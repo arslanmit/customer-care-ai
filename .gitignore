@@ -1,0 +1,41 @@
+# macOS files
+.DS_Store
+
+# Python artifacts
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+.Python
+env/
+venv/
+ENV/
+
+# Node artifacts
+node_modules/
+
+# Package distributions
+build/
+dist/
+.eggs/
+*.egg-info/
+
+# Logs and coverage
+*.log
+htmlcov/
+*.cover
+*.py.cover
+coverage.xml
+*.lcov
+
+# Environment variables
+.env
+
+# IDE settings
+.vscode/
+.idea/
+
+# Misc
+*.swp
+*~
