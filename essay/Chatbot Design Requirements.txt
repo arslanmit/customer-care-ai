@@ -1,0 +1,36 @@
+	1.	Analysis of Functional and Non-Functional Requirements
+• Functional Requirements:
+o Customer inquiries and complaints management
+o Order tracking and updates
+o Product recommendations based on user preferences
+o Seamless escalation to human agents
+• Non-Functional Requirements:
+o Performance: Real-time response (under 2 seconds per query)
+o Usability: Intuitive interaction, minimizing user learning curve
+o Ethical Considerations: Transparent handling of user data, ethical use of AI recommendations
+	2.	Creation of Chatbot Prototype and User Interaction
+• Prototype: Design a conversation flow prototype clearly illustrating dialogue paths and decision branches.
+• User Interface Elements: Utilize advanced UI elements such as quick replies, buttons, rich media cards, and seamless human-agent transition indicators.
+• Integration Points: The Prototype should clearly show integrations with external databases (product databases, order management systems).
+• Flowcharts: Provide clear conversation flowcharts for the chatbot UI interactions.
+	3.	Programming Work, AI, and NLP Techniques
+• Technical Implementation:
+o Rasa Open Source for dialogue management and natural language understanding (NLU)
+o Front-end: ReactJS or similar advanced UI frameworks for custom interface design
+o API integrations for data retrieval and system interactions
+• AI and NLP Integration:
+o Intent classification, entity extraction, dialogue state management
+o Use of Transformer-based models for NLU enhancements
+	4.	Testing
+• Rasa NLU Tests:
+o Use the built-in command rasa test nlu to evaluate how accurately the model recognizes intents and entities.
+o User satisfaction measured via usability testing and feedback surveys
+o Inspect whether the system correctly identifies entities (e.g., names, dates, product IDs).
+• Conversation Flow Tests:
+o Run rasa test core to validate how the system transitions between dialogue states based on user input.
+• Stories and Rules:
+o Ensure the chatbot follows defined stories and rules without unexpected deviations.
+o Verify that it handles edge cases (e.g., unknown or out-of-scope queries).
+	5.	Deployment
+• Deployment Process:
+o Use Google Cloud Platform (GCP)
