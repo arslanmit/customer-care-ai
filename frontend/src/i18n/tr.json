@@ -5,6 +5,7 @@
     "sendButton": "Gönder",
     "welcomeMessage": "Merhaba! Size bugün nasıl yardımcı olabilirim?",
     "errorMessage": "Üzgünüm, bir şeyler yanlış gitti.",
+    "selectLanguage": "Dil seçin",
     "languages": {
       "en": "İngilizce",
       "es": "İspanyolca",
