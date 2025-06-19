@@ -1,0 +1,15 @@
+# Rasa NLU config template
+language: en
+pipeline:
+  # Define your NLU pipeline components here
+  - name: WhitespaceTokenizer
+  - name: RegexFeaturizer
+  - name: LexicalSyntacticFeaturizer
+  - name: CountVectorsFeaturizer
+  - name: DIETClassifier
+
+policies:
+  # Define your policies here
+  - name: MemoizationPolicy
+  - name: RulePolicy
+  - name: TEDPolicy

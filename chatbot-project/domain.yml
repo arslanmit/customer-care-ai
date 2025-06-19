@@ -1,0 +1,28 @@
+version: "3.1"
+
+intents:
+  - greet
+  - goodbye
+  - ask_info
+  - tell_joke
+
+entities: []
+
+slots: {}
+
+responses:
+  utter_greet:
+    - text: "Hello! How can I help you today?"
+  utter_goodbye:
+    - text: "Goodbye, have a great day!"
+  utter_info:
+    - text: "I’m an assistant that can tell jokes and provide information about our services."
+  utter_default:
+    - text: "Sorry, I didn’t understand that. Could you rephrase?"
+
+actions:
+  - action_tell_joke
+
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true
