@@ -5,6 +5,7 @@ import en from './en.json';
 import es from './es.json';
 import fr from './fr.json';
 import de from './de.json';
+import tr from './tr.json';
 
 // Initialize i18next
 i18n
@@ -14,7 +15,8 @@ i18n
       en: { translation: en },
       es: { translation: es },
       fr: { translation: fr },
-      de: { translation: de }
+      de: { translation: de },
+      tr: { translation: tr }
     },
     lng: 'en',
     fallbackLng: 'en',

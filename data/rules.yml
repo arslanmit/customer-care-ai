@@ -36,3 +36,23 @@ rules:
     steps:
       - intent: tell_joke
       - action: action_tell_joke
+      
+  - rule: Handle customer support request
+    steps:
+      - intent: support_request
+      - action: utter_support_help
+
+  - rule: Handle human agent request
+    steps:
+      - intent: request_human_agent
+      - action: utter_transfer_to_agent
+
+  - rule: Handle product inquiry
+    steps:
+      - intent: product_inquiry
+      - action: utter_product_info
+      
+  - rule: Handle language change request
+    steps:
+      - intent: change_language
+      - action: utter_language_changed

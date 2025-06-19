@@ -9,14 +9,15 @@ const RASA_BASE_URL = import.meta.env.VITE_RASA_URL || "http://localhost:5005";
 
 const LanguageSwitcher = () => {
   const { i18n, t } = useTranslation();
-  const languages = ['en', 'es', 'fr', 'de'];
+  const languages = ['en', 'es', 'fr', 'de', 'tr'];
 
   return (
     <div className="language-switcher">
       <select 
         value={i18n.language} 
         onChange={(e) => i18n.changeLanguage(e.target.value)}
-        aria-label="Select language"
+        aria-label={t('chatbot.selectLanguage')}
+        className="language-select"
       >
         {languages.map((lang) => (
           <option key={lang} value={lang}>
@@ -48,11 +49,11 @@ const ChatInterface = ({ messages, input, setInput, handleSend, handleKeyPress, 
           <LanguageSwitcher />
           {isAuthenticated ? (
             <button className="auth-button" onClick={logout}>
-              Logout ({user?.name})
+              {t('chatbot.logout')} ({user?.name})
             </button>
           ) : (
             <button className="auth-button" onClick={() => setShowLoginForm(true)}>
-              Login
+              {t('chatbot.login')}
             </button>
           )}
         </div>
@@ -170,7 +171,7 @@ const ChatbotContainer = () => {
             className="toggle-view-button"
             onClick={() => setShowAnalytics(false)}
           >
-            Back to Chat
+            {t('chatbot.backToChat')}
           </button>
         </>
       ) : (
@@ -188,8 +189,9 @@ const ChatbotContainer = () => {
             <button 
               className="toggle-view-button"
               onClick={() => setShowAnalytics(true)}
+              aria-label={t('chatbot.viewAnalytics')}
             >
-              View Analytics
+              {t('chatbot.viewAnalytics')}
             </button>
           )}
         </>

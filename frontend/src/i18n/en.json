@@ -5,11 +5,13 @@
     "sendButton": "Send",
     "welcomeMessage": "Hello! How can I assist you today?",
     "errorMessage": "Sorry, something went wrong.",
+    "selectLanguage": "Select language",
     "languages": {
       "en": "English",
       "es": "Spanish",
       "fr": "French",
-      "de": "German"
+      "de": "German",
+      "tr": "Turkish"
     },
     "viewAnalytics": "View Analytics",
     "backToChat": "Back to Chat",

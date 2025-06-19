@@ -1,0 +1,45 @@
+{
+  "chatbot": {
+    "title": "Müşteri Hizmetleri Asistanı",
+    "placeholder": "Mesajınızı yazın...",
+    "sendButton": "Gönder",
+    "welcomeMessage": "Merhaba! Size bugün nasıl yardımcı olabilirim?",
+    "errorMessage": "Üzgünüm, bir şeyler yanlış gitti.",
+    "languages": {
+      "en": "İngilizce",
+      "es": "İspanyolca",
+      "fr": "Fransızca",
+      "de": "Almanca",
+      "tr": "Türkçe"
+    },
+    "viewAnalytics": "Analizleri Görüntüle",
+    "backToChat": "Sohbete Dön",
+    "login": "Giriş Yap",
+    "logout": "Çıkış Yap"
+  },
+  "analytics": {
+    "title": "Konuşma Analizleri",
+    "messageStats": "Mesaj İstatistikleri",
+    "userMessages": "Kullanıcı Mesajları",
+    "botResponses": "Bot Yanıtları",
+    "avgResponseTime": "Ortalama Yanıt Süresi",
+    "messageDistribution": "Mesaj Dağılımı",
+    "intentDistribution": "Niyet Dağılımı",
+    "intentTypes": "Niyet Türleri"
+  },
+  "auth": {
+    "login": "Giriş Yap",
+    "register": "Hesap Oluştur",
+    "email": "E-posta",
+    "password": "Şifre",
+    "name": "İsim",
+    "loginToggle": "Zaten hesabınız var mı? Giriş yapın",
+    "registerToggle": "Hesaba ihtiyacınız var mı? Kaydolun",
+    "demoCredentials": "Demo bilgileri:",
+    "demoEmail": "E-posta: user@example.com",
+    "demoPassword": "Şifre: password",
+    "emailRequired": "E-posta gereklidir",
+    "passwordRequired": "Şifre gereklidir",
+    "nameRequired": "İsim gereklidir"
+  }
+}

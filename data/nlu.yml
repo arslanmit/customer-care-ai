@@ -3,6 +3,7 @@ version: "3.1"
 nlu:
   - intent: greet
     examples: |
+      # English greetings
       - hello
       - hi
       - hey
@@ -13,9 +14,32 @@ nlu:
       - hi!
       - hey!
       - greetings
+      - how are you today
+      - how's it going
+      
+      # Spanish greetings
+      - hola
+      - buenos días
+      - buenas tardes
+      - buenas noches
+      - ¿cómo estás?
+      
+      # French greetings
+      - bonjour
+      - salut
+      - bonsoir
+      - comment ça va
+      
+      # German greetings
+      - hallo
+      - guten tag
+      - guten morgen
+      - guten abend
+      - wie geht es dir
 
   - intent: goodbye
     examples: |
+      # English goodbyes
       - bye
       - goodbye
       - see you later
@@ -26,9 +50,30 @@ nlu:
       - bye bye
       - later
       - farewell
+      - thanks for your help
+      
+      # Spanish goodbyes
+      - adiós
+      - hasta luego
+      - hasta pronto
+      - chao
+      - nos vemos
+      
+      # French goodbyes
+      - au revoir
+      - à bientôt
+      - salut
+      - à plus tard
+      
+      # German goodbyes
+      - tschüss
+      - auf wiedersehen
+      - bis später
+      - bis bald
 
   - intent: ask_info
     examples: |
+      # English queries
       - what can you do?
       - how can you help me?
       - what are your features?
@@ -39,6 +84,23 @@ nlu:
       - what services do you provide?
       - what are you for?
       - what help can you offer?
+      - who created you?
+      
+      # Spanish queries
+      - ¿qué puedes hacer?
+      - ¿cómo puedes ayudarme?
+      - ¿cuáles son tus funciones?
+      - háblame de ti
+      
+      # French queries
+      - que peux-tu faire?
+      - comment peux-tu m'aider?
+      - quelles sont tes fonctionnalités?
+      
+      # German queries
+      - was kannst du tun?
+      - wie kannst du mir helfen?
+      - was sind deine funktionen?
 
   - intent: tell_joke
     examples: |
@@ -71,6 +133,9 @@ nlu:
       - qwertyuiop
       - random words
       - unknown input
+      - xyzkwarfm
+      - !@#$%^&*
+      - 123456789
 
   - intent: provide_info
     examples: |
@@ -79,11 +144,92 @@ nlu:
       - Can I tell you my name?
       - I'd like to tell you my name
       - may I give you my name
+      - My name is [John](name)
+      - I am [Mary](name)
+      - Call me [Alex](name)
+      - I'm [Sarah](name)
+      - They call me [Michael](name)
 
   - intent: ask_time
     examples: |
+      # English
       - what time is it?
       - do you know the current time?
       - tell me the time please
       - can you tell me the time?
       - current time?
+      - what's the time now?
+      
+      # Spanish
+      - ¿qué hora es?
+      - ¿sabes la hora actual?
+      - dime la hora por favor
+      
+      # French
+      - quelle heure est-il?
+      - quelle est l'heure actuelle?
+      
+      # German
+      - wie spät ist es?
+      - kannst du mir die uhrzeit sagen?
+      - wie viel uhr ist es?
+
+  - intent: support_request
+    examples: |
+      - I need help with my order
+      - There's a problem with my account
+      - My product isn't working
+      - I have an issue with my purchase
+      - Something is wrong with my subscription
+      - I need customer support
+      - Help me with my recent order
+      - I need assistance with your service
+      - My product is defective
+      - I want to report a problem
+      - Can you help me fix an issue?
+      - I'm having trouble with my device
+      - Something broke and I need help
+      - Technical support needed
+      - I'm experiencing difficulties
+
+  - intent: change_language
+    examples: |
+      - I want to speak in Spanish
+      - Can we talk in French?
+      - Switch to German please
+      - Change language to English
+      - I prefer to speak in Spanish
+      - Can you understand French?
+      - Let's speak German
+      - I'd like to continue in English
+      - Speak to me in Spanish
+      - Use French instead
+      - Talk to me in German
+      - English please
+
+  - intent: request_human_agent
+    examples: |
+      - I want to speak to a human
+      - Connect me with a real person
+      - Can I talk to a customer representative?
+      - Transfer me to an agent
+      - I need a human representative
+      - Is there a real person I can speak to?
+      - No bots, I want a human
+      - Can I speak with a customer service rep?
+      - Get me a human agent
+      - I don't want to talk to a bot
+      - Can you connect me to a person?
+      
+  - intent: product_inquiry
+    examples: |
+      - What products do you offer?
+      - Tell me about your services
+      - Do you have [product name]?
+      - I'm looking for information about your [product]
+      - What are your most popular items?
+      - Tell me more about your subscription service
+      - What features does your product have?
+      - How much does your service cost?
+      - Are there any discounts available?
+      - Do you have a premium version?
