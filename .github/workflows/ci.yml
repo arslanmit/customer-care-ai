@@ -1,0 +1,52 @@
+name: CI Tests
+on:
+  push:
+    branches: ["main", "master"]
+  pull_request:
+
+jobs:
+  frontend-tests:
+    name: Frontend Unit Tests
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install frontend dependencies
+        working-directory: frontend
+        run: npm ci --ignore-scripts
+
+      - name: Run frontend tests
+        working-directory: frontend
+        run: npm test -- --watchAll=false
+
+  backend-tests:
+    name: Backend Rasa Tests
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+
+      - name: Install project dependencies
+        run: |
+          python -m venv venv
+          source venv/bin/activate
+          pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run Rasa tests (stories & actions)
+        run: |
+          source venv/bin/activate
+          rasa test --no-prompt
