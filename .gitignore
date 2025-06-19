@@ -36,6 +36,11 @@ coverage.xml
 .vscode/
 .idea/
 
+# Rasa caches and models
+.rasa/
+models/
+.python-version
+
 # Misc
 *.swp
 *~
