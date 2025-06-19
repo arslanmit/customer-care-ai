@@ -1,0 +1,20 @@
+version: "3.1"
+
+stories:
+  - story: basic info inquiry
+    steps:
+      - intent: greet
+      - action: utter_greet
+      - intent: ask_info
+      - action: utter_info
+      - intent: goodbye
+      - action: utter_goodbye
+
+  - story: joke interaction
+    steps:
+      - intent: greet
+      - action: utter_greet
+      - intent: tell_joke
+      - action: action_tell_joke
+      - intent: goodbye
+      - action: utter_goodbye

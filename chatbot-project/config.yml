@@ -1,0 +1,9 @@
+# Rasa configuration template
+language: en
+
+pipeline:
+  - name: WhitespaceTokenizer
+  - name: DIETClassifier
+
+policies:
+  - name: RulePolicy

@@ -1,0 +1,54 @@
+version: "3.1"
+
+nlu:
+  - intent: greet
+    examples: |
+      - hello
+      - hi
+      - hey
+      - hi there
+      - hello there
+      - good morning
+      - good evening
+      - hi!
+      - hey!
+      - greetings
+
+  - intent: goodbye
+    examples: |
+      - bye
+      - goodbye
+      - see you later
+      - talk to you later
+      - see ya
+      - catch you later
+      - have a nice day
+      - bye bye
+      - later
+      - farewell
+
+  - intent: ask_info
+    examples: |
+      - what can you do?
+      - how can you help me?
+      - what are your features?
+      - what do you know?
+      - tell me about yourself
+      - what is your purpose?
+      - how can you assist me?
+      - what services do you provide?
+      - what are you for?
+      - what help can you offer?
+
+  - intent: tell_joke
+    examples: |
+      - tell me a joke
+      - make me laugh
+      - I want to hear something funny
+      - say something funny
+      - can you tell a joke?
+      - do you know any jokes?
+      - make a joke
+      - give me a joke
+      - joke please
+      - cheer me up
