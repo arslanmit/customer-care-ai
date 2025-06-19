@@ -28,6 +28,7 @@ slots:
       - es
       - fr
       - de
+      - tr
     influence_conversation: true
     mappings:
       - type: custom
@@ -42,6 +43,8 @@ responses:
       language: fr
     - text: "Hallo! Wie kann ich Ihnen heute helfen?"
       language: de
+    - text: "Merhaba! Bugün size nasıl yardımcı olabilirim?"
+      language: tr
       
   utter_goodbye:
     - text: "Goodbye, have a great day!"
@@ -52,6 +55,8 @@ responses:
       language: fr
     - text: "Auf Wiedersehen, haben Sie einen schönen Tag!"
       language: de
+    - text: "Hoşça kalın, iyi günler!"
+      language: tr
       
   utter_info:
     - text: "I'm an assistant that can tell jokes, answer questions, provide information about our services, and help with customer support."
@@ -62,6 +67,8 @@ responses:
       language: fr
     - text: "Ich bin ein Assistent, der Witze erzählen, Fragen beantworten, Informationen über unsere Dienstleistungen bereitstellen und beim Kundensupport helfen kann."
       language: de
+    - text: "Şakalar anlatabilen, soruları yanıtlayabilen, hizmetlerimiz hakkında bilgi sağlayabilen ve müşteri desteğiyle yardımcı olabilen bir asistanım."
+      language: tr
       
   utter_default:
     - text: "Sorry, I didn't understand that. Could you rephrase?"
@@ -72,6 +79,8 @@ responses:
       language: fr
     - text: "Entschuldigung, ich habe das nicht verstanden. Könnten Sie das umformulieren?"
       language: de
+    - text: "Üzgünüm, bunu anlamadım. Yeniden ifade edebilir misiniz?"
+      language: tr
       
   utter_ask_name:
     - text: "May I have your name, please?"
@@ -82,6 +91,8 @@ responses:
       language: fr
     - text: "Darf ich Ihren Namen erfahren, bitte?"
       language: de
+    - text: "İsminizi öğrenebilir miyim, lütfen?"
+      language: tr
       
   utter_thank_you:
     - text: "Thank you, {name}!"
@@ -92,6 +103,8 @@ responses:
       language: fr
     - text: "Danke, {name}!"
       language: de
+    - text: "Teşekkür ederim, {name}!"
+      language: tr
       
   utter_support_help:
     - text: "I understand you're having an issue. Please describe your problem in detail, and I'll do my best to help you resolve it."
@@ -102,6 +115,8 @@ responses:
       language: fr
     - text: "Ich verstehe, dass Sie ein Problem haben. Bitte beschreiben Sie Ihr Problem im Detail, und ich werde mein Bestes tun, um Ihnen bei der Lösung zu helfen."
       language: de
+    - text: "Bir sorun yaşadığınızı anlıyorum. Lütfen sorununuzu detaylı bir şekilde açıklayın ve çözmenize yardımcı olmak için elimden geleni yapacağım."
+      language: tr
       
   utter_transfer_to_agent:
     - text: "I'll connect you with a human customer service agent right away. Please hold for a moment."
@@ -112,6 +127,8 @@ responses:
       language: fr
     - text: "Ich verbinde Sie sofort mit einem menschlichen Kundendienstmitarbeiter. Bitte warten Sie einen Moment."
       language: de
+    - text: "Sizi hemen bir müşteri hizmetleri temsilcisine bağlayacağım. Lütfen bir an bekleyin."
+      language: tr
       
   utter_product_info:
     - text: "We offer a range of products and services designed to meet your needs. Our most popular items include our premium support packages, customizable solutions, and enterprise-level services. Would you like more specific information about any of these?"
@@ -122,6 +139,8 @@ responses:
       language: fr
     - text: "Wir bieten eine Reihe von Produkten und Dienstleistungen an, die auf Ihre Bedürfnisse zugeschnitten sind. Zu unseren beliebtesten Artikeln gehören unsere Premium-Support-Pakete, anpassbare Lösungen und Dienste auf Unternehmensebene. Möchten Sie genauere Informationen zu einem dieser Angebote?"
       language: de
+    - text: "İhtiyaçlarınızı karşılamak için tasarlanmış bir dizi ürün ve hizmet sunuyoruz. En popüler ürünlerimiz arasında premium destek paketlerimiz, özelleştirilebilir çözümlerimiz ve kurumsal düzeyde hizmetlerimiz bulunmaktadır. Bunlardan herhangi biri hakkında daha spesifik bilgi almak ister misiniz?"
+      language: tr
       
   utter_language_changed:
     - text: "I've switched to English. How can I help you?"
@@ -132,6 +151,8 @@ responses:
       language: fr
     - text: "Ich bin zum Deutschen gewechselt. Wie kann ich Ihnen helfen?"
       language: de
+    - text: "Türkçe'ye geçtim. Size nasıl yardımcı olabilirim?"
+      language: tr
 
 actions:
   - action_tell_joke
