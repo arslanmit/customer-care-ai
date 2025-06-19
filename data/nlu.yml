@@ -52,3 +52,27 @@ nlu:
       - give me a joke
       - joke please
       - cheer me up
+
+  - intent: nlu_fallback
+    examples: |
+      - blargle
+      - asdfghjkl
+      - qwertyuiop
+      - random words
+      - unknown input
+
+  - intent: provide_info
+    examples: |
+      - I want to introduce myself
+      - I'd like to give my name
+      - Can I tell you my name?
+      - I'd like to tell you my name
+      - may I give you my name
+
+  - intent: ask_time
+    examples: |
+      - what time is it?
+      - do you know the current time?
+      - tell me the time please
+      - can you tell me the time?
+      - current time?
