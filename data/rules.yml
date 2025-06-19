@@ -31,3 +31,8 @@ rules:
     steps:
       - intent: ask_time
       - action: action_tell_time
+
+  - rule: Tell a joke on request
+    steps:
+      - intent: tell_joke
+      - action: action_tell_joke

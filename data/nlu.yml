@@ -52,6 +52,17 @@ nlu:
       - give me a joke
       - joke please
       - cheer me up
+      - do you have a joke?
+      - could you make me laugh?
+      - I need a laugh
+      - something funny please
+      - entertain me with a joke
+      - I'd like to hear a joke
+      - say a joke
+      - do you know a good joke?
+      - amuse me
+      - tell a funny story
+      - crack a joke
 
   - intent: nlu_fallback
     examples: |
