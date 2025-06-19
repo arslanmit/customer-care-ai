@@ -10,7 +10,7 @@ pipeline:
   epochs: 50
 - name: EntitySynonymMapper
 - name: FallbackClassifier
-  threshold: 0.4
+  threshold: 0.2
   ambiguity_threshold: 0.1
 
 policies:
