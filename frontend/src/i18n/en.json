@@ -1,0 +1,15 @@
+{
+  "chatbot": {
+    "title": "Customer Care Assistant",
+    "placeholder": "Type your message...",
+    "sendButton": "Send",
+    "welcomeMessage": "Hello! How can I assist you today?",
+    "errorMessage": "Sorry, something went wrong.",
+    "languages": {
+      "en": "English",
+      "es": "Spanish",
+      "fr": "French",
+      "de": "German"
+    }
+  }
+}
