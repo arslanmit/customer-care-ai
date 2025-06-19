@@ -1,34 +1,112 @@
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import '@testing-library/jest-dom';
+import userEvent from '@testing-library/user-event';
 import Chatbot from './Chatbot.jsx';
 
-// Mock the global fetch function before each test
+// Mock the i18n provider since it's needed by the component
+vi.mock('react-i18next', () => ({
+  useTranslation: () => ({
+    t: (key) => {
+      // Return key-specific translations for common keys
+      const translations = {
+        'chatbot.placeholder': 'Type your message...',
+        'chatbot.sendButton': 'Send',
+        'chatbot.viewAnalytics': 'View Analytics',
+        'chatbot.backToChat': 'Back to Chat',
+        'chatbot.login': 'Login',
+        'chatbot.logout': 'Logout',
+        'chatbot.selectLanguage': 'Select language'
+      };
+      return translations[key] || key;
+    },
+    i18n: {
+      changeLanguage: vi.fn(),
+      language: 'en',
+    },
+  }),
+}));
+
+// Mock localStorage
 beforeEach(() => {
-  global.fetch = jest.fn(() =>
+  // Setup localStorage mock
+  Object.defineProperty(window, 'localStorage', {
+    value: {
+      getItem: vi.fn(() => null),
+      setItem: vi.fn(),
+      removeItem: vi.fn(),
+    },
+    writable: true,
+  });
+  
+  // Mock fetch API
+  global.fetch = vi.fn(() =>
     Promise.resolve({
+      ok: true,
       json: () => Promise.resolve([{ text: 'Hi there!' }]),
     })
   );
 });
 
 afterEach(() => {
-  jest.resetAllMocks();
+  vi.resetAllMocks();
 });
 
-test('user message appears and bot response is added', async () => {
-  render(<Chatbot />);
+describe('Chatbot Component', () => {
+  it('renders the chatbot interface correctly', () => {
+    render(<Chatbot />);
+    expect(screen.getByPlaceholderText('Type your message...')).toBeInTheDocument();
+    expect(screen.getByText('Send')).toBeInTheDocument();
+  });
 
-  const input = screen.getByPlaceholderText(/Type your message/i);
-  const sendButton = screen.getByText(/Send/i);
+  it('sends user message and receives bot response', async () => {
+    const user = userEvent.setup();
+    render(<Chatbot />);
 
-  // Type a message
-  fireEvent.change(input, { target: { value: 'hello' } });
-  // Click send
-  fireEvent.click(sendButton);
+    const input = screen.getByPlaceholderText('Type your message...');
+    const sendButton = screen.getByText('Send');
 
-  // User message should immediately appear
-  expect(screen.getByText('hello')).toBeInTheDocument();
+    // Type a message using userEvent for more realistic interaction
+    await user.type(input, 'hello');
+    await user.click(sendButton);
 
-  // Wait for mocked bot response to appear
-  await waitFor(() => expect(screen.getByText('Hi there!')).toBeInTheDocument());
+    // User message should immediately appear
+    expect(screen.getByText('hello')).toBeInTheDocument();
+
+    // Wait for mocked bot response to appear
+    await waitFor(() => expect(screen.getByText('Hi there!')).toBeInTheDocument());
+    
+    // Verify fetch was called with the right parameters
+    expect(global.fetch).toHaveBeenCalledTimes(1);
+  });
+
+  it('switches between chat and analytics views', async () => {
+    const user = userEvent.setup();
+    render(<Chatbot />);
+
+    // Initially in chat view
+    expect(screen.getByPlaceholderText('Type your message...')).toBeInTheDocument();
+    
+    // Click to view analytics
+    const viewAnalyticsButton = screen.getByText('View Analytics');
+    await user.click(viewAnalyticsButton);
+    
+    // Expect back to chat button to be present in analytics view
+    expect(screen.getByText('Back to Chat')).toBeInTheDocument();
+  });
+
+  it('handles language switching', async () => {
+    const user = userEvent.setup();
+    render(<Chatbot />);
+
+    // Find the language selector
+    const languageSelect = screen.getByLabelText('Select language');
+    expect(languageSelect).toBeInTheDocument();
+    
+    // Change language
+    await user.selectOptions(languageSelect, 'es');
+    
+    // i18n change language should have been called
+    const { i18n } = vi.mocked(useTranslation(), true)();
+    expect(i18n.changeLanguage).toHaveBeenCalledWith('es');
+  });
 });
