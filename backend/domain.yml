@@ -1,0 +1,159 @@
+version: "3.1"
+
+intents:
+  - greet
+  - goodbye
+  - ask_info
+  - tell_joke
+  - provide_info
+  - ask_time
+  - nlu_fallback
+  - support_request
+  - change_language
+  - request_human_agent
+  - product_inquiry
+
+entities: []
+
+slots:
+  name:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: from_text
+  language:
+    type: categorical
+    values:
+      - en
+      - es
+      - fr
+      - de
+      - tr
+    influence_conversation: true
+    mappings:
+      - type: custom
+
+responses:
+  # English responses
+  utter_greet:
+    - text: "Hello! How can I help you today?"
+  utter_goodbye:
+    - text: "Goodbye, have a great day!"
+  utter_info:
+    - text: "I'm here to help. What would you like to know?"
+  utter_default:
+    - text: "I'm not sure how to respond to that. Could you rephrase?"
+  utter_ask_name:
+    - text: "May I have your name, please?"
+  utter_thank_you:
+    - text: "You're welcome! Is there anything else I can help you with?"
+  utter_support_help:
+    - text: "I'm here to help with any issues you're experiencing. Could you describe the problem?"
+  utter_transfer_to_agent:
+    - text: "I'll connect you with a human support agent right away. Please hold for a moment."
+  utter_product_info:
+    - text: "We offer a range of products and services designed to meet your needs. Our most popular items include our premium support packages, customizable solutions, and enterprise-level services. Would you like more specific information about any of these?"
+  utter_language_changed:
+    - text: "I've changed the language to English."
+
+  # Spanish responses
+  "utter_greet_es":
+    - text: "¡Hola! ¿Cómo puedo ayudarte hoy?"
+  "utter_goodbye_es":
+    - text: "¡Adiós, que tengas un gran día!"
+  "utter_info_es":
+    - text: "Estoy aquí para ayudar. ¿Qué te gustaría saber?"
+  "utter_default_es":
+    - text: "No estoy seguro de cómo responder a eso. ¿Podrías reformularlo?"
+  "utter_ask_name_es":
+    - text: "¿Me podría dar su nombre, por favor?"
+  "utter_thank_you_es":
+    - text: "¡De nada! ¿Hay algo más en lo que pueda ayudarte?"
+  "utter_support_help_es":
+    - text: "Estoy aquí para ayudarte con cualquier problema que estés teniendo. ¿Podrías describir el problema?"
+  "utter_transfer_to_agent_es":
+    - text: "Te conectaré con un agente de soporte humano de inmediato. Por favor, espera un momento."
+  "utter_product_info_es":
+    - text: "Ofrecemos una variedad de productos y servicios diseñados para satisfacer tus necesidades. Nuestros artículos más populares incluyen nuestros paquetes de soporte premium, soluciones personalizables y servicios de nivel empresarial. ¿Te gustaría información más específica sobre alguno de estos?"
+  "utter_language_changed_es":
+    - text: "He cambiado el idioma a español."
+
+  # French responses
+  "utter_greet_fr":
+    - text: "Bonjour! Comment puis-je vous aider aujourd'hui?"
+  "utter_goodbye_fr":
+    - text: "Au revoir, passez une excellente journée!"
+  "utter_info_fr":
+    - text: "Je suis là pour vous aider. Que voudriez-vous savoir?"
+  "utter_default_fr":
+    - text: "Je ne suis pas sûr de savoir comment répondre à cela. Pourriez-vous reformuler?"
+  "utter_ask_name_fr":
+    - text: "Puis-je avoir votre nom, s'il vous plaît?"
+  "utter_thank_you_fr":
+    - text: "Je vous en prie ! Y a-t-il autre chose dont vous avez besoin ?"
+  "utter_support_help_fr":
+    - text: "Je suis là pour vous aider avec tout problème que vous rencontrez. Pourriez-vous décrire le problème?"
+  "utter_transfer_to_agent_fr":
+    - text: "Je vais vous mettre en relation avec un agent de support humain immédiatement. Veuillez patienter un instant."
+  "utter_product_info_fr":
+    - text: "Nous proposons une gamme de produits et services conçus pour répondre à vos besoins. Nos articles les plus populaires incluent nos forfaits d'assistance premium, des solutions personnalisables et des services de niveau entreprise. Souhaitez-vous des informations plus spécifiques sur l'un d'entre eux?"
+  "utter_language_changed_fr":
+    - text: "J'ai changé la langue en français."
+
+  # German responses
+  "utter_greet_de":
+    - text: "Hallo! Wie kann ich Ihnen heute helfen?"
+  "utter_goodbye_de":
+    - text: "Auf Wiedersehen, einen schönen Tag noch!"
+  "utter_info_de":
+    - text: "Ich bin hier, um zu helfen. Was möchten Sie wissen?"
+  "utter_default_de":
+    - text: "Ich bin mir nicht sicher, wie ich darauf antworten soll. Könnten Sie das umformulieren?"
+  "utter_ask_name_de":
+    - text: "Darf ich bitte Ihren Namen erfahren?"
+  "utter_thank_you_de":
+    - text: "Gern geschehen! Kann ich Ihnen sonst noch behilflich sein?"
+  "utter_support_help_de":
+    - text: "Ich bin hier, um Ihnen bei allen Problemen zu helfen. Könnten Sie das Problem beschreiben?"
+  "utter_transfer_to_agent_de":
+    - text: "Ich verbinde Sie sofort mit einem menschlichen Support-Mitarbeiter. Bitte warten Sie einen Moment."
+  "utter_product_info_de":
+    - text: "Wir bieten eine Reihe von Produkten und Dienstleistungen an, die auf Ihre Bedürfnisse zugeschnitten sind. Zu unseren beliebtesten Artikeln gehören unsere Premium-Support-Pakete, anpassbare Lösungen und Unternehmensdienstleistungen. Möchten Sie genauere Informationen zu einem dieser Punkte?"
+  "utter_language_changed_de":
+    - text: "Ich habe die Sprache auf Deutsch umgestellt."
+
+  # Turkish responses
+  "utter_greet_tr":
+    - text: "Merhaba! Bugün size nasıl yardımcı olabilirim?"
+  "utter_goodbye_tr":
+    - text: "Güle güle, iyi günler!"
+  "utter_info_tr":
+    - text: "Yardımcı olmaktan mutluluk duyarım. Ne öğrenmek istersiniz?"
+  "utter_default_tr":
+    - text: "Buna nasıl yanıt vereceğimden emin değilim. Yeniden ifade edebilir misiniz?"
+  "utter_ask_name_tr":
+    - text: "Adınızı alabilir miyim, lütfen?"
+  "utter_thank_you_tr":
+    - text: "Rica ederim! Yardımcı olabileceğim başka bir şey var mı?"
+  "utter_support_help_tr":
+    - text: "Yaşadığınız herhangi bir sorunda yardımcı olmak için buradayım. Sorunu açıklayabilir misiniz?"
+  "utter_transfer_to_agent_tr":
+    - text: "Sizi hemen bir müşteri temsilcisine bağlıyorum. Lütfen bir saniye bekleyin."
+  "utter_product_info_tr":
+    - text: "İhtiyaçlarınızı karşılamak için tasarlanmış çeşitli ürün ve hizmetler sunuyoruz. En popüler ürünlerimiz arasında premium destek paketlerimiz, özelleştirilebilir çözümlerimiz ve kurumsal düzeyde hizmetlerimiz bulunmaktadır. Bunlardan herhangi biri hakkında daha spesifik bilgi ister misiniz?"
+  "utter_language_changed_tr":
+    - text: "Dili Türkçe olarak değiştirdim."
+
+actions:
+  - action_tell_joke
+  - action_tell_time
+  - action_set_language
+
+forms:
+  name_form:
+    required_slots:
+      - name
+
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true

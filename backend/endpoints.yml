@@ -5,4 +5,4 @@ action_endpoint:
 
 tracker_store:
   type: SQL
-  db: /Users/umitarslan/customer-care-ai/logs/conversations.db
+  db: ../logs/conversations.db
