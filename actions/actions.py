@@ -13,20 +13,32 @@ logger = logging.getLogger(__name__)
 
 
 def get_language(tracker: Tracker) -> Text:
-    """Get the current language from tracker or default to English."""
-    # Check request language from header if available
-    language_header = next(
-        (e for e in tracker.events if e.get('event') == 'user' and e.get('metadata', {}).get('language')),
-        None
-    )
+    """Get the current language from tracker or default to English.
     
-    if language_header:
-        return language_header.get('metadata', {}).get('language', 'en')
-    
-    # Get language from slot if set
-    language = tracker.get_slot('language')
-    if language:
-        return language
+    Args:
+        tracker: The conversation tracker
+        
+    Returns:
+        The detected language code (en, es, fr, de, tr)
+    """
+    try:
+        # Check request language from header if available
+        language_header = next(
+            (e for e in tracker.events if e.get('event') == 'user' and e.get('metadata', {}).get('language')),
+            None
+        )
+        
+        if language_header:
+            lang_code = language_header.get('metadata', {}).get('language', 'en')
+            if lang_code in ['en', 'es', 'fr', 'de', 'tr']:
+                return lang_code
+        
+        # Get language from slot if set
+        language = tracker.get_slot('language')
+        if language and language in ['en', 'es', 'fr', 'de', 'tr']:
+            return language
+    except Exception as e:
+        logger.error(f"Error detecting language: {e}")
         
     return 'en'  # Default to English
 
@@ -68,6 +80,12 @@ class ActionTellJoke(Action):
                 "Warum vertrauen Wissenschaftler Atomen nicht? Weil sie alles erfinden!",
                 "Ich habe meinem Computer gesagt, dass ich eine Pause brauche, und er sagte 'Kein Problem — ich schlafe ein.'",
                 "Warum hat die Vogelscheuche einen Preis gewonnen? Weil sie auf ihrem Gebiet hervorragend war!"
+            ],
+            'tr': [
+                "Bilim insanları neden atomlara güvenmez? Çünkü her şeyi onlar uydurur!",
+                "Bilgisayarıma ara vermem gerektiğini söyledim, o da 'Sorun değil — ben uyuyacağım.' dedi.",
+                "Korkuluk neden ödül kazandı? Çünkü alanında üstündü!",
+                "Programcılar neden doğayı sevmez? Çünkü içinde çok fazla hata vardır."
             ]
         }
         
@@ -100,15 +118,28 @@ class ActionTellTime(Action):
             'en': "%I:%M %p",  # 12-hour format with AM/PM
             'es': "%H:%M",    # 24-hour format
             'fr': "%H h %M",  # French format
-            'de': "%H:%M"     # 24-hour format
+            'de': "%H:%M",    # 24-hour format
+            'tr': "%H:%M"     # 24-hour format
         }
         
-        time_messages = {
-            'en': f"The current time is {now.strftime(time_formats.get('en', '%H:%M'))}",
-            'es': f"La hora actual es {now.strftime(time_formats.get('es', '%H:%M'))}",
-            'fr': f"L'heure actuelle est {now.strftime(time_formats.get('fr', '%H:%M'))}",
-            'de': f"Die aktuelle Zeit ist {now.strftime(time_formats.get('de', '%H:%M'))} Uhr"
-        }
+        try:
+            time_messages = {
+                'en': f"The current time is {now.strftime(time_formats.get('en', '%H:%M'))}",
+                'es': f"La hora actual es {now.strftime(time_formats.get('es', '%H:%M'))}",
+                'fr': f"L'heure actuelle est {now.strftime(time_formats.get('fr', '%H:%M'))}",
+                'de': f"Die aktuelle Zeit ist {now.strftime(time_formats.get('de', '%H:%M'))} Uhr",
+                'tr': f"Şu anki saat {now.strftime(time_formats.get('tr', '%H:%M'))}"
+            }
+        except Exception as e:
+            logger.error(f"Error formatting time: {e}")
+            # Fallback to a simple format that should work everywhere
+            time_messages = {
+                'en': f"The current time is {now.strftime('%H:%M')}",
+                'es': f"La hora actual es {now.strftime('%H:%M')}",
+                'fr': f"L'heure actuelle est {now.strftime('%H:%M')}",
+                'de': f"Die aktuelle Zeit ist {now.strftime('%H:%M')}",
+                'tr': f"Şu anki saat {now.strftime('%H:%M')}"
+            }
         
         # Get the message in the user's language, fallback to English
         message = time_messages.get(language, time_messages['en'])
@@ -131,22 +162,39 @@ class ActionSetLanguage(Action):
         tracker: Tracker,
         domain: Dict[Text, Any],
     ) -> List[Dict[Text, Any]]:
-        # Extract language entity from message, default to English
+        # Extract language from message, default to English
         message = tracker.latest_message.get('text', '').lower()
         
         language = 'en'  # Default
         
-        # Simple language detection based on intent
-        if 'spanish' in message or 'español' in message or 'espanol' in message:
-            language = 'es'
-        elif 'french' in message or 'français' in message or 'francais' in message:
-            language = 'fr'
-        elif 'german' in message or 'deutsch' in message:
-            language = 'de'
-        elif 'english' in message or 'inglés' in message or 'ingles' in message:
-            language = 'en'
+        try:
+            # Language detection based on keywords
+            language_keywords = {
+                'es': ['spanish', 'español', 'espanol', 'castellano'],
+                'fr': ['french', 'français', 'francais', 'le français'],
+                'de': ['german', 'deutsch', 'deutsche', 'germanisch'],
+                'tr': ['turkish', 'türkçe', 'turkce', 'türk'],
+                'en': ['english', 'inglés', 'ingles']
+            }
             
-        logger.debug(f"Setting language to {language}")
+            # Check each language's keywords
+            for lang_code, keywords in language_keywords.items():
+                if any(keyword in message for keyword in keywords):
+                    language = lang_code
+                    break
+                    
+            # Additional check for possible language codes directly in the message
+            lang_codes = ['en', 'es', 'fr', 'de', 'tr']
+            for code in lang_codes:
+                # Check if the code appears as a standalone word
+                if f" {code} " in f" {message} " or message == code:
+                    language = code
+                    break
+            
+            logger.info(f"Setting language to {language} based on message: {message}")
+            
+        except Exception as e:
+            logger.error(f"Error detecting language from message '{message}': {e}")
         
         # The response will come from domain.yml utter_language_changed
         # with the appropriate language variant
