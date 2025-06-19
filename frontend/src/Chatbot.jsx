@@ -61,11 +61,6 @@ const Chatbot = () => {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKeyPress}
-          onPaste={(e) => {
-            e.preventDefault();
-            const pasteData = e.clipboardData.getData('text');
-            setInput(pasteData);
-          }}
           placeholder="Type your message..."
         />
         <button onClick={handleSend}>Send</button>
