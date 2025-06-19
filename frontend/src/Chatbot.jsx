@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import './chatbot.css';
 
+const RASA_BASE_URL = process.env.REACT_APP_RASA_URL || "http://localhost:5005";
+
 const Chatbot = () => {
   const [messages, setMessages] = useState([
     { sender: 'bot', text: 'Hello! How can I assist you today?' },
@@ -16,7 +18,7 @@ const Chatbot = () => {
     setInput('');
 
     try {
-      const res = await fetch('http://localhost:5005/webhooks/rest/webhook', {
+      const res = await fetch(`${RASA_BASE_URL}/webhooks/rest/webhook`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ sender: 'browser-user', message: currentInput }),
