@@ -5,6 +5,7 @@ A full-stack conversational AI chatbot built with Rasa (backend) and React (fron
 ## Project Overview
 
 This project implements an intelligent conversational agent that can:
+
 - Handle basic greetings and farewells
 - Collect user information using forms
 - Respond to time inquiries
@@ -13,6 +14,7 @@ This project implements an intelligent conversational agent that can:
 ## Architecture
 
 ### Backend (Rasa)
+
 - NLU pipeline with WhitespaceTokenizer, RegexFeaturizer, DIETClassifier, and FallbackClassifier
 - Custom actions for telling time and jokes
 - Form-based slot filling for collecting user information
@@ -20,6 +22,7 @@ This project implements an intelligent conversational agent that can:
 - REST API with CORS support for frontend integration
 
 ### Frontend (React)
+
 - Modern React application built with Vite
 - Chat interface with message history
 - Responsive design
@@ -28,6 +31,7 @@ This project implements an intelligent conversational agent that can:
 ## Getting Started
 
 ### Prerequisites
+
 - Python 3.8-3.10 (for Rasa compatibility)
 - Node.js 18+
 - Docker and Docker Compose (for containerized deployment)
@@ -37,6 +41,7 @@ This project implements an intelligent conversational agent that can:
 #### Backend Setup
 
 1. Create a Python virtual environment:
+
 ```bash
 python -m venv .venv
 source .venv/bin/activate  # On Windows: .venv\Scripts\activate
@@ -47,12 +52,14 @@ source .venv/bin/activate  # On Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-3. Train the Rasa model:
+1. Train the Rasa model:
+
 ```bash
 rasa train
 ```
 
-4. Run the Rasa server:
+1. Run the Rasa server:
+
 ```bash
 # In one terminal
 rasa run actions
@@ -64,6 +71,7 @@ rasa run --enable-api --cors "*"
 #### Frontend Setup
 
 1. Navigate to the frontend directory:
+
 ```bash
 cd frontend
 ```
@@ -73,7 +81,8 @@ cd frontend
 npm install
 ```
 
-3. Start development server:
+1. Start development server:
+
 ```bash
 npm run dev
 ```
@@ -88,7 +97,7 @@ To start both services with Docker Compose:
 docker-compose up --build
 ```
 
-This will start both the Rasa backend (available at http://localhost:5005) and the React frontend (available at http://localhost:8080).
+This will start both the Rasa backend (available at [http://localhost:5005](http://localhost:5005)) and the React frontend (available at [http://localhost:8080](http://localhost:8080)).
 
 To stop the Docker containers:
 
@@ -122,6 +131,7 @@ The project is configured for deployment to Google Cloud Run with a CI/CD pipeli
 ### Manual Deployment
 
 1. Build Docker images:
+
 ```bash
 # Backend
 docker build -t gcr.io/<PROJECT_ID>/rasa-backend:latest -f Dockerfile .
@@ -130,13 +140,15 @@ docker build -t gcr.io/<PROJECT_ID>/rasa-backend:latest -f Dockerfile .
 docker build -t gcr.io/<PROJECT_ID>/chat-frontend:latest -f frontend/Dockerfile .
 ```
 
-2. Push images to Google Container Registry:
+1. Push images to Google Container Registry:
+
 ```bash
 docker push gcr.io/<PROJECT_ID>/rasa-backend:latest
 docker push gcr.io/<PROJECT_ID>/chat-frontend:latest
 ```
 
-3. Deploy to Cloud Run:
+1. Deploy to Cloud Run:
+
 ```bash
 # Backend
 gcloud run deploy rasa-backend \
@@ -162,7 +174,7 @@ The GitHub Actions workflow in `.github/workflows/ci.yml` handles:
 
 ## Project Structure
 
-```
+```text
 customer-care-ai/
 ├── actions/             # Custom Rasa actions
 ├── data/                # Training data (NLU, stories, rules)
