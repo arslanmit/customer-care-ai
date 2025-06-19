@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { 
   Chart as ChartJS, 
   CategoryScale, 
@@ -23,6 +24,7 @@ ChartJS.register(
 );
 
 const Analytics = ({ conversationHistory }) => {
+  const { t } = useTranslation();
   const [messageStats, setMessageStats] = useState({
     userCount: 0,
     botCount: 0,
@@ -31,37 +33,55 @@ const Analytics = ({ conversationHistory }) => {
   });
 
   useEffect(() => {
-    if (conversationHistory && conversationHistory.length > 0) {
+    if (!conversationHistory || conversationHistory.length === 0) return;
+    
+    try {
       // Calculate basic message statistics
       const userMessages = conversationHistory.filter(msg => msg.sender === 'user');
       const botMessages = conversationHistory.filter(msg => msg.sender === 'bot');
       
-      // Mock intent distribution (in a real app, this would come from Rasa)
-      const mockIntents = {
-        'greet': Math.floor(Math.random() * 5),
-        'ask_info': Math.floor(Math.random() * 5),
-        'tell_joke': Math.floor(Math.random() * 5),
-        'ask_time': Math.floor(Math.random() * 5),
-        'goodbye': Math.floor(Math.random() * 5)
+      // Extract intents from bot messages (or generate mock data if not available)
+      const intentCounts = {};
+      botMessages.forEach(msg => {
+        if (msg.intent) {
+          intentCounts[msg.intent] = (intentCounts[msg.intent] || 0) + 1;
+        }
+      });
+      
+      // If no real intents found, use mock data
+      const mockIntents = Object.keys(intentCounts).length ? intentCounts : {
+        'greet': Math.floor(Math.random() * 5) + 1,
+        'ask_info': Math.floor(Math.random() * 5) + 1,
+        'tell_joke': Math.floor(Math.random() * 5) + 1,
+        'ask_time': Math.floor(Math.random() * 5) + 1,
+        'goodbye': Math.floor(Math.random() * 5) + 1
       };
+      
+      // Calculate average response time (mock data for now)
+      // In a real app, this would use timestamps from the messages
+      const avgResponseTime = Math.floor(Math.random() * 500) + 200;
       
       // Update stats
       setMessageStats({
         userCount: userMessages.length,
         botCount: botMessages.length,
-        avgResponseTime: Math.floor(Math.random() * 500) + 200, // Mock response time in ms
+        avgResponseTime,
         intentDistribution: mockIntents
       });
+    } catch (error) {
+      console.error('Error analyzing conversation history:', error);
     }
   }, [conversationHistory]);
 
   const messageCountData = {
-    labels: ['User Messages', 'Bot Responses'],
+    labels: [t('analytics.userMessages'), t('analytics.botResponses')],
     datasets: [
       {
-        label: 'Message Count',
+        label: t('analytics.messageStats'),
         data: [messageStats.userCount, messageStats.botCount],
         backgroundColor: ['rgba(54, 162, 235, 0.6)', 'rgba(75, 192, 192, 0.6)'],
+        borderColor: ['rgba(54, 162, 235, 1)', 'rgba(75, 192, 192, 1)'],
+        borderWidth: 1
       },
     ],
   };
@@ -92,44 +112,65 @@ const Analytics = ({ conversationHistory }) => {
   };
 
   return (
-    <div className="analytics-container">
-      <h2>Conversation Analytics</h2>
+    <div className="analytics-container" role="region" aria-labelledby="analytics-title">
+      <h2 id="analytics-title">{t('analytics.title')}</h2>
       
       <div className="analytics-grid">
-        <div className="analytics-card">
-          <h3>Message Statistics</h3>
-          <p>User Messages: {messageStats.userCount}</p>
-          <p>Bot Responses: {messageStats.botCount}</p>
-          <p>Avg Response Time: {messageStats.avgResponseTime}ms</p>
-          <div className="chart-container">
+        <section className="analytics-card" aria-labelledby="message-stats-title">
+          <h3 id="message-stats-title">{t('analytics.messageStats')}</h3>
+          <div className="stats-summary">
+            <p><strong>{t('analytics.userMessages')}:</strong> {messageStats.userCount}</p>
+            <p><strong>{t('analytics.botResponses')}:</strong> {messageStats.botCount}</p>
+            <p><strong>{t('analytics.avgResponseTime')}:</strong> {messageStats.avgResponseTime}ms</p>
+          </div>
+          <div className="chart-container" role="img" aria-label={t('analytics.messageDistribution')}>
             <Bar 
               data={messageCountData} 
               options={{
                 responsive: true,
                 plugins: {
                   legend: { position: 'top' },
-                  title: { display: true, text: 'Message Distribution' }
-                }
+                  title: { display: true, text: t('analytics.messageDistribution') }
+                },
+                scales: {
+                  y: {
+                    beginAtZero: true,
+                    ticks: { precision: 0 }
+                  }
+                },
+                maintainAspectRatio: false
               }} 
             />
           </div>
-        </div>
+        </section>
         
-        <div className="analytics-card">
-          <h3>Intent Distribution</h3>
-          <div className="chart-container">
+        <section className="analytics-card" aria-labelledby="intent-dist-title">
+          <h3 id="intent-dist-title">{t('analytics.intentDistribution')}</h3>
+          <div className="chart-container" role="img" aria-label={t('analytics.intentDistribution')}>
             <Pie 
               data={intentData}
               options={{
                 responsive: true,
                 plugins: {
                   legend: { position: 'right' },
-                  title: { display: true, text: 'Intent Types' }
-                }
+                  title: { display: true, text: t('analytics.intentTypes') },
+                  tooltip: {
+                    callbacks: {
+                      label: (context) => {
+                        const label = context.label || '';
+                        const value = context.raw || 0;
+                        const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                        const percentage = Math.round((value / total) * 100);
+                        return `${label}: ${value} (${percentage}%)`;
+                      }
+                    }
+                  }
+                },
+                maintainAspectRatio: false
               }}
             />
           </div>
-        </div>
+        </section>
       </div>
     </div>
   );
