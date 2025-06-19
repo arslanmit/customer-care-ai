@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import './chatbot.css';
 import Analytics from './Analytics';
 import { useAuth, LoginForm, AuthProvider } from './Auth';
-import '../src/i18n';
+import './i18n';
 
 const RASA_BASE_URL = import.meta.env.VITE_RASA_URL || "http://localhost:5005";
 
@@ -91,6 +91,13 @@ const ChatbotContainer = () => {
   const [showAnalytics, setShowAnalytics] = useState(false);
   const [showLoginForm, setShowLoginForm] = useState(false);
   const { isAuthenticated } = useAuth();
+
+  // Initialize session ID for analytics tracking if not exists
+  useEffect(() => {
+    if (!localStorage.getItem('session_id')) {
+      localStorage.setItem('session_id', `session_${Date.now()}`);
+    }
+  }, []);
 
   // Initialize with welcome message translated based on current language
   useEffect(() => {

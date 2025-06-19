@@ -10,6 +10,35 @@
       "es": "Spanish",
       "fr": "French",
       "de": "German"
-    }
+    },
+    "viewAnalytics": "View Analytics",
+    "backToChat": "Back to Chat",
+    "login": "Login",
+    "logout": "Logout"
+  },
+  "analytics": {
+    "title": "Conversation Analytics",
+    "messageStats": "Message Statistics",
+    "userMessages": "User Messages",
+    "botResponses": "Bot Responses",
+    "avgResponseTime": "Average Response Time",
+    "messageDistribution": "Message Distribution",
+    "intentDistribution": "Intent Distribution",
+    "intentTypes": "Intent Types"
+  },
+  "auth": {
+    "login": "Login",
+    "register": "Create Account",
+    "email": "Email",
+    "password": "Password",
+    "name": "Name",
+    "loginToggle": "Already have an account? Login",
+    "registerToggle": "Need an account? Register",
+    "demoCredentials": "Demo credentials:",
+    "demoEmail": "Email: user@example.com",
+    "demoPassword": "Password: password",
+    "emailRequired": "Email is required",
+    "passwordRequired": "Password is required",
+    "nameRequired": "Name is required"
   }
 }
