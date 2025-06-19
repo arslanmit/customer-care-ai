@@ -10,6 +10,13 @@ stories:
       - intent: goodbye
       - action: utter_goodbye
 
+  - story: greet and goodbye path
+    steps:
+      - intent: greet
+      - action: utter_greet
+      - intent: goodbye
+      - action: utter_goodbye
+
   - story: joke interaction
     steps:
       - intent: greet

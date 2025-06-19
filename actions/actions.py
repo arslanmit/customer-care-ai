@@ -1,6 +1,7 @@
 """Custom actions for the Customer Care chatbot."""
 
 import random
+from datetime import datetime
 from typing import Any, Dict, List, Text
 
 from rasa_sdk import Action, Tracker
@@ -26,4 +27,21 @@ class ActionTellJoke(Action):
         ]
         joke = random.choice(jokes)
         dispatcher.utter_message(text=joke)
+        return []
+
+
+class ActionTellTime(Action):
+    """Provide the current time to the user."""
+
+    def name(self) -> Text:
+        return "action_tell_time"
+
+    def run(
+        self,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: Dict[Text, Any],
+    ) -> List[Dict[Text, Any]]:
+        now = datetime.now().strftime("%H:%M")
+        dispatcher.utter_message(text=f"The current time is {now}.")
         return []
