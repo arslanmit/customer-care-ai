@@ -32,7 +32,7 @@ This project implements an intelligent conversational agent that can:
 - Node.js 18+
 - Docker and Docker Compose (for containerized deployment)
 
-### Local Development Setup
+### Running Locally (Recommended for Development)
 
 #### Backend Setup
 
@@ -78,15 +78,23 @@ npm install
 npm run dev
 ```
 
-### Running with Docker Compose
+### Running with Docker (Optional)
 
-For a complete containerized setup:
+Docker setup is provided as an alternative option when you need containerized environments.
+
+To start both services with Docker Compose:
 
 ```bash
 docker-compose up --build
 ```
 
 This will start both the Rasa backend (available at http://localhost:5005) and the React frontend (available at http://localhost:8080).
+
+To stop the Docker containers:
+
+```bash
+docker-compose down
+```
 
 ## Testing
 
