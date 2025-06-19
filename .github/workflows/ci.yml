@@ -81,3 +81,20 @@ jobs:
         run: |
           docker build -t gcr.io/${{ secrets.GCP_PROJECT }}/chat-frontend:${{ github.sha }} -f frontend/Dockerfile ./frontend
           docker push gcr.io/${{ secrets.GCP_PROJECT }}/chat-frontend:${{ github.sha }}
+
+      - name: Deploy updated images to Cloud Run
+        env:
+          PROJECT: ${{ secrets.GCP_PROJECT }}
+          REGION: ${{ secrets.GCP_REGION }}
+          BACKEND_URL: ${{ secrets.BACKEND_URL }}
+        run: |
+          # Deploy backend
+          gcloud run deploy rasa-backend \
+            --image gcr.io/$PROJECT/rasa-backend:${{ github.sha }} \
+            --region $REGION --platform managed --quiet
+
+          # Deploy frontend with backend URL env var
+          gcloud run deploy chat-frontend \
+            --image gcr.io/$PROJECT/chat-frontend:${{ github.sha }} \
+            --region $REGION --platform managed --quiet \
+            --update-env-vars REACT_APP_RASA_URL=$BACKEND_URL
