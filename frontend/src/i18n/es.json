@@ -1,0 +1,15 @@
+{
+  "chatbot": {
+    "title": "Asistente de Atención al Cliente",
+    "placeholder": "Escribe tu mensaje...",
+    "sendButton": "Enviar",
+    "welcomeMessage": "¡Hola! ¿Cómo puedo ayudarte hoy?",
+    "errorMessage": "Lo siento, algo salió mal.",
+    "languages": {
+      "en": "Inglés",
+      "es": "Español",
+      "fr": "Francés",
+      "de": "Alemán"
+    }
+  }
+}

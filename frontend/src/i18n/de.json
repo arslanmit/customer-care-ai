@@ -1,0 +1,15 @@
+{
+  "chatbot": {
+    "title": "Kundendienst-Assistent",
+    "placeholder": "Nachricht eingeben...",
+    "sendButton": "Senden",
+    "welcomeMessage": "Hallo! Wie kann ich Ihnen heute helfen?",
+    "errorMessage": "Entschuldigung, etwas ist schiefgelaufen.",
+    "languages": {
+      "en": "Englisch",
+      "es": "Spanisch",
+      "fr": "Französisch",
+      "de": "Deutsch"
+    }
+  }
+}
