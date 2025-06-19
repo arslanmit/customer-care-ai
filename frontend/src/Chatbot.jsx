@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './chatbot.css';
 
-const RASA_BASE_URL = process.env.REACT_APP_RASA_URL || "http://localhost:5005";
+const RASA_BASE_URL = import.meta.env.VITE_RASA_URL || "http://localhost:5005";
 
 const Chatbot = () => {
   const [messages, setMessages] = useState([
@@ -41,6 +41,11 @@ const Chatbot = () => {
     if (e.key === 'Enter') handleSend();
   };
 
+  const handlePaste = (e) => {
+    const pasteData = e.clipboardData.getData('text');
+    setInput(pasteData);
+  };
+
   return (
     <div className="chat-container">
       <div className="messages">
@@ -56,6 +61,11 @@ const Chatbot = () => {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKeyPress}
+          onPaste={(e) => {
+            e.preventDefault();
+            const pasteData = e.clipboardData.getData('text');
+            setInput(pasteData);
+          }}
           placeholder="Type your message..."
         />
         <button onClick={handleSend}>Send</button>
