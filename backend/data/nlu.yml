@@ -55,6 +55,29 @@ nlu:
       - hoşça kal
       - güle güle
 
+  - intent: nlu_fallback
+    examples: |
+      - asdfghjkl
+      - qwertyuiop
+      - zxcvbnm
+      - 1234567890
+      - !@#$%^&*()
+      - lorem ipsum dolor sit amet
+      - the quick brown fox jumps over the lazy dog
+      - abcdefghijklmnopqrstuvwxyz
+      - 123 main street
+      - my hovercraft is full of eels
+      - the mitochondria is the powerhouse of the cell
+      - to be or not to be that is the question
+      - the rain in spain falls mainly on the plain
+      - how much wood would a woodchuck chuck
+      - peter piper picked a peck of pickled peppers
+      - she sells seashells by the seashore
+      - the quick brown fox jumps over the lazy dog
+      - pack my box with five dozen liquor jugs
+      - the five boxing wizards jump quickly
+      - sphinx of black quartz judge my vow
+
   - intent: ask_time
     examples: |
       - what time is it
