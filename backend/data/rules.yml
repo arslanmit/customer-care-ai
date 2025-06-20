@@ -1,23 +1,41 @@
 version: "3.1"
 
+# ===== CONVERSATION RULES =====
+# Rules define the happy paths in conversations that should be followed
+# These are deterministic rules that always trigger when conditions are met
+
 rules:
+  # ===== GREETING RULES =====
   - rule: Greet on first user message
+    # This rule ensures the bot greets when user starts conversation
+    condition:
+      - active_loop: null  # Only trigger when not in a form
     steps:
       - intent: greet
       - action: utter_greet
 
+  # ===== FALLBACK HANDLING =====
   - rule: Handle NLU fallback
+    # This rule handles cases where the user's input wasn't understood
+    condition:
+      - active_loop: null  # Don't interfere with forms
     steps:
       - intent: nlu_fallback
+      - action: action_increment_fallback_count
       - action: utter_default
 
+  # ===== FORM HANDLING =====
   - rule: Activate name form
+    # Triggers the name collection form when user provides info
+    condition:
+      - active_loop: null  # Don't start if another form is active
     steps:
       - intent: provide_info
       - action: name_form
       - active_loop: name_form
 
   - rule: Submit name form
+    # Handles form submission and cleanup
     condition:
       - active_loop: name_form
     steps:
@@ -27,32 +45,60 @@ rules:
           - requested_slot: null
       - action: utter_thank_you
 
+  # ===== INFORMATION REQUESTS =====
   - rule: Answer time inquiry
+    condition:
+      - active_loop: null  # Don't interrupt forms
     steps:
       - intent: ask_time
       - action: action_tell_time
 
   - rule: Tell a joke on request
+    condition:
+      - active_loop: null  # Don't interrupt forms
     steps:
       - intent: tell_joke
       - action: action_tell_joke
       
+  # ===== SUPPORT REQUESTS =====
   - rule: Handle customer support request
+    condition:
+      - active_loop: null  # Don't interrupt forms
     steps:
       - intent: support_request
       - action: utter_support_help
 
   - rule: Handle human agent request
+    condition:
+      - active_loop: null  # Don't interrupt forms
     steps:
       - intent: request_human_agent
       - action: utter_transfer_to_agent
+      - action: action_handoff_to_human
 
+  # ===== PRODUCT INQUIRIES =====
   - rule: Handle product inquiry
+    condition:
+      - active_loop: null  # Don't interrupt forms
     steps:
       - intent: product_inquiry
       - action: utter_product_info
       
+  # ===== LANGUAGE HANDLING =====
   - rule: Handle language change request
+    condition:
+      - active_loop: null  # Don't interrupt forms
     steps:
       - intent: change_language
+      - action: action_set_language
       - action: utter_language_changed
+
+  # ===== ESCALATION RULES =====
+  - rule: Escalate after multiple fallbacks
+    # Triggers after 3 consecutive fallbacks to handle confusion
+    condition:
+      - slot_was_set:
+          - num_fallbacks: 3
+    steps:
+      - action: utter_escalate_to_agent
+      - action: action_handoff_to_human

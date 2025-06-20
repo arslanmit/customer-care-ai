@@ -1,6 +1,12 @@
 version: "3.1"
 
+# Session configuration controls conversation session handling
+session_config:
+  session_expiration_time: 60  # minutes of inactivity before session expires
+  carry_over_slots_to_new_session: true  # maintain slot values between sessions
+
 # ===== INTENTS =====
+# User intents that the assistant can recognize
 intents:
   - greet
   - goodbye
@@ -27,14 +33,15 @@ entities:
   - language
 
 # ===== SLOTS =====
+# Slots store information to keep track of conversation state
 slots:
-  # Form slot tracking
+  # Tracks which form slot is currently being requested
   requested_slot:
     type: any
     influence_conversation: false
     mappings: []
     
-  # User information
+  # User's personal information
   name:
     type: text
     influence_conversation: false
@@ -42,84 +49,121 @@ slots:
       - type: from_entity
         entity: name
   
+  # User's preferred language
   language:
     type: categorical
-    values: [en, es, fr, de, tr]
-    influence_conversation: true
+    values: [en, es, fr, de, tr]  # Supported languages
+    influence_conversation: true   # Affects conversation flow
     mappings:
       - type: from_entity
         entity: language
   
+  # Stores session-specific metadata
   session_metadata:
     type: any
     influence_conversation: false
     mappings: []
     initial_value: {}
   
+  # Tracks number of fallback responses in current conversation
   num_fallbacks:
     type: float
-    influence_conversation: true
+    influence_conversation: true  # Used to trigger escalation after multiple fallbacks
     min_value: 0
-    max_value: 10
+    max_value: 10                 # Maximum fallbacks before escalation
     initial_value: 0
     mappings: []
 
 # ===== RESPONSES =====
+# Response templates used throughout the conversation
 responses:
+  # Greeting responses
   utter_greet:
     - text: "Hello! How can I help you today?"
+    - text: "Hi there! How may I assist you?"
+    - text: "Greetings! What can I do for you today?"
   
+  # Farewell responses
   utter_goodbye:
     - text: "Goodbye! Have a great day!"
+    - text: "See you later! Take care!"
+    - text: "Thanks for chatting. Goodbye!"
   
+  # Information requests
   utter_ask_info:
     - text: "I can help with various topics. What would you like to know?"
+    - text: "I'm here to help. What information do you need?"
   
+  # Time and date responses
   utter_ask_time:
     - text: "The current time is {time}."
+    - text: "It's {time} right now."
   
   utter_ask_date:
     - text: "Today's date is {date}."
+    - text: "It's {date} today."
   
   utter_ask_datetime:
     - text: "The current date and time is {datetime}."
+    - text: "It's {datetime} at the moment."
   
+  # Fun responses
   utter_tell_joke:
     - text: "Why don't scientists trust atoms? Because they make up everything!"
+    - text: "Did you hear about the mathematician who's afraid of negative numbers? He'll stop at nothing to avoid them!"
   
+  # Support responses
   utter_support_request:
     - text: "I'm here to help. What seems to be the issue?"
+    - text: "I'd be happy to assist. Could you describe the problem?"
   
   utter_support_help:
     - text: "I'm here to assist you. Could you please describe your issue in more detail?"
+    - text: "To better assist you, could you provide more details about the problem?"
   
-  utter_transfer_to_agent:
-    - text: "I'll connect you with a human agent right away."
+  utter_escalate_to_agent:
+    - text: "I'm having trouble understanding. Let me connect you with a human agent who can help you better."
+    - text: "I want to make sure you get the best assistance. Let me transfer you to one of our support agents."
+    - text: "I'm still learning and want to make sure you get the right help. Let me connect you with a human agent."
+    - text: "Let me transfer you to one of our support agents who can help you further."
     
   utter_request_human_agent:
     - text: "I'll connect you with a human agent right away."
+    - text: "I'll transfer you to one of our support agents who can assist you."
     
+  # Acknowledgment responses
   utter_thank_you:
     - text: "You're welcome! Is there anything else I can help you with?"
     - text: "Happy to help! Let me know if you need anything else."
+    - text: "My pleasure! Feel free to ask if you have more questions."
     
+  # Information responses
   utter_info:
     - text: "I'm here to help with any questions you have. What would you like to know?"
+    - text: "I can provide information on various topics. What would you like to learn about?"
   
   utter_product_info:
     - text: "We offer a range of products. What would you like to know?"
+    - text: "I can tell you about our product line. What specifically interests you?"
   
+  # Language handling
   utter_ask_language:
     - text: "Which language would you prefer? (English, Spanish, French, German, Turkish)"
+    - text: "Please choose your preferred language: English, Spanish, French, German, or Turkish"
   
   utter_language_changed:
     - text: "I've changed the language to {language}."
+    - text: "Language updated to {language}."
   
+  # Fallback responses
   utter_default:
     - text: "I'm not sure I understand. Could you rephrase that?"
+    - text: "I didn't quite get that. Could you say it differently?"
+    - text: "I'm still learning. Could you try asking in a different way?"
   
   utter_out_of_scope:
     - text: "I'm not trained to help with that yet. Is there something else I can assist you with?"
+    - text: "I don't have the information to help with that. Can I help you with something else?"
 
 # ===== ACTIONS =====
 actions:
@@ -133,4 +177,5 @@ actions:
   - action_tell_joke
   - action_set_language
   - action_handoff_to_human
+  - action_increment_fallback_count
   - name_form
