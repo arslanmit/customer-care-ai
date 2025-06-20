@@ -65,3 +65,37 @@ stories:
       - action: action_tell_joke
       - intent: goodbye
       - action: utter_goodbye
+
+  - story: date inquiry
+    steps:
+      - intent: ask_date
+      - action: action_tell_date
+
+  - story: date inquiry with follow up
+    steps:
+      - intent: greet
+      - action: utter_greet
+      - intent: ask_date
+      - action: action_tell_date
+      - intent: ask_time
+      - action: action_tell_time
+      - intent: tell_joke
+      - action: action_tell_joke
+      - intent: goodbye
+      - action: utter_goodbye
+
+  - story: datetime inquiry
+    steps:
+      - intent: ask_datetime
+      - action: action_tell_datetime
+
+  - story: datetime inquiry with follow up
+    steps:
+      - intent: greet
+      - action: utter_greet
+      - intent: ask_datetime
+      - action: action_tell_datetime
+      - intent: tell_joke
+      - action: action_tell_joke
+      - intent: goodbye
+      - action: utter_goodbye
