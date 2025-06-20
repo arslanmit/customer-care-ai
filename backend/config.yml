@@ -13,7 +13,7 @@ languages:
 pipeline:
   # Language model for word vectors and tokenization
   - name: SpacyNLP
-    model: "en_core_web_md"  # Using medium model for better accuracy
+    model: "en_core_web_sm"  # Using small model for compatibility
   
   # Tokenization
   - name: SpacyTokenizer
@@ -27,12 +27,13 @@ pipeline:
   - name: RegexFeaturizer
     case_sensitive: false
   
-  # Lexical and syntactic features
+  # Lexical and syntactic features for better intent classification
   - name: LexicalSyntacticFeaturizer
-    "features": [
-      ["low", "suffix3", "suffix4", "prefix3", "prefix4", "pos"],
-      ["BOS", "EOS", "low", "suffix3", "suffix4", "pos"],
-      ["low", "suffix3", "suffix4", "pos"]]
+    features:
+      - - low
+        - pos
+      - - BOS
+        - EOS
   
   # Character-level n-gram features
   - name: CountVectorsFeaturizer
@@ -105,27 +106,28 @@ policies:
   
   # Transformer-based dialogue policy
   - name: TEDPolicy
-    max_history: 10  # Increased for better context
-    epochs: 200
-    batch_size: [32, 64]
+    max_history: 8
+    epochs: 100
+    batch_size: 32
     learning_rate: 0.001
-    hidden_layers_sizes:
-      text: [256, 128]
+    hidden_layers_sizes: {"text": [256, 128], "action": [64]}
     number_of_attention_heads: 4
-    key_relative_attention: true
-    max_relative_position: 10
+    dropout: 0.2
+    weight_sparsity: 0.8
+    use_gpu: false
     use_key_relative_attention: true
     use_max_neg_sim: true
     use_gelu: true
     drop_rate: 0.1
     drop_rate_attention: 0.1
-    weight_sparsity: 0.8
+    max_relative_position: 10
     constrain_similarities: true
     model_confidence: "softmax"
     featurizer:
       - name: MaxHistoryTrackerFeaturizer
-        max_history: 10
-      - name: BinarySingleStateFeaturizer
+        max_history: 8
+        state_featurizer:
+          - name: SingleStateFeaturizer
   
   # Memorization policy for simple patterns
   - name: MemoizationPolicy
