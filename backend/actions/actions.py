@@ -353,6 +353,31 @@ class ActionHandoffToHuman(Action):
         ]
 
 
+class ActionAskOrderNumber(Action):
+    """Ask the user for their order number to check the status."""
+
+    def name(self) -> Text:
+        return "action_ask_order_number"
+
+    async def run(
+        self,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: Dict[Text, Any],
+    ) -> List[Dict[Text, Any]]:
+        """
+        Ask the user for their order number to check the status.
+        """
+        # Get the language
+        language = get_language(tracker)
+        
+        # For now, we'll use the default English response from domain.yml
+        # In a real implementation, you might want to add multilingual support here
+        dispatcher.utter_message(response="utter_ask_order_number")
+        
+        return []
+
+
 class ActionDefaultFallback(Action):
     """Executes the fallback action and goes back to the previous state of the dialogue"""
 
@@ -365,52 +390,51 @@ class ActionDefaultFallback(Action):
         tracker: Tracker,
         domain: Dict[Text, Any],
     ) -> List[Dict[Text, Any]]:
+        """
+        Default fallback which attempts to recover from user messages which don't fit the conversation flow.
+        """
         # Log the fallback
-        logger.warning(f"Action fallback triggered for message: {tracker.latest_message.get('text')}")
+        logger.debug("Triggered default fallback action.")
         
-        # Increment fallback counter
-        fallback_count = tracker.get_slot("num_fallbacks") or 0
-        fallback_count += 1
-        
-        # Get the appropriate fallback message based on context
+        # Get the language
         language = get_language(tracker)
         
-        fallback_messages = {
-            'en': [
-                "I'm not sure I understand. Could you rephrase that?",
-                "I didn't quite get that. Could you try saying it differently?",
-                "I'm still learning. Could you try asking in a different way?"
-            ],
-            'es': [
-                "No estoy seguro de entender. ¿Podrías decirlo de otra manera?",
-                "No entendí bien eso. ¿Podrías intentar decirlo de otra forma?",
-                "Todavía estoy aprendiendo. ¿Podrías intentar preguntar de otra manera?"
-            ],
-            'fr': [
-                "Je ne suis pas sûr de comprendre. Pourriez-vous reformuler cela ?",
-                "Je n'ai pas bien compris. Pourriez-vous essayer de le dire différemment ?",
-                "J'apprends encore. Pourriez-vous essayer de demander d'une autre manière ?"
-            ],
-            'de': [
-                "Ich bin mir nicht sicher, ob ich das verstehe. Könnten Sie das umformulieren?",
-                "Das habe ich nicht ganz verstanden. Könnten Sie es anders ausdrücken?",
-                "Ich lerne noch. Könnten Sie es anders formulieren?"
-            ],
-            'tr': [
-                "Anladığımdan emin değilim. Başka şekilde ifade edebilir misiniz?",
-                "Bunu tam olarak anlayamadım. Farklı bir şekilde söyleyebilir misiniz?",
-                "Hala öğreniyorum. Başka bir şekilde sormayı deneyebilir misiniz?"
-            ]
-        }
+        # Get the latest user message
+        latest_message = tracker.latest_message
+        if latest_message is None:
+            logger.warning("No latest message found in tracker.")
+            return []
+            
+        # Log the intent and entities for debugging
+        intent = latest_message.get('intent', {}).get('name')
+        entities = latest_message.get('entities', [])
+        logger.debug(f"Fallback triggered with intent: {intent}, entities: {entities}")
         
-        # Get messages for the current language, default to English
-        messages = fallback_messages.get(language, fallback_messages['en'])
-        message = messages[min(fallback_count - 1, len(messages) - 1)]
-        
-        # Send the message
-        dispatcher.utter_message(text=message)
-        
-        # Revert user message which led to fallback
-        return [UserUtteranceReverted()] + [
-            SlotSet("num_fallbacks", fallback_count)
-        ]
+        # Check if this is an out of scope message
+        if intent == 'out_of_scope':
+            if language == 'es':
+                dispatcher.utter_message(response="utter_out_of_scope_es")
+            elif language == 'fr':
+                dispatcher.utter_message(response="utter_out_of_scope_fr")
+            elif language == 'de':
+                dispatcher.utter_message(response="utter_out_of_scope_de")
+            elif language == 'tr':
+                dispatcher.utter_message(response="utter_out_of_scope_tr")
+            else:
+                dispatcher.utter_message(response="utter_out_of_scope")
+            return []
+            
+        # For other fallbacks, try to respond based on language
+        if language == 'es':
+            dispatcher.utter_message(text="Lo siento, no estoy seguro de lo que quieres decir. ¿Podrías reformularlo?")
+        elif language == 'fr':
+            dispatcher.utter_message(text="Je suis désolé, je ne suis pas sûr de comprendre. Pourriez-vous reformuler ?")
+        elif language == 'de':
+            dispatcher.utter_message(text="Es tut mir leid, ich bin mir nicht sicher, was Sie meinen. Könnten Sie es anders formulieren?")
+        elif language == 'tr':
+            dispatcher.utter_message(text="Üzgünüm, ne demek istediğinizden emin değilim. Başka şekilde ifade edebilir misiniz?")
+        else:
+            dispatcher.utter_message(response="utter_default")
+            
+        # Revert user message which led to fallback.
+        return [UserUtteranceReverted()]

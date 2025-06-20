@@ -176,6 +176,11 @@ responses:
   utter_out_of_scope:
     - text: "I'm not trained to help with that yet. Is there something else I can assist you with?"
     - text: "I don't have the information to help with that. Can I help you with something else?"
+    
+  utter_ask_order_number:
+    - text: "Could you please provide your order number so I can check the status for you?"
+    - text: "I'd be happy to help with that. May I have your order number, please?"
+    - text: "To check your order status, I'll need your order number. Could you share it with me?"
 
 # ===== ACTIONS =====
 actions:
@@ -190,4 +195,5 @@ actions:
   - action_set_language
   - action_handoff_to_human
   - action_increment_fallback_count
+  - action_ask_order_number
   - name_form
