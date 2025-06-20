@@ -1,6 +1,10 @@
 # Development dependencies
 -r requirements.txt
 
+# Local Development
+python-dotenv>=1.0.0,<2.0.0  # For .env file support
+watchdog>=3.0.0,<4.0.0     # For auto-reload in development
+
 # Testing
 pytest>=8.4.1,<9.0.0
 pytest-cov>=6.2.1,<7.0.0

@@ -4,17 +4,22 @@ rasa-sdk==3.6.2
 
 # Natural Language Processing
 spacy==3.7.5
-https://github.com/explosion/spacy-models/releases/download/en_core_web_md-3.7.1/en_core_web_md-3.7.1-py3-none-any.whl
-https://github.com/explosion/spacy-models/releases/download/es_core_news_md-3.7.0/es_core_news_md-3.7.0-py3-none-any.whl
-https://github.com/explosion/spacy-models/releases/download/fr_core_news_md-3.7.0/fr_core_news_md-3.7.0-py3-none-any.whl
-https://github.com/explosion/spacy-models/releases/download/de_core_news_md-3.7.0/de_core_news_md-3.7.0-py3-none-any.whl
+# Language models will be installed via post-install script
 
 # Machine Learning & NLP
 numpy>=1.23.5,<2.0.0
 scikit-learn>=1.1.3,<2.0.0
 scipy>=1.10.1,<2.0.0
-tensorflow-macos>=2.12.0,<3.0.0  # For M1/M2 Macs
-tensorflow-intel>=2.12.0,<3.0.0  # For Intel Macs/Linux
+# TensorFlow will be installed based on the platform in setup.py
+"tensorflow-cpu>=2.12.0,<3.0.0; platform_machine != 'arm64' and platform_machine != 'aarch64'"
+"tensorflow-macos>=2.12.0,<3.0.0; sys_platform == 'darwin' and platform_machine == 'arm64'"
+"tensorflow>=2.12.0,<3.0.0; platform_machine == 'x86_64' and sys_platform != 'darwin'"
+
+# Language Models (will be installed by setup.py)
+https://github.com/explosion/spacy-models/releases/download/en_core_web_md-3.7.1/en_core_web_md-3.7.1-py3-none-any.whl
+https://github.com/explosion/spacy-models/releases/download/es_core_news_md-3.7.0/es_core_news_md-3.7.0-py3-none-any.whl
+https://github.com/explosion/spacy-models/releases/download/fr_core_news_md-3.7.0/fr_core_news_md-3.7.0-py3-none-any.whl
+https://github.com/explosion/spacy-models/releases/download/de_core_news_md-3.7.0/de_core_news_md-3.7.0-py3-none-any.whl
 
 # Database & Storage
 redis>=4.6.0,<5.0.0

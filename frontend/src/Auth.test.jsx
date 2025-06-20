@@ -1,140 +1,206 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, waitFor } from '@testing-library/react';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { render, screen, waitFor, renderHook, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import Auth from './Auth.jsx';
+import { AuthProvider, useAuth } from './Auth.jsx';
 
-// Mock the i18n provider
-vi.mock('react-i18next', () => ({
-  useTranslation: () => ({
-    t: (key) => {
-      const translations = {
-        'auth.login': 'Login',
-        'auth.register': 'Create Account',
-        'auth.email': 'Email',
-        'auth.password': 'Password',
-        'auth.name': 'Name',
-        'auth.loginToggle': 'Already have an account? Login',
-        'auth.registerToggle': 'Need an account? Register',
-        'auth.demoCredentials': 'Demo credentials:',
-        'auth.demoEmail': 'Email: user@example.com',
-        'auth.demoPassword': 'Password: password',
-        'auth.emailRequired': 'Email is required',
-        'auth.passwordRequired': 'Password is required',
-        'auth.nameRequired': 'Name is required'
-      };
-      return translations[key] || key;
-    }
-  }),
-}));
+// Test component that uses the auth context
+const TestComponent = () => {
+  const { isAuthenticated, user, login, logout, register } = useAuth();
+  return (
+    <div>
+      <div data-testid="isAuthenticated">{isAuthenticated ? 'true' : 'false'}</div>
+      <div data-testid="user">{JSON.stringify(user)}</div>
+      <button onClick={() => login('test@example.com', 'password')}>Login</button>
+      <button onClick={() => register('Test User', 'test@example.com', 'password')}>Register</button>
+      <button onClick={logout}>Logout</button>
+    </div>
+  );
+};
 
-// Create a mock for the user context provider
-const mockSetUserData = vi.fn();
-vi.mock('./AuthContext', () => ({
-  useAuth: () => ({
-    userData: null, 
-    setUserData: mockSetUserData
-  })
-}));
+// Helper component to render the auth provider with test component
+const renderAuthProvider = () => {
+  return render(
+    <AuthProvider>
+      <TestComponent />
+    </AuthProvider>
+  );
+};
 
-describe('Auth Component', () => {
+describe('Auth Context', () => {
+  // Mock localStorage
+  const localStorageMock = {
+    getItem: vi.fn(),
+    setItem: vi.fn(),
+    removeItem: vi.fn(),
+    clear: vi.fn(),
+  };
+
   beforeEach(() => {
-    // Reset mocks before each test
+    // Clear all mocks and localStorage before each test
     vi.clearAllMocks();
     
     // Mock localStorage
     Object.defineProperty(window, 'localStorage', {
-      value: {
-        getItem: vi.fn(),
-        setItem: vi.fn(),
-        removeItem: vi.fn(),
-      },
+      value: localStorageMock,
       writable: true
     });
   });
 
-  it('renders login form by default', () => {
-    render(<Auth />);
-    
-    // Login form elements should be visible
-    expect(screen.getByLabelText('Email')).toBeInTheDocument();
-    expect(screen.getByLabelText('Password')).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Login' })).toBeInTheDocument();
-    
-    // Register toggle should be visible
-    expect(screen.getByText('Need an account? Register')).toBeInTheDocument();
-    
-    // Name field should not be visible in login mode
-    expect(screen.queryByLabelText('Name')).not.toBeInTheDocument();
+  afterEach(() => {
+    // Cleanup
+    vi.restoreAllMocks();
   });
 
-  it('switches to register form when toggle is clicked', async () => {
-    const user = userEvent.setup();
-    render(<Auth />);
-    
-    // Click register toggle
-    await user.click(screen.getByText('Need an account? Register'));
-    
-    // Register form elements should be visible
-    expect(screen.getByLabelText('Name')).toBeInTheDocument();
-    expect(screen.getByLabelText('Email')).toBeInTheDocument();
-    expect(screen.getByLabelText('Password')).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Create Account' })).toBeInTheDocument();
-    
-    // Login toggle should be visible
-    expect(screen.getByText('Already have an account? Login')).toBeInTheDocument();
+  it('provides initial auth state', () => {
+    renderAuthProvider();
+
+    expect(screen.getByTestId('isAuthenticated')).toHaveTextContent('false');
+    expect(screen.getByTestId('user')).toHaveTextContent('null');
   });
 
-  it('validates email and password on login submission', async () => {
+  it('handles login successfully', async () => {
     const user = userEvent.setup();
-    render(<Auth />);
-    
-    // Submit form without filling fields
-    await user.click(screen.getByRole('button', { name: 'Login' }));
-    
-    // Validation error messages should appear
-    expect(screen.getByText('Email is required')).toBeInTheDocument();
-    expect(screen.getByText('Password is required')).toBeInTheDocument();
-  });
+    renderAuthProvider();
 
-  it('validates all fields on register submission', async () => {
-    const user = userEvent.setup();
-    render(<Auth />);
+    // Mock successful login
+    localStorageMock.getItem.mockReturnValueOnce('mock-token');
     
-    // Switch to register mode
-    await user.click(screen.getByText('Need an account? Register'));
+    // Click login button with valid credentials
+    await user.click(screen.getByText('Login'));
     
-    // Submit form without filling fields
-    await user.click(screen.getByRole('button', { name: 'Create Account' }));
-    
-    // Validation error messages should appear
-    expect(screen.getByText('Name is required')).toBeInTheDocument();
-    expect(screen.getByText('Email is required')).toBeInTheDocument();
-    expect(screen.getByText('Password is required')).toBeInTheDocument();
-  });
-
-  it('successfully logs in with valid credentials', async () => {
-    const user = userEvent.setup();
-    render(<Auth />);
-    
-    // Fill in login form
-    await user.type(screen.getByLabelText('Email'), 'user@example.com');
-    await user.type(screen.getByLabelText('Password'), 'password');
-    
-    // Submit form
-    await user.click(screen.getByRole('button', { name: 'Login' }));
-    
-    // Wait for authentication to complete
+    // Wait for the login to complete
     await waitFor(() => {
-      expect(mockSetUserData).toHaveBeenCalledWith(expect.objectContaining({
-        name: expect.any(String),
-        email: 'user@example.com',
-        token: expect.any(String)
-      }));
-      
-      expect(window.localStorage.setItem).toHaveBeenCalledWith(
-        'authToken',
-        expect.any(String)
-      );
+      expect(screen.getByTestId('isAuthenticated')).toHaveTextContent('true');
+    });
+    
+    // Check that user data is set
+    const userData = JSON.parse(screen.getByTestId('user').textContent);
+    expect(userData).toMatchObject({
+      id: '1',
+      name: 'Demo User',
+      email: 'test@example.com'
+    });
+    
+    // Check that auth token was stored in localStorage
+    expect(localStorage.setItem).toHaveBeenCalledWith('auth_token', expect.any(String));
+  });
+
+  it('handles login failure', async () => {
+    const user = userEvent.setup();
+    const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    
+    renderAuthProvider();
+
+    // Mock a failed login
+    localStorageMock.getItem.mockReturnValueOnce(null);
+    
+    // Click login button with invalid credentials
+    await user.click(screen.getByText('Login'));
+    
+    // Should still be logged out
+    await waitFor(() => {
+      expect(screen.getByTestId('isAuthenticated')).toHaveTextContent('false');
+    });
+    
+    // Error should be logged
+    expect(consoleSpy).toHaveBeenCalledWith('Login error:', expect.any(Error));
+    consoleSpy.mockRestore();
+  });
+
+  it('handles registration successfully', async () => {
+    const user = userEvent.setup();
+    renderAuthProvider();
+
+    // Click register button with valid data
+    await user.click(screen.getByText('Register'));
+    
+    // Wait for the registration to complete
+    await waitFor(() => {
+      expect(screen.getByTestId('isAuthenticated')).toHaveTextContent('true');
+    });
+    
+    // Check that user data is set
+    const userData = JSON.parse(screen.getByTestId('user').textContent);
+    expect(userData).toMatchObject({
+      id: expect.any(String),
+      name: 'Test User',
+      email: 'test@example.com'
+    });
+    
+    // Check that auth token was stored in localStorage
+    expect(localStorage.setItem).toHaveBeenCalledWith('auth_token', expect.any(String));
+  });
+
+  it('validates registration data', async () => {
+    const user = userEvent.setup();
+    const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    
+    renderAuthProvider();
+
+    // Mock a failed registration with invalid data
+    localStorageMock.setItem.mockImplementationOnce(() => {
+      throw new Error('Invalid email or password (min 6 characters)');
+    });
+    
+    // Click register button
+    await user.click(screen.getByText('Register'));
+    
+    // Should still be logged out
+    await waitFor(() => {
+      expect(screen.getByTestId('isAuthenticated')).toHaveTextContent('false');
+    });
+    
+    // Error should be logged
+    expect(consoleSpy).toHaveBeenCalledWith(
+      'Registration error:', 
+      expect.any(Error)
+    );
+    consoleSpy.mockRestore();
+  });
+
+  it('handles logout', async () => {
+    const user = userEvent.setup();
+    renderAuthProvider();
+
+    // Login first
+    await user.click(screen.getByText('Login'));
+    await waitFor(() => {
+      expect(screen.getByTestId('isAuthenticated')).toHaveTextContent('true');
+    });
+    
+    // Now logout
+    await user.click(screen.getByText('Logout'));
+    
+    // Should be logged out
+    await waitFor(() => {
+      expect(screen.getByTestId('isAuthenticated')).toHaveTextContent('false');
+      expect(screen.getByTestId('user')).toHaveTextContent('null');
+    });
+    
+    // Check that auth token was removed from localStorage
+    expect(localStorage.removeItem).toHaveBeenCalledWith('auth_token');
+  });
+
+  it('restores session from localStorage on mount', async () => {
+    // Mock existing token in localStorage
+    const mockToken = 'existing-token';
+    localStorageMock.getItem.mockImplementation((key) => {
+      return key === 'auth_token' ? mockToken : null;
+    });
+    
+    renderAuthProvider();
+    
+    // Should be authenticated with the existing token
+    await waitFor(() => {
+      expect(screen.getByTestId('isAuthenticated')).toHaveTextContent('true');
+    });
+    
+    // Should have user data
+    const userData = JSON.parse(screen.getByTestId('user').textContent);
+    expect(userData).toMatchObject({
+      id: '1',
+      name: 'Demo User',
+      email: 'user@example.com'
     });
   });
 });
