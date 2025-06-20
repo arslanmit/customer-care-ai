@@ -373,6 +373,7 @@ nlu:
 
   - intent: support_request
     examples: |
+      # English
       - I need help with my order
       - There's a problem with my account
       - My product isn't working
@@ -388,9 +389,86 @@ nlu:
       - Something broke and I need help
       - Technical support needed
       - I'm experiencing difficulties
+      - I need to speak with support
+      - This isn't working as expected
+      - I need help troubleshooting
+      - Can you assist me with an issue?
+      - I have a question about my account
+      - I need to report a technical problem
+      - Your product isn't functioning properly
+      - I need customer service
+      
+      # Spanish
+      - Necesito ayuda con mi pedido
+      - Tengo un problema con mi cuenta
+      - Mi producto no funciona
+      - Tengo un problema con mi compra
+      - Hay un problema con mi suscripción
+      - Necesito ayuda al cliente
+      - Ayúdame con mi pedido reciente
+      - Necesito asistencia con su servicio
+      - Mi producto está defectuoso
+      - Quiero reportar un problema
+      - ¿Puedes ayudarme a solucionar un problema?
+      - Estoy teniendo problemas con mi dispositivo
+      - Algo se rompió y necesito ayuda
+      - Necesito soporte técnico
+      - Estoy experimentando dificultades
+      
+      # French
+      - J'ai besoin d'aide avec ma commande
+      - Il y a un problème avec mon compte
+      - Mon produit ne fonctionne pas
+      - J'ai un problème avec mon achat
+      - Quelque chose ne va pas avec mon abonnement
+      - J'ai besoin d'aide clientèle
+      - Aidez-moi avec ma commande récente
+      - J'ai besoin d'aide pour votre service
+      - Mon produit est défectueux
+      - Je veux signaler un problème
+      - Pouvez-vous m'aider à résoudre un problème ?
+      - J'ai des problèmes avec mon appareil
+      - Quelque chose s'est cassé et j'ai besoin d'aide
+      - J'ai besoin d'un support technique
+      - Je rencontre des difficultés
+      
+      # German
+      - Ich brauche Hilfe mit meiner Bestellung
+      - Es gibt ein Problem mit meinem Konto
+      - Mein Produkt funktioniert nicht
+      - Ich habe ein Problem mit meinem Kauf
+      - Etwas stimmt nicht mit meinem Abonnement
+      - Ich brauche Kundendienst
+      - Hilf mir mit meiner letzten Bestellung
+      - Ich brauche Hilfe mit Ihrem Service
+      - Mein Produkt ist defekt
+      - Ich möchte ein Problem melden
+      - Können Sie mir bei einem Problem helfen?
+      - Ich habe Probleme mit meinem Gerät
+      - Etwas ist kaputt gegangen und ich brauche Hilfe
+      - Ich brauche technischen Support
+      - Ich habe Schwierigkeiten
+      
+      # Turkish
+      - Siparişimle ilgili yardıma ihtiyacım var
+      - Hesabımla ilgili bir sorun var
+      - Ürünüm çalışmıyor
+      - Satın almamla ilgili bir sorunum var
+      - Aboneliğimde bir sorun var
+      - Müşteri desteğine ihtiyacım var
+      - Son siparişimle ilgili yardım edin
+      - Hizmetinizle ilgili yardıma ihtiyacım var
+      - Ürünüm arızalı
+      - Bir sorun bildirmek istiyorum
+      - Bir sorunu çözmek için bana yardımcı olabilir misiniz?
+      - Cihazımla ilgili sorun yaşıyorum
+      - Bir şey bozuldu ve yardıma ihtiyacım var
+      - Teknik desteğe ihtiyacım var
+      - Zorluklar yaşıyorum
 
   - intent: change_language
     examples: |
+      # English
       - I want to speak in Spanish
       - Can we talk in French?
       - Switch to German please
@@ -403,6 +481,99 @@ nlu:
       - Use French instead
       - Talk to me in German
       - English please
+      - Can you change the language to Spanish?
+      - I'd like to change languages
+      - Can we switch to French?
+      - Please use German
+      - Change to English language
+      - I want to communicate in Spanish
+      - Can you speak to me in French?
+      - Let's continue in German
+      - Switch my language to English
+      - I'd prefer to speak in Spanish
+      - Can we use French from now on?
+      - Talk to me in German, please
+      - Change the interface to English
+      
+      # Spanish
+      - Quiero hablar en español
+      - ¿Podemos hablar en francés?
+      - Cambia a alemán, por favor
+      - Cambia el idioma a inglés
+      - Prefiero hablar en español
+      - ¿Puedes entender francés?
+      - Hablemos en alemán
+      - Me gustaría continuar en inglés
+      - Cambia a español
+      - Usa inglés
+      - Quiero cambiar a francés
+      - ¿Puedes hablar alemán?
+      - Usemos español
+      - Cambia mi idioma a inglés
+      - Háblame en español
+      - Usa francés en su lugar
+      - Háblame en alemán
+      - Inglés, por favor
+      
+      # French
+      - Je veux parler en espagnol
+      - Pouvons-nous parler en français ?
+      - Passe à l'allemand s'il te plaît
+      - Change la langue en anglais
+      - Je préfère parler en espagnol
+      - Peux-tu comprendre le français ?
+      - Parlons allemand
+      - J'aimerais continuer en anglais
+      - Change en espagnol
+      - Utilise l'anglais
+      - Je veux passer au français
+      - Peux-tu parler allemand ?
+      - Utilisons l'espagnol
+      - Change ma langue en anglais
+      - Parle-moi en espagnol
+      - Utilise le français à la place
+      - Parle-moi en allemand
+      - Anglais s'il te plaît
+      
+      # German
+      - Ich möchte auf Spanisch sprechen
+      - Können wir auf Französisch sprechen?
+      - Wechsle bitte zu Deutsch
+      - Ändere die Sprache auf Englisch
+      - Ich bevorzuge es, auf Spanisch zu sprechen
+      - Verstehst du Französisch?
+      - Lass uns Deutsch sprechen
+      - Ich möchte auf Englisch fortfahren
+      - Wechsle zu Spanisch
+      - Verwende Englisch
+      - Ich möchte zu Französisch wechseln
+      - Können Sie Deutsch sprechen?
+      - Lass uns Spanisch verwenden
+      - Ändere meine Sprache auf Englisch
+      - Sprich mit mir auf Spanisch
+      - Verwende stattdessen Französisch
+      - Sprich mit mir auf Deutsch
+      - Englisch, bitte
+      
+      # Turkish
+      - İspanyolca konuşmak istiyorum
+      - Fransızca konuşabilir miyiz?
+      - Lütfen Almancaya geç
+      - Dili İngilizce olarak değiştir
+      - İspanyolca konuşmayı tercih ederim
+      - Fransızca anlayabiliyor musun?
+      - Almanca konuşalım
+      - İngilizce devam etmek istiyorum
+      - İspanyolcaya geç
+      - İngilizce kullan
+      - Fransızcaya geçmek istiyorum
+      - Almanca konuşabilir misin?
+      - İspanyolca kullanalım
+      - Dilimi İngilizce olarak değiştir
+      - Benimle İspanyolca konuş
+      - Bunun yerine Fransızca kullan
+      - Benimle Almanca konuş
+      - İngilizce lütfen
 
   - intent: request_human_agent
     examples: |
@@ -420,6 +591,7 @@ nlu:
       
   - intent: product_inquiry
     examples: |
+      # English
       - What products do you offer?
       - Tell me about your services
       - Do you have [product name]?
@@ -430,3 +602,61 @@ nlu:
       - How much does your service cost?
       - Are there any discounts available?
       - Do you have a premium version?
+      - Can you tell me about your pricing plans?
+      - What's included in the basic package?
+      - How does your product compare to competitors?
+      - Do you offer a free trial?
+      - What are the benefits of upgrading?
+      - Can you explain your service in detail?
+      - What payment methods do you accept?
+      - Is there a mobile app available?
+      - How do I get started with your service?
+      - What support options are included?
+      
+      # Spanish
+      - ¿Qué productos ofrecen?
+      - Háblame de sus servicios
+      - ¿Tienen [nombre del producto]?
+      - Estoy buscando información sobre su [producto]
+      - ¿Cuáles son sus artículos más populares?
+      - Cuéntame más sobre su servicio de suscripción
+      - ¿Qué características tiene su producto?
+      - ¿Cuánto cuesta su servicio?
+      - ¿Hay descuentos disponibles?
+      - ¿Tienen una versión premium?
+      
+      # French
+      - Quels produits proposez-vous ?
+      - Parlez-moi de vos services
+      - Avez-vous [nom du produit] ?
+      - Je cherche des informations sur votre [produit]
+      - Quels sont vos articles les plus populaires ?
+      - Parlez-moi de votre service d'abonnement
+      - Quelles sont les fonctionnalités de votre produit ?
+      - Combien coûte votre service ?
+      - Y a-t-il des réductions disponibles ?
+      - Avez-vous une version premium ?
+      
+      # German
+      - Welche Produkte bieten Sie an?
+      - Erzählen Sie mir von Ihren Dienstleistungen
+      - Haben Sie [Produktname]?
+      - Ich suche Informationen zu Ihrem [Produkt]
+      - Was sind Ihre beliebtesten Artikel?
+      - Erzählen Sie mir mehr über Ihren Abonnementdienst
+      - Welche Funktionen hat Ihr Produkt?
+      - Wie viel kostet Ihr Service?
+      - Gibt es Rabatte?
+      - Haben Sie eine Premium-Version?
+      
+      # Turkish
+      - Hangi ürünleri sunuyorsunuz?
+      - Hizmetleriniz hakkında bilgi verin
+      - [Ürün adı] var mı?
+      - [Ürün] hakkında bilgi arıyorum
+      - En popüler ürünleriniz nelerdir?
+      - Abonelik hizmetiniz hakkında daha fazla bilgi verin
+      - Ürününüzün özellikleri nelerdir?
+      - Hizmetinizin maliyeti nedir?
+      - Mevcut indirimler var mı?
+      - Premium sürümünüz var mı?
