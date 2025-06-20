@@ -1,82 +1,144 @@
 #!/bin/bash
 
-# Update and upgrade system packages
-echo "Updating system packages..."
-sudo apt-get update && sudo apt-get upgrade -y
+# Colors for output
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+RED='\033[0;31m'
+NC='\033[0m' # No Color
 
-# Install system dependencies
-echo "Installing system dependencies..."
-sudo apt-get install -y \
-    python3-pip \
-    python3-venv \
-    build-essential \
-    python3-dev \
-    libssl-dev \
-    libffi-dev \
-    libpq-dev \
-    libjpeg-dev \
-    zlib1g-dev \
-    redis-server \
-    postgresql \
-    postgresql-contrib
+# Function to check if command exists
+command_exists() {
+    command -v "$1" >/dev/null 2>&1
+}
 
-# Create and activate virtual environment
-echo "Setting up Python virtual environment..."
-python3 -m venv venv
-source venv/bin/activate
+# Function to print section header
+print_section() {
+    echo -e "\n${GREEN}==>${NC} ${YELLOW}$1${NC}"
+    echo "----------------------------------------"
+}
 
-# Upgrade pip and setuptools
-echo "Upgrading pip and setuptools..."
-pip install --upgrade pip setuptools wheel
+# Function to check and install system dependencies
+install_system_deps() {
+    print_section "Checking System Dependencies"
+    
+    # Check for Docker
+    if ! command_exists docker; then
+        echo -e "${RED}Docker is not installed. Please install Docker first.${NC}"
+        echo "Visit: https://docs.docker.com/get-docker/"
+        exit 1
+    fi
+    
+    # Check for Docker Compose
+    if ! command_exists docker-compose; then
+        echo -e "${RED}Docker Compose is not installed. Please install Docker Compose.${NC}"
+        echo "Visit: https://docs.docker.com/compose/install/"
+        exit 1
+    fi
+    
+    echo -e "${GREEN}✓${NC} All required system dependencies are installed"
+}
 
-# Install Python dependencies
-echo "Installing Python dependencies..."
-pip install -r backend/requirements.txt
+# Function to set up environment
+setup_environment() {
+    print_section "Setting Up Environment"
+    
+    # Create .env file if it doesn't exist
+    if [ ! -f .env ]; then
+        echo -e "${YELLOW}Creating .env file...${NC}"
+        cp .env.example .env
+        
+        # Generate a random secret key
+        SECRET_KEY=$(openssl rand -hex 32)
+        
+        # Update the .env file with the generated secret key
+        if [[ "$OSTYPE" == "darwin"* ]]; then
+            # macOS
+            sed -i '' "s/JWT_SECRET_KEY=.*/JWT_SECRET_KEY=$SECRET_KEY/" .env
+            sed -i '' "s/SECRET_KEY=.*/SECRET_KEY=$SECRET_KEY/" .env
+        else
+            # Linux
+            sed -i "s/JWT_SECRET_KEY=.*/JWT_SECRET_KEY=$SECRET_KEY/" .env
+            sed -i "s/SECRET_KEY=.*/SECRET_KEY=$SECRET_KEY/" .env
+        fi
+        
+        echo -e "${GREEN}✓${NC} Created .env file with generated secrets"
+    else
+        echo -e "${YELLOW}.env file already exists. Skipping creation.${NC}"
+    fi
+    
+    # Create required directories
+    mkdir -p data/rasa data/postgres data/redis
+    
+    echo -e "${GREEN}✓${NC} Environment setup complete"
+}
 
-# Download and install spaCy models
-echo "Downloading spaCy language models..."
-python -m spacy download en_core_web_md
-python -m spacy download es_core_news_md
-python -m spacy download fr_core_news_md
-python -m spacy download de_core_news_md
+# Function to build and start services
+start_services() {
+    print_section "Starting Services with Docker Compose"
+    
+    echo -e "${YELLOW}Pulling the latest images...${NC}"
+    docker-compose -f docker-compose.prod.yml pull
+    
+    echo -e "\n${YELLOW}Building and starting containers...${NC}"
+    docker-compose -f docker-compose.prod.yml up -d --build
+    
+    echo -e "\n${GREEN}✓${NC} Services are starting in the background"
+    echo -e "${YELLOW}This might take a few minutes for the first run...${NC}"
+    
+    # Show status
+    echo -e "\n${YELLOW}Checking service status...${NC}"
+    docker-compose -f docker-compose.prod.yml ps
+}
 
-# Set up environment variables
-echo "Setting up environment variables..."
-cat > .env << 'EOL'
-# Rasa Configuration
-RASA_ENVIRONMENT=development
-RASA_ACTIONS_PORT=5055
-RASA_ACTIONS_URL=http://localhost:5055/webhook
-RASA_MODEL=./models
-RASA_LOG_LEVEL=INFO
+# Function to display post-setup information
+show_post_setup_info() {
+    print_section "Setup Complete!"
+    
+    echo -e "${GREEN}✅ Your Rasa Chatbot is now running!${NC}"
+    echo ""
+    echo -e "${YELLOW}Access the following services:${NC}"
+    echo -e "  • Rasa API:        http://localhost:5005"
+    echo -e "  • Frontend:        http://localhost:3000"
+    echo -e "  • Admin Dashboard: http://localhost:3000/admin"
+    echo -e "  • Prometheus:      http://localhost:9090"
+    echo -e "  • Grafana:         http://localhost:3001 (admin/admin)"
+    echo ""
+    echo -e "${YELLOW}Useful commands:${NC}"
+    echo -e "  • View logs:        ${GREEN}docker-compose -f docker-compose.prod.yml logs -f${NC}"
+    echo -e "  • Stop services:    ${GREEN}docker-compose -f docker-compose.prod.yml down${NC}"
+    echo -e "  • Restart services: ${GREEN}docker-compose -f docker-compose.prod.yml restart${NC}"
+    echo -e "  • Rebuild services: ${GREEN}docker-compose -f docker-compose.prod.yml up -d --build${NC}"
+    echo ""
+    echo -e "${YELLOW}Next steps:${NC}"
+    echo "1. Access the admin dashboard to configure your bot"
+    echo "2. Train your first model using the web interface"
+    echo "3. Check the logs if you encounter any issues"
+    echo ""
+    echo -e "${GREEN}Happy bot building! 🚀${NC}"
+}
 
-# Database Configuration
-POSTGRES_USER=rasa
-POSTGRES_PASSWORD=rasa123
-POSTGRES_DB=rasa
-POSTGRES_HOST=localhost
-POSTGRES_PORT=5432
+# Main execution
+main() {
+    # Check if running as root
+    if [ "$(id -u)" -eq 0 ]; then
+        echo -e "${RED}Error: This script should not be run as root.${NC}" >&2
+        exit 1
+    fi
+    
+    # Check for required commands
+    for cmd in docker docker-compose openssl; do
+        if ! command_exists "$cmd"; then
+            echo -e "${RED}Error: $cmd is required but not installed.${NC}" >&2
+            exit 1
+        fi
+    done
+    
+    # Run setup steps
+    install_system_deps
+    setup_environment
+    start_services
+    show_post_setup_info
+}
 
-# Redis Configuration
-REDIS_HOST=localhost
-REDIS_PORT=6379
-REDIS_DB=0
-
-# Security
-JWT_SECRET_KEY=your-secret-key-here
-JWT_ALGORITHM=HS256
-JWT_ACCESS_TOKEN_EXPIRE_MINUTES=1440
-
-# Sentry Configuration (optional)
-# SENTRY_DSN=your-sentry-dsn
-EOL
-
-echo "Setup complete! To activate the virtual environment, run:"
-echo "source venv/bin/activate"
-echo ""
-echo "Don't forget to:"
-echo "1. Update the .env file with your actual configuration"
-echo "2. Set up PostgreSQL database and user"
-echo "3. Configure Redis if needed"
-echo "4. Run 'rasa train' to train your model"
-echo "5. Start the Rasa server with 'rasa run --enable-api --cors \"*\"'"
+# Run the main function
+main "$@"
