@@ -152,7 +152,30 @@ nlu:
 
   - intent: ask_time
     examples: |
-      # English
+      - what time is it
+      - what's the time
+      - tell me the time
+      - could you tell me the current time
+      - time please
+      - what time do you have
+      - do you know what time it is
+      - can you tell me what time it is
+      - what's the current time
+      - what time is it right now
+      - could you give me the time
+      - may I know the time
+      - what's the clock say
+      - what time is it now
+      - can you tell me the time please
+      - what time is it over there
+      - could you tell me the exact time
+      - what's the time right now
+      - can you check the time for me
+      - do you have the time
+      - what time is it currently
+      - can you tell me the current time
+      - what's the time where you are
+      - could you let me know what time it is
       - what time is it?
       - do you know the current time?
       - tell me the time please

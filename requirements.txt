@@ -2,46 +2,30 @@
 rasa==3.6.21
 rasa-sdk==3.6.2
 
-# Core Dependencies
+# Essential Dependencies
 python-dateutil>=2.8.2
-pytz>=2024.1
+pytz>=2019.1,<2023.0  # Rasa 3.6.21 requires pytz<2023.0
 python-dotenv>=1.0.0
-python-jose[cryptography]>=3.3.0
-python-multipart>=0.0.6
 
-# Database & Storage
+# Database
 sqlalchemy>=1.4.50
 psycopg2-binary>=2.9.9
 redis>=4.6.0
 
-# API & Web
-fastapi>=0.103.0
+# Basic API
+fastapi>=0.68.0,<0.69.0
 uvicorn>=0.23.2
-pydantic>=1.10.12
-python-socketio>=5.8.0
-python-engineio>=4.6.0
+pydantic>=1.9.0,<1.10.10  # Rasa 3.6.21 requires pydantic < 1.10.10
 
-# Utils
-python-jose[cryptography]>=3.3.0
-python-multipart>=0.0.6
+# Monitoring
+sentry-sdk>=0.17.0,<1.15.0  # Rasa 3.6.21 requires sentry-sdk<1.15.0
 
-# Testing
+# Testing (minimal set)
 pytest>=7.4.2
 pytest-cov>=4.1.0
-pytest-asyncio>=0.21.1
 
-# Development
-black>=23.7.0
-isort>=5.12.0
-flake8>=6.1.0
-mypy>=1.5.1
-
-# Monitoring & Logging
-prometheus-client>=0.17.1
-sentry-sdk>=1.30.0
-python-json-logger>=2.0.7
-
-# Optional: Uncomment if needed
-# tensorflow>=2.13.0
-# transformers>=4.31.0
-# torch>=2.0.1
+# Development (optional, uncomment if needed)
+# black>=23.7.0
+# isort>=5.12.0
+# flake8>=6.1.0
+# mypy>=1.5.1
