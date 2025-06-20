@@ -5,7 +5,7 @@ language: en
 pipeline:
   # Text processing
   - name: SpacyNLP
-    model: "en_core_web_md"
+    model: "en_core_web_sm"
   - name: SpacyTokenizer
   - name: SpacyFeaturizer
     pooling: "mean"
