@@ -1,3 +1,47 @@
-# Python dependencies for customer-care Rasa chatbot project
+# Core Rasa
 rasa==3.6.21
 rasa-sdk==3.6.2
+
+# Core Dependencies
+python-dateutil>=2.8.2
+pytz>=2024.1
+python-dotenv>=1.0.0
+python-jose[cryptography]>=3.3.0
+python-multipart>=0.0.6
+
+# Database & Storage
+sqlalchemy>=1.4.50
+psycopg2-binary>=2.9.9
+redis>=4.6.0
+
+# API & Web
+fastapi>=0.103.0
+uvicorn>=0.23.2
+pydantic>=1.10.12
+python-socketio>=5.8.0
+python-engineio>=4.6.0
+
+# Utils
+python-jose[cryptography]>=3.3.0
+python-multipart>=0.0.6
+
+# Testing
+pytest>=7.4.2
+pytest-cov>=4.1.0
+pytest-asyncio>=0.21.1
+
+# Development
+black>=23.7.0
+isort>=5.12.0
+flake8>=6.1.0
+mypy>=1.5.1
+
+# Monitoring & Logging
+prometheus-client>=0.17.1
+sentry-sdk>=1.30.0
+python-json-logger>=2.0.7
+
+# Optional: Uncomment if needed
+# tensorflow>=2.13.0
+# transformers>=4.31.0
+# torch>=2.0.1
