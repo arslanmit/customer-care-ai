@@ -2,111 +2,106 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import Analytics from './Analytics.jsx';
 
-// Mock Chart.js 
+// Mock react-chartjs-2
 vi.mock('react-chartjs-2', () => ({
-  Bar: () => <div data-testid="bar-chart" />,
-  Doughnut: () => <div data-testid="doughnut-chart" />,
+  Bar: () => <div data-testid="bar-chart">Bar Chart</div>,
+  Pie: () => <div data-testid="pie-chart">Pie Chart</div>,
 }));
 
-// Mock the i18n provider
+// Mock the useTranslation hook with specific translations for Analytics
 vi.mock('react-i18next', () => ({
   useTranslation: () => ({
-    t: (key) => {
-      const translations = {
-        'analytics.title': 'Conversation Analytics',
-        'analytics.messageStats': 'Message Statistics',
-        'analytics.userMessages': 'User Messages',
-        'analytics.botResponses': 'Bot Responses',
-        'analytics.avgResponseTime': 'Average Response Time',
-        'analytics.messageDistribution': 'Message Distribution',
-        'analytics.intentDistribution': 'Intent Distribution',
-        'analytics.intentTypes': 'Intent Types'
-      };
-      return translations[key] || key;
-    }
+    t: (key) => key, // Return the key as the translation
+    i18n: {
+      language: 'en',
+      changeLanguage: () => Promise.resolve(),
+    },
   }),
 }));
 
 describe('Analytics Component', () => {
   const mockConversation = [
-    { sender: 'user', text: 'Hello', timestamp: new Date().toISOString() },
+    { 
+      sender: 'user', 
+      text: 'Hello', 
+      timestamp: new Date().toISOString(),
+      intent: 'greet'
+    },
     { 
       sender: 'bot', 
       text: 'Hi there!', 
-      timestamp: new Date().toISOString(), 
-      metadata: { intent: 'greet', confidence: 0.9 } 
+      timestamp: new Date().toISOString(),
+      intent: 'greet_response'
     },
-    { sender: 'user', text: 'What time is it?', timestamp: new Date().toISOString() },
+    { 
+      sender: 'user', 
+      text: 'What time is it?', 
+      timestamp: new Date().toISOString(),
+      intent: 'ask_time'
+    },
     { 
       sender: 'bot', 
       text: 'It is 2:30 PM', 
-      timestamp: new Date().toISOString(), 
-      metadata: { intent: 'ask_time', confidence: 0.85 } 
+      timestamp: new Date().toISOString(),
+      intent: 'time_response'
     }
   ];
 
-  beforeEach(() => {
-    // Mock localStorage with conversation history
-    Object.defineProperty(window, 'localStorage', {
-      value: {
-        getItem: vi.fn(() => JSON.stringify(mockConversation)),
-      },
-      writable: true
-    });
-  });
-
   it('renders the analytics title', () => {
-    render(<Analytics />);
-    expect(screen.getByText('Conversation Analytics')).toBeInTheDocument();
+    render(<Analytics conversationHistory={mockConversation} />);
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('analytics.title');
   });
 
   it('displays message statistics section', () => {
-    render(<Analytics />);
-    expect(screen.getByText('Message Statistics')).toBeInTheDocument();
-    expect(screen.getByText('User Messages')).toBeInTheDocument();
-    expect(screen.getByText('Bot Responses')).toBeInTheDocument();
-    expect(screen.getByText('Average Response Time')).toBeInTheDocument();
+    render(<Analytics conversationHistory={mockConversation} />);
+    
+    // Check for section headers
+    expect(screen.getByText('analytics.messageStats')).toBeInTheDocument();
+    
+    // Check for message counts
+    const userMessagesText = screen.getByText('analytics.userMessages').parentElement.textContent;
+    const botResponsesText = screen.getByText('analytics.botResponses').parentElement.textContent;
+    
+    expect(parseInt(userMessagesText.match(/\d+/)[0])).toBeGreaterThan(0);
+    expect(parseInt(botResponsesText.match(/\d+/)[0])).toBeGreaterThan(0);
   });
 
   it('renders message distribution chart', () => {
-    render(<Analytics />);
-    expect(screen.getByText('Message Distribution')).toBeInTheDocument();
+    render(<Analytics conversationHistory={mockConversation} />);
     expect(screen.getByTestId('bar-chart')).toBeInTheDocument();
   });
 
   it('renders intent distribution chart', () => {
-    render(<Analytics />);
-    expect(screen.getByText('Intent Distribution')).toBeInTheDocument();
-    expect(screen.getByTestId('doughnut-chart')).toBeInTheDocument();
+    render(<Analytics conversationHistory={mockConversation} />);
+    expect(screen.getByTestId('pie-chart')).toBeInTheDocument();
   });
 
   it('displays correct message counts from conversation history', () => {
-    render(<Analytics />);
+    render(<Analytics conversationHistory={mockConversation} />);
     
-    // We have 2 user messages and 2 bot responses in our mock data
-    const userMessageCount = screen.getAllByText(/2/)[0];
-    expect(userMessageCount).toBeInTheDocument();
+    // Check for user messages and bot responses
+    const userMessagesText = screen.getByText('analytics.userMessages').parentElement.textContent;
+    const botResponsesText = screen.getByText('analytics.botResponses').parentElement.textContent;
     
-    const botResponseCount = screen.getAllByText(/2/)[1];
-    expect(botResponseCount).toBeInTheDocument();
+    expect(parseInt(userMessagesText.match(/\d+/)[0])).toBe(2);
+    expect(parseInt(botResponsesText.match(/\d+/)[0])).toBe(2);
   });
   
   it('handles empty conversation history gracefully', () => {
-    // Override the localStorage mock to return null
-    Object.defineProperty(window, 'localStorage', {
-      value: {
-        getItem: vi.fn(() => null),
-      },
-      writable: true
-    });
+    render(<Analytics conversationHistory={[]} />);
     
-    render(<Analytics />);
+    // Should still render the component without errors
+    expect(screen.getByText('analytics.title')).toBeInTheDocument();
     
-    // The component should still render without errors
-    expect(screen.getByText('Conversation Analytics')).toBeInTheDocument();
+    // Should show no messages
+    const userMessagesText = screen.getByText('analytics.userMessages').parentElement.textContent;
+    const botResponsesText = screen.getByText('analytics.botResponses').parentElement.textContent;
+    
+    expect(parseInt(userMessagesText.match(/\d+/)[0])).toBe(0);
+    expect(parseInt(botResponsesText.match(/\d+/)[0])).toBe(0);
     
     // Charts should still be rendered with default/empty data
     expect(screen.getByTestId('bar-chart')).toBeInTheDocument();
-    expect(screen.getByTestId('doughnut-chart')).toBeInTheDocument();
+    expect(screen.getByTestId('pie-chart')).toBeInTheDocument();
   });
 });

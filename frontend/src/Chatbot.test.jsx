@@ -1,13 +1,12 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import Chatbot from './Chatbot.jsx';
 
-// Mock the i18n provider since it's needed by the component
+// Mock the useTranslation hook with specific translations for Chatbot
 vi.mock('react-i18next', () => ({
   useTranslation: () => ({
     t: (key) => {
-      // Return key-specific translations for common keys
       const translations = {
         'chatbot.placeholder': 'Type your message...',
         'chatbot.sendButton': 'Send',
@@ -15,7 +14,10 @@ vi.mock('react-i18next', () => ({
         'chatbot.backToChat': 'Back to Chat',
         'chatbot.login': 'Login',
         'chatbot.logout': 'Logout',
-        'chatbot.selectLanguage': 'Select language'
+        'chatbot.selectLanguage': 'Select language',
+        'chatbot.welcome': 'Welcome to the Chatbot',
+        'chatbot.errorSending': 'Error sending message',
+        'chatbot.typing': 'typing...'
       };
       return translations[key] || key;
     },
@@ -24,6 +26,16 @@ vi.mock('react-i18next', () => ({
       language: 'en',
     },
   }),
+}));
+
+// Mock the AuthContext
+vi.mock('../contexts/AuthContext', () => ({
+  useAuth: () => ({
+    user: { id: '123', name: 'Test User' },
+    login: vi.fn(),
+    logout: vi.fn(),
+    isAuthenticated: true
+  })
 }));
 
 // Mock localStorage
