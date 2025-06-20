@@ -7,7 +7,7 @@ from typing import Any, Dict, List, Text
 
 from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
-from rasa_sdk.events import SlotSet
+from rasa_sdk.events import SlotSet, UserUtteranceReverted
 
 logger = logging.getLogger(__name__)
 
@@ -276,41 +276,141 @@ class ActionSetLanguage(Action):
         tracker: Tracker,
         domain: Dict[Text, Any],
     ) -> List[Dict[Text, Any]]:
-        # Extract language from message, default to English
-        message = tracker.latest_message.get('text', '').lower()
+        language = next(tracker.get_latest_entity_values("language"), None)
         
-        language = 'en'  # Default
+        if not language:
+            # If no language entity was found, try to extract from the latest message
+            language = tracker.latest_message.get('text', '').lower()
+            
+            # Simple language detection from text
+            if 'spanish' in language or 'español' in language or 'espanol' in language:
+                language = 'es'
+            elif 'french' in language or 'français' in language or 'francais' in language:
+                language = 'fr'
+            elif 'german' in language or 'deutsch' in language:
+                language = 'de'
+            elif 'turkish' in language or 'türkçe' in language or 'turkce' in language:
+                language = 'tr'
+            else:
+                language = 'en'  # Default to English
         
-        try:
-            # Language detection based on keywords
-            language_keywords = {
-                'es': ['spanish', 'español', 'espanol', 'castellano'],
-                'fr': ['french', 'français', 'francais', 'le français'],
-                'de': ['german', 'deutsch', 'deutsche', 'germanisch'],
-                'tr': ['turkish', 'türkçe', 'turkce', 'türk'],
-                'en': ['english', 'inglés', 'ingles']
-            }
-            
-            # Check each language's keywords
-            for lang_code, keywords in language_keywords.items():
-                if any(keyword in message for keyword in keywords):
-                    language = lang_code
-                    break
-                    
-            # Additional check for possible language codes directly in the message
-            lang_codes = ['en', 'es', 'fr', 'de', 'tr']
-            for code in lang_codes:
-                # Check if the code appears as a standalone word
-                if f" {code} " in f" {message} " or message == code:
-                    language = code
-                    break
-            
-            logger.info(f"Setting language to {language} based on message: {message}")
-            
-        except Exception as e:
-            logger.error(f"Error detecting language from message '{message}': {e}")
-        
-        # The response will come from domain.yml utter_language_changed
-        # with the appropriate language variant
+        # Ensure language is in our supported languages
+        if language not in ['en', 'es', 'fr', 'de', 'tr']:
+            language = 'en'
         
         return [SlotSet("language", language)]
+
+
+class ActionIncrementFallbackCount(Action):
+    """Increment the fallback counter and handle escalation if needed."""
+
+    def name(self) -> Text:
+        return "action_increment_fallback_count"
+
+    def run(
+        self,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: Dict[Text, Any],
+    ) -> List[Dict[Text, Any]]:
+        # Get current fallback count
+        fallback_count = tracker.get_slot("num_fallbacks") or 0
+        fallback_count += 1
+        
+        # Reset fallback count if we had a successful interaction
+        last_intent = tracker.latest_message.get("intent", {}).get("name")
+        if last_intent != "nlu_fallback":
+            fallback_count = 0
+        
+        return [SlotSet("num_fallbacks", fallback_count)]
+
+
+class ActionHandoffToHuman(Action):
+    """Handle the handoff to a human agent."""
+
+    def name(self) -> Text:
+        return "action_handoff_to_human"
+
+    def run(
+        self,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: Dict[Text, Any],
+    ) -> List[Dict[Text, Any]]:
+        # In a real implementation, you would:
+        # 1. Log the handoff
+        # 2. Create a support ticket
+        # 3. Notify the support team
+        # 4. Update the conversation state
+        
+        # For now, we'll just log it and send a message
+        logger.info(f"Handing off conversation to human agent. User message: {tracker.latest_message.get('text')}")
+        
+        # Reset fallback counter after handoff
+        return [
+            SlotSet("num_fallbacks", 0),
+            SlotSet("escalated", True)
+        ]
+
+
+class ActionDefaultFallback(Action):
+    """Executes the fallback action and goes back to the previous state of the dialogue"""
+
+    def name(self) -> Text:
+        return "action_default_fallback"
+
+    async def run(
+        self,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: Dict[Text, Any],
+    ) -> List[Dict[Text, Any]]:
+        # Log the fallback
+        logger.warning(f"Action fallback triggered for message: {tracker.latest_message.get('text')}")
+        
+        # Increment fallback counter
+        fallback_count = tracker.get_slot("num_fallbacks") or 0
+        fallback_count += 1
+        
+        # Get the appropriate fallback message based on context
+        language = get_language(tracker)
+        
+        fallback_messages = {
+            'en': [
+                "I'm not sure I understand. Could you rephrase that?",
+                "I didn't quite get that. Could you try saying it differently?",
+                "I'm still learning. Could you try asking in a different way?"
+            ],
+            'es': [
+                "No estoy seguro de entender. ¿Podrías decirlo de otra manera?",
+                "No entendí bien eso. ¿Podrías intentar decirlo de otra forma?",
+                "Todavía estoy aprendiendo. ¿Podrías intentar preguntar de otra manera?"
+            ],
+            'fr': [
+                "Je ne suis pas sûr de comprendre. Pourriez-vous reformuler cela ?",
+                "Je n'ai pas bien compris. Pourriez-vous essayer de le dire différemment ?",
+                "J'apprends encore. Pourriez-vous essayer de demander d'une autre manière ?"
+            ],
+            'de': [
+                "Ich bin mir nicht sicher, ob ich das verstehe. Könnten Sie das umformulieren?",
+                "Das habe ich nicht ganz verstanden. Könnten Sie es anders ausdrücken?",
+                "Ich lerne noch. Könnten Sie es anders formulieren?"
+            ],
+            'tr': [
+                "Anladığımdan emin değilim. Başka şekilde ifade edebilir misiniz?",
+                "Bunu tam olarak anlayamadım. Farklı bir şekilde söyleyebilir misiniz?",
+                "Hala öğreniyorum. Başka bir şekilde sormayı deneyebilir misiniz?"
+            ]
+        }
+        
+        # Get messages for the current language, default to English
+        messages = fallback_messages.get(language, fallback_messages['en'])
+        message = messages[min(fallback_count - 1, len(messages) - 1)]
+        
+        # Send the message
+        dispatcher.utter_message(text=message)
+        
+        # Revert user message which led to fallback
+        return [UserUtteranceReverted()] + [
+            SlotSet("num_fallbacks", fallback_count)
+        ]
