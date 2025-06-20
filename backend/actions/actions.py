@@ -150,6 +150,120 @@ class ActionTellTime(Action):
         return []
 
 
+class ActionTellDate(Action):
+    """Provide the current date to the user in their preferred language."""
+
+    def name(self) -> Text:
+        return "action_tell_date"
+
+    def run(
+        self,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: Dict[Text, Any],
+    ) -> List[Dict[Text, Any]]:
+        language = get_language(tracker)
+        now = datetime.now()
+        
+        # Format date based on language
+        date_formats = {
+            'en': "%A, %B %d, %Y",  # Tuesday, June 20, 2023
+            'es': "%A, %d de %B de %Y",  # martes, 20 de junio de 2023
+            'fr': "%A %d %B %Y",  # mardi 20 juin 2023
+            'de': "%A, %d. %B %Y",  # Dienstag, 20. Juni 2023
+            'tr': "%d %B %Y %A"  # 20 Haziran 2023 Salı
+        }
+        
+        try:
+            date_messages = {
+                'en': f"Today is {now.strftime(date_formats['en'])}",
+                'es': f"Hoy es {now.strftime(date_formats['es'])}",
+                'fr': f"Nous sommes le {now.strftime(date_formats['fr'])}",
+                'de': f"Heute ist {now.strftime(date_formats['de'])}",
+                'tr': f"Bugün {now.strftime(date_formats['tr'])}"
+            }
+        except Exception as e:
+            logger.error(f"Error formatting date: {e}")
+            # Fallback to a simple format
+            date_messages = {
+                'en': f"Today is {now.strftime('%Y-%m-%d')}",
+                'es': f"Hoy es {now.strftime('%Y-%m-%d')}",
+                'fr': f"Aujourd'hui c'est le {now.strftime('%Y-%m-%d')}",
+                'de': f"Heute ist der {now.strftime('%d.%m.%Y')}",
+                'tr': f"Bugünün tarihi {now.strftime('%d.%m.%Y')}"
+            }
+        
+        # Get the message in the user's language, fallback to English
+        message = date_messages.get(language, date_messages['en'])
+        
+        # Add intent metadata for analytics
+        dispatcher.utter_message(text=message, intent="ask_date", confidence=1.0)
+        
+        return []
+
+
+class ActionTellDateTime(Action):
+    """Provide the current date and time to the user in their preferred language."""
+
+    def name(self) -> Text:
+        return "action_tell_datetime"
+
+    def run(
+        self,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: Dict[Text, Any],
+    ) -> List[Dict[Text, Any]]:
+        language = get_language(tracker)
+        now = datetime.now()
+        
+        # Format date and time based on language
+        datetime_formats = {
+            'en': {
+                'date': "%A, %B %d, %Y",
+                'time': "%I:%M %p",
+                'message': "Today is {date} and the current time is {time}"
+            },
+            'es': {
+                'date': "%A, %d de %B de %Y",
+                'time': "%H:%M",
+                'message': "Hoy es {date} y la hora actual es {time}"
+            },
+            'fr': {
+                'date': "%A %d %B %Y",
+                'time': "%H h %M",
+                'message': "Nous sommes le {date} et il est {time}"
+            },
+            'de': {
+                'date': "%A, %d. %B %Y",
+                'time': "%H:%M",
+                'message': "Heute ist {date} und es ist {time} Uhr"
+            },
+            'tr': {
+                'date': "%d %B %Y %A",
+                'time': "%H:%M",
+                'message': "Bugün {date} ve saat şu an {time}"
+            }
+        }
+        
+        try:
+            fmt = datetime_formats.get(language, datetime_formats['en'])
+            date_str = now.strftime(fmt['date'])
+            time_str = now.strftime(fmt['time'])
+            message = fmt['message'].format(date=date_str, time=time_str)
+        except Exception as e:
+            logger.error(f"Error formatting datetime: {e}")
+            # Fallback to simple format
+            fallback_date = now.strftime('%Y-%m-%d')
+            fallback_time = now.strftime('%H:%M')
+            message = f"Today is {fallback_date} and the current time is {fallback_time}"
+        
+        # Add intent metadata for analytics
+        dispatcher.utter_message(text=message, intent="ask_datetime", confidence=1.0)
+        
+        return []
+
+
 class ActionSetLanguage(Action):
     """Set the user's preferred language."""
 

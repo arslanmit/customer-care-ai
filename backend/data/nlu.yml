@@ -150,6 +150,147 @@ nlu:
       - I'm [Sarah](name)
       - They call me [Michael](name)
 
+  - intent: ask_date
+    examples: |
+      # English
+      - what's the date today
+      - what is today's date
+      - can you tell me the current date
+      - what day is it today
+      - what's the day today
+      - could you tell me today's date
+      - what is the date
+      - what's today's date
+      - what is the current date
+      - can you tell me the date
+      - what's the date
+      - what day is today
+      - what's the date right now
+      - can you tell me what day it is
+      - what's today's date and day
+      - what is today's day and date
+      - could you tell me the current date
+      - what's the date today in numbers
+      - what's the date in numbers
+      - can you tell me today's date in numbers
+      - what's today's date in numbers
+      - what's the date in digits
+      - can you tell me the date in numbers
+      - what's today's date in digits
+      - what's the date in numbers
+      
+      # Spanish
+      - ¿cuál es la fecha de hoy?
+      - ¿qué día es hoy?
+      - dime la fecha actual
+      - ¿me dices la fecha de hoy?
+      - ¿podrías decirme la fecha?
+      - ¿qué fecha es hoy?
+      - ¿cuál es la fecha actual?
+      - ¿me dices el día de hoy?
+      - ¿podrías decirme el día de hoy?
+      - ¿qué día es hoy en números?
+      
+      # French
+      - quelle est la date d'aujourd'hui?
+      - quelle est la date actuelle?
+      - peux-tu me dire la date?
+      - quel jour sommes-nous?
+      - c'est quel jour aujourd'hui?
+      - pourrais-tu me dire la date d'aujourd'hui?
+      - quelle est la date du jour?
+      - peux-tu me dire le jour d'aujourd'hui?
+      - quelle est la date en chiffres?
+      
+      # German
+      - welches Datum ist heute?
+      - wie ist das heutige Datum?
+      - kannst du mir das Datum sagen?
+      - welcher Tag ist heute?
+      - wie lautet das aktuelle Datum?
+      - könntest du mir das heutige Datum sagen?
+      - was für ein Tag ist heute?
+      - wie ist das Datum von heute?
+      - welches Datum haben wir heute?
+      
+      # Turkish
+      - bugünün tarihi ne?
+      - bugün günlerden ne?
+      - bugünün tarihini söyler misin?
+      - bugün ayın kaçı?
+      - şu anki tarih nedir?
+      - bugünün tarihini söyleyebilir misin?
+      - bugün hangi gün?
+      - bugünün tarihi kaç?
+
+  - intent: ask_datetime
+    examples: |
+      # English
+      - what's the date and time
+      - what is the current date and time
+      - can you tell me today's date and time
+      - what's the time and date
+      - what is today's date and current time
+      - can you tell me the exact date and time
+      - what's the full date and time right now
+      - what's today's date and the current time
+      - can you give me the current date and time
+      - what is the exact date and time now
+      - tell me the date and time
+      - what's the time and date right now
+      - current date and time please
+      - what's today's full date and time
+      - can you tell me what day and time it is
+      - what's the current date and exact time
+      - give me the current date and time
+      - what's the exact date and time right now
+      - can you tell me the current date and exact time
+      - what is today's date and the time now
+      - what's the complete date and time
+      
+      # Spanish
+      - ¿cuál es la fecha y hora actual?
+      - ¿me dices la fecha y hora?
+      - ¿podrías decirme la fecha y hora actuales?
+      - ¿qué día y hora es ahora mismo?
+      - dime la fecha y hora exactas
+      - ¿cuál es la fecha y hora de ahora?
+      - ¿me dices la fecha y la hora actuales?
+      - ¿podrías decirme el día y la hora exactos?
+      - necesito saber la fecha y hora actuales
+      - ¿cuál es el día y la hora en este momento?
+      
+      # French
+      - quelle est la date et l'heure actuelles?
+      - peux-tu me dire la date et l'heure?
+      - quelle est la date et l'heure exactes maintenant?
+      - peux-tu me donner la date et l'heure actuelles?
+      - quel est le jour et l'heure en ce moment?
+      - pourrais-tu me dire la date et l'heure exactes?
+      - j'aimerais connaître la date et l'heure actuelles
+      - peux-tu me dire la date complète et l'heure?
+      - quelle est la date et l'heure précises?
+      
+      # German
+      - wie lautet das aktuelle Datum und die Uhrzeit?
+      - kannst du mir das aktuelle Datum und die Uhrzeit sagen?
+      - was ist das heutige Datum und die aktuelle Uhrzeit?
+      - könntest du mir das genaue Datum und die Uhrzeit nennen?
+      - wie lautet das genaue Datum und die genaue Uhrzeit?
+      - was ist das aktuelle Datum und die genaue Uhrzeit?
+      - kannst du mir das heutige Datum und die Uhrzeit sagen?
+      - wie lautet der aktuelle Tag und die genaue Uhrzeit?
+      
+      # Turkish
+      - şu anki tarih ve saat nedir?
+      - bugünün tarihi ve saati nedir?
+      - bana şu anki tarih ve saati söyler misin?
+      - tam tarih ve saati öğrenebilir miyim?
+      - bugünün günü ve saati nedir?
+      - şu anki gün ve saati söyleyebilir misin?
+      - mevcut tarih ve saati öğrenebilir miyim?
+      - bugünün tam tarihini ve saati söyler misin?
+
   - intent: ask_time
     examples: |
       - what time is it
