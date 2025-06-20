@@ -1,0 +1,210 @@
+version: '3.8'
+
+x-common-env: &common-env
+  TZ: "${TZ:-UTC}"
+  PYTHONUNBUFFERED: "1"
+  PYTHONPATH: "/app"
+  SANIC_WORKERS: "${SANIC_WORKERS:-2}"
+  SANIC_HOST: "0.0.0.0"
+  SANIC_PORT: "5005"
+  SANIC_ACCESS_LOG: "true"
+  SANIC_NO_HEADERS: "true"
+  SANIC_REQUEST_MAX_SIZE: "50000000"
+  SANIC_REQUEST_BUFFER_SIZE: "50000000"
+  SANIC_RESPONSE_TIMEOUT: "300"
+  SANIC_KEEP_ALIVE_TIMEOUT: "75"
+  SANIC_GRACEFUL_SHUTDOWN_TIMEOUT: "15.0"
+  SANIC_WEBSOCKET_MAX_SIZE: "16777216"
+  SANIC_WEBSOCKET_MAX_QUEUE: "32"
+  SANIC_WEBSOCKET_READ_LIMIT: "2097152"
+  SANIC_WEBSOCKET_WRITE_LIMIT: "2097152"
+  SANIC_WEBSOCKET_PING_INTERVAL: "20"
+  SANIC_WEBSOCKET_PING_TIMEOUT: "20"
+
+services:
+  rasa:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+      args:
+        - BUILDKIT_INLINE_CACHE=1
+    container_name: rasa
+    restart: unless-stopped
+    ports:
+      - "5005:5005"
+    env_file:
+      - .env
+    environment:
+      <<: *common-env
+      RASA_ENVIRONMENT: production
+      RASA_ACTIONS_URL: http://actions:5055/webhook
+      REDIS_HOST: redis
+      POSTGRES_HOST: postgres
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY}
+      PROMETHEUS_MULTIPROC_DIR: /tmp/prometheus
+      PROMETHEUS_METRICS_EXPORT_PORT: 5005
+      RASA_METRICS_ONLY_SERVER: "True"
+    depends_on:
+      redis:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+      actions:
+        condition: service_started
+    networks:
+      - rasa-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5005/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 2G
+        reservations:
+          memory: 1G
+    security_opt:
+      - no-new-privileges:true
+    tmpfs:
+      - /tmp
+    read_only: true
+
+  actions:
+    build:
+      context: .
+      dockerfile: ./Dockerfile.actions
+    container_name: rasa-actions
+    restart: unless-stopped
+    expose:
+      - "5055"
+    env_file:
+      - .env
+    environment:
+      - SANIC_WORKERS=2
+      - REDIS_HOST=redis
+      - POSTGRES_HOST=postgres
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    depends_on:
+      - redis
+      - postgres
+    networks:
+      - rasa-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://actions:5055/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  redis:
+    image: redis:7.2-alpine
+    container_name: redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+    networks:
+      - rasa-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  postgres:
+    image: postgres:15-alpine
+    container_name: postgres
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5432:5432"
+    networks:
+      - rasa-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.prod
+    container_name: frontend
+    restart: unless-stopped
+    ports:
+      - "3000:80"
+    environment:
+      - NODE_ENV=production
+      - REACT_APP_RASA_URL=http://localhost:5005
+    depends_on:
+      - rasa
+    networks:
+      - rasa-network
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    restart: unless-stopped
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus:/etc/prometheus
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'
+    networks:
+      - rasa-network
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    restart: unless-stopped
+    ports:
+      - "3001:3000"
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./monitoring/grafana/provisioning:/etc/grafana/provisioning
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_USERS_ALLOW_SIGN_UP=false
+    depends_on:
+      - prometheus
+    networks:
+      - rasa-network
+
+networks:
+  rasa-network:
+    driver: bridge
+
+volumes:
+  redis_data:
+  postgres_data:
+  prometheus_data:
+  grafana_data:
