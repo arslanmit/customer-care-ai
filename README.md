@@ -1,122 +1,127 @@
 # Customer Care AI Chatbot
 
-A full-stack conversational AI chatbot built with Rasa (backend) and React (frontend), designed to handle customer service inquiries.
+A full-stack conversational AI chatbot built with Rasa (backend) and React (frontend), designed to handle customer service inquiries with multilingual support and advanced conversation management.
 
-## Project Overview
+## 🚀 Key Features
 
-This project implements an intelligent conversational agent that can:
+- **Multilingual Support**: English, Spanish, French, German, and Turkish
+- **Advanced Conversation Flow**: Stateful conversations with context management
+- **Production-Ready**: Containerized with Docker and Kubernetes support
+- **Scalable Architecture**: Microservices-based design with Redis for caching
+- **Monitoring**: Integrated with Prometheus and Grafana
+- **CI/CD**: Automated testing and deployment with GitHub Actions
 
-- Handle basic greetings and farewells
-- Collect user information using forms
-- Respond to time inquiries
-- Gracefully handle fallbacks when it doesn't understand user input
+## 🏗️ Project Structure
 
-## Architecture
+```
+customer-care-ai/
+├── .github/              # GitHub Actions workflows
+├── actions/              # Custom Rasa actions
+│   └── actions.py        # Action server implementation
+├── backend/              # Rasa backend
+│   ├── data/             # NLU training data, stories, rules
+│   ├── models/           # Trained Rasa models
+│   ├── tests/            # Backend tests
+│   ├── config.yml        # Rasa configuration
+│   ├── credentials.yml   # Channel credentials
+│   ├── domain.yml        # Domain definition
+│   └── endpoints.yml     # Endpoint configurations
+├── frontend/             # React application
+│   ├── public/           # Static files
+│   ├── src/              # React source code
+│   └── tests/            # Frontend tests
+├── monitoring/           # Monitoring setup
+│   ├── prometheus/       # Prometheus config
+│   └── grafana/          # Grafana dashboards
+├── scripts/              # Utility scripts
+├── .env.example         # Environment variables template
+├── docker-compose.yml    # Local development
+├── Dockerfile           # Production Dockerfile
+├── requirements.txt     # Python dependencies
+└── setup.sh            # Setup script
+```
 
-### Backend (Rasa)
+## 🛠️ Prerequisites
 
-- NLU pipeline with WhitespaceTokenizer, RegexFeaturizer, DIETClassifier, and FallbackClassifier
-- Custom actions for telling time and jokes
-- Form-based slot filling for collecting user information
-- Conversation persistence with SQLite
-- REST API with CORS support for frontend integration
-
-### Frontend (React)
-
-- Modern React application built with Vite
-- Chat interface with message history
-- Responsive design
-- Environment-based configuration for backend URL
-
-## Getting Started
-
-### Prerequisites
-
-- Python 3.8-3.10 (for Rasa compatibility)
+- Python 3.10+
 - Node.js 18+
-- Docker and Docker Compose (for containerized deployment)
+- Docker & Docker Compose
+- Redis
+- PostgreSQL
 
-### Running Locally (Recommended for Development)
+## 🚀 Quick Start
 
-#### Backend Setup
-
-1. Create a Python virtual environment:
+### 1. Clone the repository
 
 ```bash
-python -m venv .venv
-source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+git clone https://github.com/yourusername/customer-care-ai.git
+cd customer-care-ai
 ```
 
-1. Install dependencies:
+### 2. Set up the environment
 
 ```bash
-pip install -r requirements.txt
+# Make setup script executable
+chmod +x setup.sh
+
+# Run the setup script
+./setup.sh
+
+# Activate virtual environment
+source venv/bin/activate  # On Windows: .\venv\Scripts\activate
 ```
 
-1. Train the Rasa model:
+### 3. Configure environment variables
+
+Copy the example environment file and update the values:
 
 ```bash
-rasa train
+cp .env.example .env
+# Edit .env with your configuration
 ```
 
-1. Run the Rasa server:
+### 4. Start the services
+
+Using Docker Compose (recommended):
 
 ```bash
-# In one terminal
-rasa run actions
-
-# In another terminal
-rasa run --enable-api --cors "*"
+docker-compose up -d
 ```
 
-#### Frontend Setup
-
-1. Navigate to the frontend directory:
+Or manually:
 
 ```bash
+# Start Redis
+redis-server &
+
+
+# Start Rasa actions server
+rasa run actions &
+
+
+# Start Rasa API server
+rasa run --enable-api --cors "*" &
+
+
+# Start frontend (from frontend directory)
 cd frontend
-```
-
-1. Install dependencies:
-
-```bash
 npm install
-```
-
-1. Start development server:
-
-```bash
 npm run dev
 ```
 
-### Running with Docker (Optional)
-
-Docker setup is provided as an alternative option when you need containerized environments.
-
-To start both services with Docker Compose:
-
-```bash
-docker-compose up --build
-```
-
-This will start both the Rasa backend (available at [http://localhost:5005](http://localhost:5005)) and the React frontend (available at [http://localhost:8080](http://localhost:8080)).
-
-To stop the Docker containers:
-
-```bash
-docker-compose down
-```
-
-## Testing
+## 🧪 Testing
 
 ### Backend Tests
 
 ```bash
-# Run Rasa tests
-rasa test
+# Run all tests
+pytest
 
-# Run Python unit tests
-python -m pytest
+# Run specific test file
+pytest tests/test_actions.py -v
+
+# Run with coverage
+pytest --cov=actions tests/
 ```
 
 ### Frontend Tests
@@ -126,71 +131,57 @@ cd frontend
 npm test
 ```
 
-## Deployment
+## 🚀 Deployment
 
-The project is configured for deployment to Google Cloud Run with a CI/CD pipeline using GitHub Actions.
-
-### Manual Deployment
-
-1. Build Docker images:
+### Docker Compose (Production)
 
 ```bash
-# Backend
-docker build -t gcr.io/<PROJECT_ID>/rasa-backend:latest -f Dockerfile .
-
-# Frontend  
-docker build -t gcr.io/<PROJECT_ID>/chat-frontend:latest -f frontend/Dockerfile .
+docker-compose -f docker-compose.prod.yml up --build -d
 ```
 
-1. Push images to Google Container Registry:
+### Kubernetes (GKE)
 
 ```bash
-docker push gcr.io/<PROJECT_ID>/rasa-backend:latest
-docker push gcr.io/<PROJECT_ID>/chat-frontend:latest
+# Set up kubectl context
+gcloud container clusters get-credentials CLUSTER_NAME --region REGION
+
+# Apply Kubernetes manifests
+kubectl apply -f k8s/
 ```
 
-1. Deploy to Cloud Run:
+### Google Cloud Run
 
 ```bash
-# Backend
-gcloud run deploy rasa-backend \
-  --image gcr.io/<PROJECT_ID>/rasa-backend:latest \
-  --platform managed --region <REGION> \
+# Build and push images
+gcloud builds submit --tag gcr.io/PROJECT_ID/customer-care-ai
+
+# Deploy to Cloud Run
+gcloud run deploy customer-care-ai \
+  --image gcr.io/PROJECT_ID/customer-care-ai \
+  --platform managed \
+  --region REGION \
   --allow-unauthenticated
-
-# Frontend
-gcloud run deploy chat-frontend \
-  --image gcr.io/<PROJECT_ID>/chat-frontend:latest \
-  --platform managed --region <REGION> \
-  --allow-unauthenticated \
-  --update-env-vars REACT_APP_RASA_URL=<BACKEND_URL>
 ```
 
-## CI/CD Pipeline
+## 📊 Monitoring
 
-The GitHub Actions workflow in `.github/workflows/ci.yml` handles:
+Access monitoring dashboards:
 
-1. Running backend tests (Python/Rasa)
-2. Running frontend tests (Jest)
-3. On push to main: building Docker images and deploying to Google Cloud Run
+- Prometheus: http://localhost:9090
+- Grafana: http://localhost:3000 (admin/admin)
 
-## Project Structure
+## 🤝 Contributing
 
-```text
-customer-care-ai/
-├── actions/             # Custom Rasa actions
-├── data/                # Training data (NLU, stories, rules)
-├── models/              # Trained Rasa models
-├── tests/               # Backend tests
-├── frontend/            # React application
-│   ├── src/             # React source code
-│   └── tests/           # Frontend tests
-├── .github/workflows/   # CI/CD configuration
-├── docker-compose.yml   # Local development orchestration
-├── Dockerfile           # Rasa backend container
-└── entrypoint.sh        # Startup script for Rasa container
-```
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-## License
+## 📄 License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 📧 Contact
+
+Project Link: [https://github.com/yourusername/customer-care-ai](https://github.com/yourusername/customer-care-ai)

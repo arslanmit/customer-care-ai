@@ -1,0 +1,54 @@
+# Use Python 3.10 slim base image
+FROM python:3.10-slim
+
+# Set environment variables
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PIP_NO_CACHE_DIR=off \
+    PIP_DISABLE_PIP_VERSION_CHECK=on \
+    PIP_DEFAULT_TIMEOUT=100 \
+    POETRY_VERSION=1.5.1 \
+    POETRY_HOME="/opt/poetry" \
+    POETRY_VIRTUALENVS_CREATE=false \
+    POETRY_NO_INTERACTION=1 \
+    PATH="$POETRY_HOME/bin:$PATH"
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    curl \
+    git \
+    libpq-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Poetry
+RUN curl -sSL https://install.python-poetry.org | python3 -
+
+
+# Set working directory
+WORKDIR /app
+
+# Copy only requirements first to leverage Docker cache
+COPY pyproject.toml poetry.lock* ./
+
+# Install runtime dependencies
+RUN poetry install --no-dev --no-root && \
+    # Clean up
+    apt-get remove -y --auto-remove build-essential curl git \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy the rest of the application
+COPY . .
+
+# Install the package in development mode
+RUN poetry install --no-dev
+
+# Make the entrypoint script executable
+RUN chmod +x /app/entrypoint.sh
+
+# Expose the port the action server runs on
+EXPOSE 5055
+
+# Set the entrypoint
+ENTRYPOINT ["/app/entrypoint.sh"]
