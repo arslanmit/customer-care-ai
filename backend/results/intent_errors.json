@@ -1,0 +1,298 @@
+[
+  {
+    "text": "how are you today",
+    "intent": "greet",
+    "intent_prediction": {
+      "name": "ask_date",
+      "confidence": 1.0
+    }
+  },
+  {
+    "text": "comment ça va",
+    "intent": "greet",
+    "intent_prediction": {
+      "name": "goodbye",
+      "confidence": 0.9999297857284546
+    }
+  },
+  {
+    "text": "adiós",
+    "intent": "goodbye",
+    "intent_prediction": {
+      "name": "greet",
+      "confidence": 0.8078874945640564
+    }
+  },
+  {
+    "text": "au revoir",
+    "intent": "goodbye",
+    "intent_prediction": {
+      "name": "greet",
+      "confidence": 0.9999045133590698
+    }
+  },
+  {
+    "text": "auf Wiedersehen",
+    "intent": "goodbye",
+    "intent_prediction": {
+      "name": "greet",
+      "confidence": 0.9999995231628418
+    }
+  },
+  {
+    "text": "!@#$%^&*()",
+    "intent": "nlu_fallback",
+    "intent_prediction": {
+      "name": "greet",
+      "confidence": 0.5480399131774902
+    }
+  },
+  {
+    "text": "the quick brown fox jumps over the lazy dog",
+    "intent": "nlu_fallback",
+    "intent_prediction": {
+      "name": "goodbye",
+      "confidence": 1.3337793092205175e-09
+    }
+  },
+  {
+    "text": "the five boxing wizards jump quickly",
+    "intent": "nlu_fallback",
+    "intent_prediction": {
+      "name": "goodbye",
+      "confidence": 1.336991184430758e-09
+    }
+  },
+  {
+    "text": "sphinx of black quartz judge my vow",
+    "intent": "nlu_fallback",
+    "intent_prediction": {
+      "name": "change_language",
+      "confidence": 1.3755564465256498e-09
+    }
+  },
+  {
+    "text": "My product is defective",
+    "intent": "support_request",
+    "intent_prediction": {
+      "name": "product_inquiry",
+      "confidence": 0.9995347261428833
+    }
+  },
+  {
+    "text": "Your product isn't functioning properly",
+    "intent": "support_request",
+    "intent_prediction": {
+      "name": "product_inquiry",
+      "confidence": 0.999452531337738
+    }
+  },
+  {
+    "text": "¿cómo estás?",
+    "intent": "greet",
+    "intent_prediction": {
+      "name": "ask_date",
+      "confidence": 0.9571069478988647
+    }
+  },
+  {
+    "text": "goodbye",
+    "intent": "goodbye",
+    "intent_prediction": {
+      "name": "greet",
+      "confidence": 0.9997407793998718
+    }
+  },
+  {
+    "text": "abcdefghijklmnopqrstuvwxyz",
+    "intent": "nlu_fallback",
+    "intent_prediction": {
+      "name": "support_request",
+      "confidence": 4.251437868418861e-09
+    }
+  },
+  {
+    "text": "123 main street",
+    "intent": "nlu_fallback",
+    "intent_prediction": {
+      "name": "ask_time",
+      "confidence": 4.700969835624846e-09
+    }
+  },
+  {
+    "text": "the mitochondria is the powerhouse of the cell",
+    "intent": "nlu_fallback",
+    "intent_prediction": {
+      "name": "ask_time",
+      "confidence": 6.047276315257477e-07
+    }
+  },
+  {
+    "text": "pack my box with five dozen liquor jugs",
+    "intent": "nlu_fallback",
+    "intent_prediction": {
+      "name": "support_request",
+      "confidence": 1.0406254659756087e-05
+    }
+  },
+  {
+    "text": "hola",
+    "intent": "greet",
+    "intent_prediction": {
+      "name": "goodbye",
+      "confidence": 0.8542459607124329
+    }
+  },
+  {
+    "text": "salut",
+    "intent": "greet",
+    "intent_prediction": {
+      "name": "goodbye",
+      "confidence": 0.999996542930603
+    }
+  },
+  {
+    "text": "wie geht es dir",
+    "intent": "greet",
+    "intent_prediction": {
+      "name": "ask_date",
+      "confidence": 0.9974454641342163
+    }
+  },
+  {
+    "text": "lorem ipsum dolor sit amet",
+    "intent": "nlu_fallback",
+    "intent_prediction": {
+      "name": "support_request",
+      "confidence": 0.998993456363678
+    }
+  },
+  {
+    "text": "to be or not to be that is the question",
+    "intent": "nlu_fallback",
+    "intent_prediction": {
+      "name": "support_request",
+      "confidence": 0.999993085861206
+    }
+  },
+  {
+    "text": "she sells seashells by the seashore",
+    "intent": "nlu_fallback",
+    "intent_prediction": {
+      "name": "support_request",
+      "confidence": 0.5455566048622131
+    }
+  },
+  {
+    "text": "hasta luego",
+    "intent": "goodbye",
+    "intent_prediction": {
+      "name": "greet",
+      "confidence": 0.9999994039535522
+    }
+  },
+  {
+    "text": "hasta pronto",
+    "intent": "goodbye",
+    "intent_prediction": {
+      "name": "greet",
+      "confidence": 0.6435149312019348
+    }
+  },
+  {
+    "text": "à bientôt",
+    "intent": "goodbye",
+    "intent_prediction": {
+      "name": "greet",
+      "confidence": 0.9665436148643494
+    }
+  },
+  {
+    "text": "asdfghjkl",
+    "intent": "nlu_fallback",
+    "intent_prediction": {
+      "name": "goodbye",
+      "confidence": 0.7238693833351135
+    }
+  },
+  {
+    "text": "my hovercraft is full of eels",
+    "intent": "nlu_fallback",
+    "intent_prediction": {
+      "name": "support_request",
+      "confidence": 0.00012665841495618224
+    }
+  },
+  {
+    "text": "how much wood would a woodchuck chuck",
+    "intent": "nlu_fallback",
+    "intent_prediction": {
+      "name": "change_language",
+      "confidence": 0.9840925931930542
+    }
+  },
+  {
+    "text": "peter piper picked a peck of pickled peppers",
+    "intent": "nlu_fallback",
+    "intent_prediction": {
+      "name": "support_request",
+      "confidence": 0.8932707905769348
+    }
+  },
+  {
+    "text": "I have a question about my account",
+    "intent": "support_request",
+    "intent_prediction": {
+      "name": "product_inquiry",
+      "confidence": 0.9846028089523315
+    }
+  },
+  {
+    "text": "have a nice day",
+    "intent": "goodbye",
+    "intent_prediction": {
+      "name": "ask_date",
+      "confidence": 1.0
+    }
+  },
+  {
+    "text": "hoşça kal",
+    "intent": "goodbye",
+    "intent_prediction": {
+      "name": "greet",
+      "confidence": 1.0
+    }
+  },
+  {
+    "text": "qwertyuiop",
+    "intent": "nlu_fallback",
+    "intent_prediction": {
+      "name": "goodbye",
+      "confidence": 0.999935507774353
+    }
+  },
+  {
+    "text": "zxcvbnm",
+    "intent": "nlu_fallback",
+    "intent_prediction": {
+      "name": "goodbye",
+      "confidence": 0.9827451109886169
+    }
+  },
+  {
+    "text": "1234567890",
+    "intent": "nlu_fallback",
+    "intent_prediction": {
+      "name": "goodbye",
+      "confidence": 0.9865526556968689
+    }
+  },
+  {
+    "text": "the rain in spain falls mainly on the plain",
+    "intent": "nlu_fallback",
+    "intent_prediction": {
+      "name": "change_language",
+      "confidence": 2.6599386160341965e-07
+    }
+  }
+]
