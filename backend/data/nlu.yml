@@ -159,20 +159,53 @@ nlu:
       - can you tell me the time?
       - current time?
       - what's the time now?
+      - could you tell me what time it is?
+      - time please
+      - what's the current time?
+      - may I know the time?
+      - can you give me the time?
+      - what time do you have?
+      - what's the exact time?
+      - what time is it right now?
+      - could you check the time for me?
+      - time check please
+      - what time is it in your location?
+      - can you tell me the current time?
+      - what's the local time?
+      - what time is it over there?
       
       # Spanish
       - ¿qué hora es?
       - ¿sabes la hora actual?
       - dime la hora por favor
+      - ¿me puedes decir la hora?
+      - ¿qué hora tienes?
+      - ¿me dices la hora?
+      - ¿podrías decirme la hora?
+      - ¿sabes qué hora es?
       
       # French
       - quelle heure est-il?
       - quelle est l'heure actuelle?
+      - peux-tu me dire l'heure?
+      - il est quelle heure?
+      - tu as l'heure?
+      - pourrais-tu me dire l'heure?
       
       # German
       - wie spät ist es?
       - kannst du mir die uhrzeit sagen?
       - wie viel uhr ist es?
+      - wie viel uhr haben wir?
+      - könntest du mir die uhrzeit sagen?
+      - weißt du, wie spät es ist?
+      
+      # Turkish
+      - saat kaç?
+      - şu an saat kaç?
+      - saati söyler misin?
+      - saat kaç oldu?
+      - şu anki saati söyleyebilir misin?
 
   - intent: support_request
     examples: |
