@@ -296,3 +296,5 @@ volumes:
   redis_data:
   prometheus_data:
   grafana_data:
+  rasa_data:
+  actions_data:
