@@ -92,6 +92,14 @@ rules:
       - intent: change_language
       - action: action_set_language
       - action: utter_language_changed
+      
+  # ===== ORDER STATUS =====
+  - rule: Handle order status inquiry
+    condition:
+      - active_loop: null  # Don't interrupt forms
+    steps:
+      - intent: check_order_status
+      - action: action_ask_order_number
 
   # ===== ESCALATION RULES =====
   - rule: Escalate after multiple fallbacks

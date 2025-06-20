@@ -192,6 +192,119 @@ nlu:
       - I'd like to see your product options
       - What do you offer?
 
+  - intent: check_order_status
+    examples: |
+      - I want to check my order status
+      - Where is my order?
+      - Order status update
+      - Check order status
+      - Track my order
+      - I'd like to know my order status
+      - Can you tell me about my order status?
+      - What's the status of my order?
+      - Has my order shipped yet?
+      - When will my order arrive?
+      - Can you check the status of order #[number]?
+      - I need an update on my order
+      - What's the latest on my order?
+      - Order tracking
+      - Status of order #[number]
+      - Where's my package?
+      - Has my order been processed?
+      - When was my order shipped?
+      - Can you look up my order status?
+      - I want to track my package
+
+  - intent: provide_order_number
+    examples: |
+      - My order number is [123456]
+      - [123456]
+      - It's [123456]
+      - The order number is [123456]
+      - [123456] is my order number
+      - Order #[123456]
+      - Here's the order number: [123456]
+      - My order ID is [123456]
+      - The number is [123456]
+      - [12345-6789] is the order number
+      - Tracking number [123456]
+      - Order reference [123456]
+      - It's order [123456]
+      - My order is [123456]
+      - [123456] is the number
+
+  - intent: need_help
+    examples: |
+      - I need help
+      - Can you help me?
+      - I need assistance
+      - Help me please
+      - I have a problem
+      - I need some help with something
+      - Could you assist me?
+      - I'm having trouble
+      - I need support
+      - Can you help me with something?
+      - I need your help
+      - Assistance needed
+      - I'm stuck
+      - I don't know what to do
+      - Can you guide me?
+
+  - intent: return_item
+    examples: |
+      - I want to return an item
+      - How do I return something?
+      - I need to make a return
+      - Return policy
+      - Can I return this item?
+      - I'd like to send something back
+      - How does the return process work?
+      - I want to send this back
+      - Can I get a refund for this?
+      - How do I start a return?
+      - I'm not satisfied with my purchase
+      - This item needs to be returned
+      - I want to exchange this item
+      - How do I process a return?
+      - I need to return order #[number]
+
+  - intent: contact_support
+    examples: |
+      - I want to talk to a human
+      - Let me speak to an agent
+      - Connect me to support
+      - I need to talk to someone
+      - Can I speak to customer service?
+      - Transfer me to an agent
+      - I need to speak with support
+      - Can I talk to a real person?
+      - Human agent please
+      - Connect me to a representative
+      - I need to speak to customer service
+      - Let me talk to support
+      - Transfer me to customer service
+      - I'd like to speak with an agent
+      - Can you connect me to support?
+
+  - intent: ask_return_policy
+    examples: |
+      - What's your return policy?
+      - How long do I have to return items?
+      - Can I get a refund?
+      - What items can be returned?
+      - Return window
+      - What's the return period?
+      - How does returns work?
+      - Can I return opened items?
+      - What's your refund policy?
+      - How do I get my money back?
+      - What's the process for returns?
+      - Can I return after 30 days?
+      - What's your exchange policy?
+      - How do I return an online order?
+      - What are the return conditions?
+
   - intent: change_language
     examples: |
       - I want to speak in Spanish
