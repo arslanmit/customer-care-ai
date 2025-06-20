@@ -3,7 +3,6 @@ version: "3.1"
 nlu:
   - intent: greet
     examples: |
-      # English greetings
       - hello
       - hi
       - hey
@@ -16,21 +15,15 @@ nlu:
       - greetings
       - how are you today
       - how's it going
-      
-      # Spanish greetings
       - hola
       - buenos días
       - buenas tardes
       - buenas noches
       - ¿cómo estás?
-      
-      # French greetings
       - bonjour
       - salut
       - bonsoir
       - comment ça va
-      
-      # German greetings
       - hallo
       - guten tag
       - guten morgen
@@ -48,331 +41,87 @@ nlu:
       - have a nice day
       - bye bye
       - later
-      - farewell
-      - thanks for your help
       - adiós
       - hasta luego
-      - hasta pronto
-      - chao
       - nos vemos
+      - hasta pronto
       - au revoir
       - à bientôt
-      - salut
       - à plus tard
       - tschüss
-      - auf wiedersehen
+      - auf Wiedersehen
       - bis später
-      - bis bald
-      - goodbye [en]
-      - bye bye [en]
-      - adiós [es]
-      - au revoir [fr]
-      - tschüss [de]
-
-  - intent: ask_info
-    examples: |
-      - what can you do?
-      - how can you help me?
-      - what are your features?
-      - what do you know?
-      - tell me about yourself
-      - what is your purpose?
-      - how can you assist me?
-      - what services do you provide?
-      - what are you for?
-      - what help can you offer?
-      - who created you?
-      - ¿qué puedes hacer? [es]
-      - ¿cómo puedes ayudarme? [es]
-      - ¿cuáles son tus funciones? [es]
-      - háblame de ti [es]
-      - que peux-tu faire? [fr]
-      - comment peux-tu m'aider? [fr]
-      - quelles sont tes fonctionnalités? [fr]
-      - was kannst du? [de]
-      - wie kannst du mir helfen? [de]
-      - was kannst du tun?
-      - wie kannst du mir helfen?
-      - was sind deine funktionen?
-
-  - intent: tell_joke
-    examples: |
-      - tell me a joke
-      - make me laugh
-      - I want to hear something funny
-      - say something funny
-      - can you tell a joke?
-      - do you know any jokes?
-      - make a joke
-      - give me a joke
-      - joke please
-      - cheer me up
-      - do you have a joke?
-      - could you make me laugh?
-      - I need a laugh
-      - something funny please
-      - entertain me with a joke
-      - I'd like to hear a joke
-      - say a joke
-      - do you know a good joke?
-      - amuse me
-      - tell a funny story
-      - crack a joke
-
-  - intent: nlu_fallback
-    examples: |
-      - blargle
-      - asdfghjkl
-      - qwertyuiop
-      - random words
-      - unknown input
-      - xyzkwarfm
-      - !@#$%^&*
-      - 123456789
-
-  - intent: provide_info
-    examples: |
-      - I want to introduce myself
-      - I'd like to give my name
-      - Can I tell you my name?
-      - I'd like to tell you my name
-      - may I give you my name
-      - My name is [John](name)
-      - I am [Mary](name)
-      - Call me [Alex](name)
-      - I'm [Sarah](name)
-      - They call me [Michael](name)
-
-  - intent: ask_date
-    examples: |
-      # English
-      - what's the date today
-      - what is today's date
-      - can you tell me the current date
-      - what day is it today
-      - what's the day today
-      - could you tell me today's date
-      - what is the date
-      - what's today's date
-      - what is the current date
-      - can you tell me the date
-      - what's the date
-      - what day is today
-      - what's the date right now
-      - can you tell me what day it is
-      - what's today's date and day
-      - what is today's day and date
-      - could you tell me the current date
-      - what's the date today in numbers
-      - what's the date in numbers
-      - can you tell me today's date in numbers
-      - what's today's date in numbers
-      - what's the date in digits
-      - can you tell me the date in numbers
-      - what's today's date in digits
-      - what's the date in numbers
-      
-      # Spanish
-      - ¿cuál es la fecha de hoy?
-      - ¿qué día es hoy?
-      - dime la fecha actual
-      - ¿me dices la fecha de hoy?
-      - ¿podrías decirme la fecha?
-      - ¿qué fecha es hoy?
-      - ¿cuál es la fecha actual?
-      - ¿me dices el día de hoy?
-      - ¿podrías decirme el día de hoy?
-      - ¿qué día es hoy en números?
-      
-      # French
-      - quelle est la date d'aujourd'hui?
-      - quelle est la date actuelle?
-      - peux-tu me dire la date?
-      - quel jour sommes-nous?
-      - c'est quel jour aujourd'hui?
-      - pourrais-tu me dire la date d'aujourd'hui?
-      - quelle est la date du jour?
-      - peux-tu me dire le jour d'aujourd'hui?
-      - quelle est la date en chiffres?
-      
-      # German
-      - welches Datum ist heute?
-      - wie ist das heutige Datum?
-      - kannst du mir das Datum sagen?
-      - welcher Tag ist heute?
-      - wie lautet das aktuelle Datum?
-      - könntest du mir das heutige Datum sagen?
-      - was für ein Tag ist heute?
-      - wie ist das Datum von heute?
-      - welches Datum haben wir heute?
-      
-      # Turkish
-      - bugünün tarihi ne?
-      - bugün günlerden ne?
-      - bugünün tarihini söyler misin?
-      - bugün ayın kaçı?
-      - şu anki tarih nedir?
-      - bugünün tarihini söyleyebilir misin?
-      - bugün hangi gün?
-      - bugünün tarihi kaç?
-
-  - intent: ask_datetime
-    examples: |
-      # English
-      - what's the date and time
-      - what is the current date and time
-      - can you tell me today's date and time
-      - what's the time and date
-      - what is today's date and current time
-      - can you tell me the exact date and time
-      - what's the full date and time right now
-      - what's today's date and the current time
-      - can you give me the current date and time
-      - what is the exact date and time now
-      - tell me the date and time
-      - what's the time and date right now
-      - current date and time please
-      - what's today's full date and time
-      - can you tell me what day and time it is
-      - what's the current date and exact time
-      - give me the current date and time
-      - what's the exact date and time right now
-      - can you tell me the current date and exact time
-      - what is today's date and the time now
-      - what's the complete date and time
-      
-      # Spanish
-      - ¿cuál es la fecha y hora actual?
-      - ¿me dices la fecha y hora?
-      - ¿podrías decirme la fecha y hora actuales?
-      - ¿qué día y hora es ahora mismo?
-      - dime la fecha y hora exactas
-      - ¿cuál es la fecha y hora de ahora?
-      - ¿me dices la fecha y la hora actuales?
-      - ¿podrías decirme el día y la hora exactos?
-      - necesito saber la fecha y hora actuales
-      - ¿cuál es el día y la hora en este momento?
-      
-      # French
-      - quelle est la date et l'heure actuelles?
-      - peux-tu me dire la date et l'heure?
-      - quelle est la date et l'heure exactes maintenant?
-      - peux-tu me donner la date et l'heure actuelles?
-      - quel est le jour et l'heure en ce moment?
-      - pourrais-tu me dire la date et l'heure exactes?
-      - j'aimerais connaître la date et l'heure actuelles
-      - peux-tu me dire la date complète et l'heure?
-      - quelle est la date et l'heure précises?
-      
-      # German
-      - wie lautet das aktuelle Datum und die Uhrzeit?
-      - kannst du mir das aktuelle Datum und die Uhrzeit sagen?
-      - was ist das heutige Datum und die aktuelle Uhrzeit?
-      - könntest du mir das genaue Datum und die Uhrzeit nennen?
-      - wie lautet das genaue Datum und die genaue Uhrzeit?
-      - was ist das aktuelle Datum und die genaue Uhrzeit?
-      - kannst du mir das heutige Datum und die Uhrzeit sagen?
-      - wie lautet der aktuelle Tag und die genaue Uhrzeit?
-      
-      # Turkish
-      - şu anki tarih ve saat nedir?
-      - bugünün tarihi ve saati nedir?
-      - bana şu anki tarih ve saati söyler misin?
-      - tam tarih ve saati öğrenebilir miyim?
-      - bugünün günü ve saati nedir?
-      - şu anki gün ve saati söyleyebilir misin?
-      - mevcut tarih ve saati öğrenebilir miyim?
-      - bugünün tam tarihini ve saati söyler misin?
+      - görüşürüz
+      - hoşça kal
+      - güle güle
 
   - intent: ask_time
     examples: |
       - what time is it
       - what's the time
       - tell me the time
-      - what time is it? [en]
-      - what's the current time? [en]
-      - qué hora es [es]
-      - quelle heure est-il [fr]
-      - wie spät ist es [de]
-      - saat kaç [tr]
-      - could you tell me the current time
-      - time please
-      - what time do you have
-      - do you know what time it is
-      - can you tell me what time it is
-      - what's the current time
-      - what time is it right now
-      - could you give me the time
-      - may I know the time
-      - what's the clock say
-      - what time is it now
-      - can you tell me the time please
-      - what time is it over there
-      - could you tell me the exact time
-      - what's the time right now
-      - can you check the time for me
+      - could you tell me the time
       - do you have the time
-      - what time is it currently
-      - can you tell me the current time
-      - what's the time where you are
-      - could you let me know what time it is
-      - what time is it?
-      - do you know the current time?
-      - tell me the time please
-      - can you tell me the time?
-      - current time?
-      - what's the time now?
-      - could you tell me what time it is?
       - time please
-      - what's the current time?
-      - may I know the time?
-      - can you give me the time?
-      - what time do you have?
-      - what's the exact time?
-      - what time is it right now?
-      - could you check the time for me?
-      - time check please
-      - what time is it in your location?
-      - can you tell me the current time?
-      - what's the local time?
-      - what time is it over there?
-      
-      # Spanish
-      - ¿qué hora es?
-      - ¿sabes la hora actual?
-      - dime la hora por favor
-      - ¿me puedes decir la hora?
-      - ¿qué hora tienes?
-      - ¿me dices la hora?
-      - ¿podrías decirme la hora?
-      - ¿sabes qué hora es?
-      
-      # French
-      - quelle heure est-il?
-      - quelle est l'heure actuelle?
-      - peux-tu me dire l'heure?
-      - il est quelle heure?
-      - tu as l'heure?
-      - pourrais-tu me dire l'heure?
-      
-      # German
-      - wie spät ist es?
-      - kannst du mir die uhrzeit sagen?
-      - wie viel uhr ist es?
-      - wie viel uhr haben wir?
-      - könntest du mir die uhrzeit sagen?
-      - weißt du, wie spät es ist?
-      
-      # Turkish
-      - saat kaç?
-      - şu an saat kaç?
-      - saati söyler misin?
-      - saat kaç oldu?
-      - şu anki saati söyleyebilir misin?
+      - what is the current time
+      - what time do you have
+      - can you give me the time
+      - what's the current time
+      - could you tell me what time it is
+      - what is the time now
+      - what's the time now
+      - what time is it right now
+      - can you tell me what time it is
+      - do you know what time it is
+      - could you tell me the current time
+      - may I know the time
+      - what time is it over there
+      - what's the time where you are
+
+  - intent: ask_date
+    examples: |
+      - what's the date today
+      - what is today's date
+      - what's today's date
+      - can you tell me the date
+      - what day is it today
+      - what's the current date
+      - date please
+      - could you tell me today's date
+      - what date is it
+      - what is the date
+      - tell me today's date
+      - what is the date today
+      - what's the date
+      - today's date
+      - current date
+      - what day is today
+      - what is the day today
+      - what day is it
+      - can you tell me what day it is
+      - ¿cuál es la fecha de hoy
+      - ¿qué día es hoy
+      - dime la fecha de hoy
+      - ¿sabes qué día es hoy
+      - ¿podrías decirme la fecha de hoy
+      - quelle est la date d'aujourd'hui
+      - on est le combien aujourd'hui
+      - quelle date sommes-nous
+      - c'est quel jour aujourd'hui
+      - peux-tu me dire la date d'aujourd'hui
+      - welches Datum haben wir heute
+      - der wievielte ist heute
+      - welcher Tag ist heute
+      - wie ist das heutige Datum
+      - kannst du mir das heutige Datum sagen
+      - bugünün tarihi ne
+      - bugün ayın kaçı
+      - bugün günlerden ne
+      - bugünün tarihini söyler misin
+      - bugün hangi gün
 
   - intent: support_request
     examples: |
-      # English
       - I need help with my order
       - There's a problem with my account
       - My product isn't working
@@ -396,266 +145,49 @@ nlu:
       - I need to report a technical problem
       - Your product isn't functioning properly
       - I need customer service
-      
-      # Spanish
-      - Necesito ayuda con mi pedido
-      - Tengo un problema con mi cuenta
-      - Mi producto no funciona
-      - Tengo un problema con mi compra
-      - Hay un problema con mi suscripción
-      - Necesito ayuda al cliente
-      - Ayúdame con mi pedido reciente
-      - Necesito asistencia con su servicio
-      - Mi producto está defectuoso
-      - Quiero reportar un problema
-      - ¿Puedes ayudarme a solucionar un problema?
-      - Estoy teniendo problemas con mi dispositivo
-      - Algo se rompió y necesito ayuda
-      - Necesito soporte técnico
-      - Estoy experimentando dificultades
-      
-      # French
-      - J'ai besoin d'aide avec ma commande
-      - Il y a un problème avec mon compte
-      - Mon produit ne fonctionne pas
-      - J'ai un problème avec mon achat
-      - Quelque chose ne va pas avec mon abonnement
-      - J'ai besoin d'aide clientèle
-      - Aidez-moi avec ma commande récente
-      - J'ai besoin d'aide pour votre service
-      - Mon produit est défectueux
-      - Je veux signaler un problème
-      - Pouvez-vous m'aider à résoudre un problème ?
-      - J'ai des problèmes avec mon appareil
-      - Quelque chose s'est cassé et j'ai besoin d'aide
-      - J'ai besoin d'un support technique
-      - Je rencontre des difficultés
-      
-      # German
-      - Ich brauche Hilfe mit meiner Bestellung
-      - Es gibt ein Problem mit meinem Konto
-      - Mein Produkt funktioniert nicht
-      - Ich habe ein Problem mit meinem Kauf
-      - Etwas stimmt nicht mit meinem Abonnement
-      - Ich brauche Kundendienst
-      - Hilf mir mit meiner letzten Bestellung
-      - Ich brauche Hilfe mit Ihrem Service
-      - Mein Produkt ist defekt
-      - Ich möchte ein Problem melden
-      - Können Sie mir bei einem Problem helfen?
-      - Ich habe Probleme mit meinem Gerät
-      - Etwas ist kaputt gegangen und ich brauche Hilfe
-      - Ich brauche technischen Support
-      - Ich habe Schwierigkeiten
-      
-      # Turkish
-      - Siparişimle ilgili yardıma ihtiyacım var
-      - Hesabımla ilgili bir sorun var
-      - Ürünüm çalışmıyor
-      - Satın almamla ilgili bir sorunum var
-      - Aboneliğimde bir sorun var
-      - Müşteri desteğine ihtiyacım var
-      - Son siparişimle ilgili yardım edin
-      - Hizmetinizle ilgili yardıma ihtiyacım var
-      - Ürünüm arızalı
-      - Bir sorun bildirmek istiyorum
-      - Bir sorunu çözmek için bana yardımcı olabilir misiniz?
-      - Cihazımla ilgili sorun yaşıyorum
-      - Bir şey bozuldu ve yardıma ihtiyacım var
-      - Teknik desteğe ihtiyacım var
-      - Zorluklar yaşıyorum
+
+  - intent: product_inquiry
+    examples: |
+      - What products do you offer?
+      - Tell me about your services
+      - What kind of products do you have?
+      - Can you tell me about your product line?
+      - What services are available?
+      - I'd like to know about your products
+      - What do you sell?
+      - Show me your product catalog
+      - What are your main products?
+      - Tell me about your offerings
+      - What kind of services do you provide?
+      - I'm interested in your products
+      - What can I buy from you?
+      - What's in your product range?
+      - Do you have a product list?
+      - What are your top products?
+      - Can you tell me about your services?
+      - What products are available?
+      - I'd like to see your product options
+      - What do you offer?
 
   - intent: change_language
     examples: |
-      # English
       - I want to speak in Spanish
       - Can we talk in French?
-      - Switch to German please
-      - Change language to English
-      - I prefer to speak in Spanish
-      - Can you understand French?
-      - Let's speak German
-      - I'd like to continue in English
-      - Speak to me in Spanish
-      - Use French instead
-      - Talk to me in German
-      - English please
-      - Can you change the language to Spanish?
-      - I'd like to change languages
-      - Can we switch to French?
-      - Please use German
-      - Change to English language
-      - I want to communicate in Spanish
-      - Can you speak to me in French?
-      - Let's continue in German
-      - Switch my language to English
-      - I'd prefer to speak in Spanish
-      - Can we use French from now on?
-      - Talk to me in German, please
-      - Change the interface to English
-      
-      # Spanish
-      - Quiero hablar en español
-      - ¿Podemos hablar en francés?
-      - Cambia a alemán, por favor
-      - Cambia el idioma a inglés
-      - Prefiero hablar en español
-      - ¿Puedes entender francés?
-      - Hablemos en alemán
-      - Me gustaría continuar en inglés
-      - Cambia a español
-      - Usa inglés
-      - Quiero cambiar a francés
-      - ¿Puedes hablar alemán?
-      - Usemos español
-      - Cambia mi idioma a inglés
-      - Háblame en español
-      - Usa francés en su lugar
-      - Háblame en alemán
-      - Inglés, por favor
-      
-      # French
-      - Je veux parler en espagnol
-      - Pouvons-nous parler en français ?
-      - Passe à l'allemand s'il te plaît
-      - Change la langue en anglais
-      - Je préfère parler en espagnol
-      - Peux-tu comprendre le français ?
-      - Parlons allemand
-      - J'aimerais continuer en anglais
-      - Change en espagnol
-      - Utilise l'anglais
-      - Je veux passer au français
-      - Peux-tu parler allemand ?
-      - Utilisons l'espagnol
-      - Change ma langue en anglais
-      - Parle-moi en espagnol
-      - Utilise le français à la place
-      - Parle-moi en allemand
-      - Anglais s'il te plaît
-      
-      # German
-      - Ich möchte auf Spanisch sprechen
-      - Können wir auf Französisch sprechen?
-      - Wechsle bitte zu Deutsch
-      - Ändere die Sprache auf Englisch
-      - Ich bevorzuge es, auf Spanisch zu sprechen
-      - Verstehst du Französisch?
-      - Lass uns Deutsch sprechen
-      - Ich möchte auf Englisch fortfahren
-      - Wechsle zu Spanisch
-      - Verwende Englisch
-      - Ich möchte zu Französisch wechseln
-      - Können Sie Deutsch sprechen?
-      - Lass uns Spanisch verwenden
-      - Ändere meine Sprache auf Englisch
-      - Sprich mit mir auf Spanisch
-      - Verwende stattdessen Französisch
-      - Sprich mit mir auf Deutsch
-      - Englisch, bitte
-      
-      # Turkish
-      - İspanyolca konuşmak istiyorum
-      - Fransızca konuşabilir miyiz?
-      - Lütfen Almancaya geç
-      - Dili İngilizce olarak değiştir
-      - İspanyolca konuşmayı tercih ederim
-      - Fransızca anlayabiliyor musun?
-      - Almanca konuşalım
-      - İngilizce devam etmek istiyorum
-      - İspanyolcaya geç
-      - İngilizce kullan
-      - Fransızcaya geçmek istiyorum
-      - Almanca konuşabilir misin?
-      - İspanyolca kullanalım
-      - Dilimi İngilizce olarak değiştir
-      - Benimle İspanyolca konuş
-      - Bunun yerine Fransızca kullan
-      - Benimle Almanca konuş
-      - İngilizce lütfen
-
-  - intent: request_human_agent
-    examples: |
-      - I want to speak to a human
-      - Connect me with a real person
-      - Can I talk to a customer representative?
-      - Transfer me to an agent
-      - I need a human representative
-      - Is there a real person I can speak to?
-      - No bots, I want a human
-      - Can I speak with a customer service rep?
-      - Get me a human agent
-      - I don't want to talk to a bot
-      - Can you connect me to a person?
-      
-  - intent: product_inquiry
-    examples: |
-      # English
-      - What products do you offer?
-      - Tell me about your services
-      - Do you have [product name]?
-      - I'm looking for information about your [product]
-      - What are your most popular items?
-      - Tell me more about your subscription service
-      - What features does your product have?
-      - How much does your service cost?
-      - Are there any discounts available?
-      - Do you have a premium version?
-      - Can you tell me about your pricing plans?
-      - What's included in the basic package?
-      - How does your product compare to competitors?
-      - Do you offer a free trial?
-      - What are the benefits of upgrading?
-      - Can you explain your service in detail?
-      - What payment methods do you accept?
-      - Is there a mobile app available?
-      - How do I get started with your service?
-      - What support options are included?
-      
-      # Spanish
-      - ¿Qué productos ofrecen?
-      - Háblame de sus servicios
-      - ¿Tienen [nombre del producto]?
-      - Estoy buscando información sobre su [producto]
-      - ¿Cuáles son sus artículos más populares?
-      - Cuéntame más sobre su servicio de suscripción
-      - ¿Qué características tiene su producto?
-      - ¿Cuánto cuesta su servicio?
-      - ¿Hay descuentos disponibles?
-      - ¿Tienen una versión premium?
-      
-      # French
-      - Quels produits proposez-vous ?
-      - Parlez-moi de vos services
-      - Avez-vous [nom du produit] ?
-      - Je cherche des informations sur votre [produit]
-      - Quels sont vos articles les plus populaires ?
-      - Parlez-moi de votre service d'abonnement
-      - Quelles sont les fonctionnalités de votre produit ?
-      - Combien coûte votre service ?
-      - Y a-t-il des réductions disponibles ?
-      - Avez-vous une version premium ?
-      
-      # German
-      - Welche Produkte bieten Sie an?
-      - Erzählen Sie mir von Ihren Dienstleistungen
-      - Haben Sie [Produktname]?
-      - Ich suche Informationen zu Ihrem [Produkt]
-      - Was sind Ihre beliebtesten Artikel?
-      - Erzählen Sie mir mehr über Ihren Abonnementdienst
-      - Welche Funktionen hat Ihr Produkt?
-      - Wie viel kostet Ihr Service?
-      - Gibt es Rabatte?
-      - Haben Sie eine Premium-Version?
-      
-      # Turkish
-      - Hangi ürünleri sunuyorsunuz?
-      - Hizmetleriniz hakkında bilgi verin
-      - [Ürün adı] var mı?
-      - [Ürün] hakkında bilgi arıyorum
-      - En popüler ürünleriniz nelerdir?
-      - Abonelik hizmetiniz hakkında daha fazla bilgi verin
-      - Ürününüzün özellikleri nelerdir?
-      - Hizmetinizin maliyeti nedir?
-      - Mevcut indirimler var mı?
-      - Premium sürümünüz var mı?
+      - Switch to German
+      - Change language to Turkish
+      - I'd like to change the language to English
+      - Can you speak in Spanish?
+      - Let's switch to French
+      - I prefer German
+      - Change to Turkish please
+      - Can we continue in English?
+      - I want to change the language
+      - Change interface language to Spanish
+      - Switch my language to French
+      - Can you speak to me in German?
+      - Change to Spanish interface
+      - I'd like to use Turkish
+      - Change language setting to English
+      - Can we switch to Spanish?
+      - I want to use French
+      - Change to German please
