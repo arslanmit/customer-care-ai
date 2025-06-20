@@ -4,5 +4,4 @@ action_endpoint:
   url: "http://localhost:5055/webhook"
 
 tracker_store:
-  type: SQL
-  db: ../logs/conversations.db
+  type: inmemory
