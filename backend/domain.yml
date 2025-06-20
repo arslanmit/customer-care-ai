@@ -22,6 +22,12 @@ intents:
   - change_language
   - nlu_fallback
   - out_of_scope
+  - check_order_status
+  - provide_order_number
+  - need_help
+  - return_item
+  - contact_support
+  - ask_return_policy
 
 # ===== ENTITIES =====
 entities:
