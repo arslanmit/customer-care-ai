@@ -1,210 +1,298 @@
 version: '3.8'
 
+# Security defaults
+x-security: &security-defaults
+  security_opt:
+    - no-new-privileges:true
+  read_only: true
+  tmpfs:
+    - /tmp
+    - /run
+    - /var/run
+  cap_drop:
+    - ALL
+  cap_add:
+    - CHOWN
+    - SETGID
+    - SETUID
+    - NET_BIND_SERVICE
+  ulimits:
+    nofile:
+      soft: 65535
+      hard: 65535
+  stop_grace_period: 30s
+  stop_signal: SIGTERM
+  healthcheck:
+    test: ["CMD-SHELL", "exit 0"]
+    interval: 30s
+    timeout: 10s
+    retries: 3
+    start_period: 10s
+
+# Define common environment variables
 x-common-env: &common-env
-  TZ: "${TZ:-UTC}"
-  PYTHONUNBUFFERED: "1"
-  PYTHONPATH: "/app"
-  SANIC_WORKERS: "${SANIC_WORKERS:-2}"
-  SANIC_HOST: "0.0.0.0"
-  SANIC_PORT: "5005"
-  SANIC_ACCESS_LOG: "true"
-  SANIC_NO_HEADERS: "true"
-  SANIC_REQUEST_MAX_SIZE: "50000000"
-  SANIC_REQUEST_BUFFER_SIZE: "50000000"
-  SANIC_RESPONSE_TIMEOUT: "300"
-  SANIC_KEEP_ALIVE_TIMEOUT: "75"
-  SANIC_GRACEFUL_SHUTDOWN_TIMEOUT: "15.0"
-  SANIC_WEBSOCKET_MAX_SIZE: "16777216"
-  SANIC_WEBSOCKET_MAX_QUEUE: "32"
-  SANIC_WEBSOCKET_READ_LIMIT: "2097152"
-  SANIC_WEBSOCKET_WRITE_LIMIT: "2097152"
-  SANIC_WEBSOCKET_PING_INTERVAL: "20"
-  SANIC_WEBSOCKET_PING_TIMEOUT: "20"
+  TZ: ${TZ:-UTC}
+  PYTHONUNBUFFERED: 1
+  PYTHONPATH: /app
+
+# Define common logging configuration
+x-logging: &logging
+  driver: "json-file"
+  options:
+    max-size: "10m"
+    max-file: "3"
 
 services:
+  # Rasa Server
   rasa:
     build:
       context: .
-      dockerfile: ./Dockerfile
+      dockerfile: Dockerfile.rasa
       args:
-        - BUILDKIT_INLINE_CACHE=1
-    container_name: rasa
-    restart: unless-stopped
-    ports:
-      - "5005:5005"
-    env_file:
-      - .env
+        - UID=1000
+        - GID=1000
+    container_name: rasa_server
+    hostname: rasa
+    domainname: customer-care-ai.local
+    restart: unless-stnz
+    env_file: .env
     environment:
       <<: *common-env
-      RASA_ENVIRONMENT: production
-      RASA_ACTIONS_URL: http://actions:5055/webhook
+      RASA_ENVIRONMENT: ${RASA_ENVIRONMENT:-production}
+      RASA_MODEL: ${RASA_MODEL:-/app/models}
+      RASA_LOG_LEVEL: ${RASA_LOG_LEVEL:-INFO}
+      RASA_REMOTE_STORAGE: /app/data
+      USER_NAME: ${RASA_USER:-admin}
+      PASSWORD: ${RASA_PASSWORD:-change-me}
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_ALGORITHM: ${JWT_ALGORITHM:-HS256}
+      CORS_ORIGINS: ${CORS_ORIGINS:-'*'}
+      DB_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}?sslmode=${POSTGRES_SSL_MODE:-require}
       REDIS_HOST: redis
-      POSTGRES_HOST: postgres
-      POSTGRES_DB: ${POSTGRES_DB}
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      JWT_SECRET_KEY: ${JWT_SECRET_KEY}
-      PROMETHEUS_MULTIPROC_DIR: /tmp/prometheus
-      PROMETHEUS_METRICS_EXPORT_PORT: 5005
-      RASA_METRICS_ONLY_SERVER: "True"
-    depends_on:
-      redis:
-        condition: service_healthy
-      postgres:
-        condition: service_healthy
-      actions:
-        condition: service_started
-    networks:
-      - rasa-network
+      REDIS_PORT: ${REDIS_PORT:-6379}
+      REDIS_DB: ${REDIS_DB:-0}
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+      REDIS_SSL: ${REDIS_SSL:-true}
+      SESSION_SECURE: ${SESSION_SECURE:-true}
+      SESSION_HTTPONLY: ${SESSION_HTTPONLY:-true}
+      SESSION_SAMESITE: ${SESSION_SAMESITE:-Lax}
+      CSRF_SECRET: ${CSRF_SECRET}
+    <<: *security-defaults
+    security_opt:
+      - no-new-privileges:true
+      - apparmor=unconfined
+    cap_drop:
+      - ALL
+    cap_add:
+      - CHOWN
+      - SETGID
+      - SETUID
+      - NET_BIND_SERVICE
+    ports:
+      - "5005:5005"
+    volumes:
+      - rasa_data:/app/data
+      - ./models:/app/models:ro
+      - ./config:/app/config:ro
+      - ./domain.yml:/app/domain.yml:ro
+      - ./config/credentials.yml:/app/credentials.yml:ro
+      - ./config/endpoints.yml:/app/endpoints.yml:ro
+      - ./config/config.yml:/app/config.yml:ro
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:5005/"]
+      test: ["CMD", "curl", "-f", "http://localhost:5005"]
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 30s
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-        max-file: "3"
-    deploy:
-      resources:
-        limits:
-          cpus: '2'
-          memory: 2G
-        reservations:
-          memory: 1G
-    security_opt:
-      - no-new-privileges:true
-    tmpfs:
-      - /tmp
-    read_only: true
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      actions:
+        condition: service_started
+    logging: *logging
+    networks:
+      - rasanet
 
+  # Rasa Actions Server
   actions:
     build:
       context: .
-      dockerfile: ./Dockerfile.actions
-    container_name: rasa-actions
+      dockerfile: Dockerfile.actions
+      args:
+        - UID=1000
+        - GID=1000
+    container_name: rasa_actions
+    hostname: actions
+    domainname: customer-care-ai.local
     restart: unless-stopped
-    expose:
-      - "5055"
-    env_file:
-      - .env
+    env_file: .env
     environment:
-      - SANIC_WORKERS=2
-      - REDIS_HOST=redis
-      - POSTGRES_HOST=postgres
-      - POSTGRES_DB=${POSTGRES_DB}
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      <<: *common-env
+      SANIC_WORKERS: ${SANIC_WORKERS:-1}
+      RASA_ACTIONS_PORT: ${RASA_ACTIONS_PORT:-5055}
+      RASA_ACTIONS_LOG_LEVEL: ${RASA_LOG_LEVEL:-INFO}
+      DB_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}?sslmode=${POSTGRES_SSL_MODE:-require}
+      REDIS_HOST: redis
+      REDIS_PORT: ${REDIS_PORT:-6379}
+      REDIS_DB: ${REDIS_DB:-0}
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+      REDIS_SSL: ${REDIS_SSL:-true}
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_ALGORITHM: ${JWT_ALGORITHM:-HS256}
+    <<: *security-defaults
+    user: "1000:1000"
+    security_opt:
+      - no-new-privileges:true
+      - apparmor=unconfined
+    cap_drop:
+      - ALL
+    cap_add:
+      - CHOWN
+      - SETGID
+      - SETUID
+      - NET_BIND_SERVICE
+    read_only: true
+    tmpfs:
+      - /tmp
+      - /run
+      - /var/run
+    volumes:
+      - actions_data:/app/actions:ro
+      - ./data/actions:/app/data
+      - /etc/passwd:/etc/passwd:ro
+      - /etc/group:/etc/group:ro
+    ports:
+      - "${RASA_ACTIONS_PORT:-5055}:5055"
     depends_on:
-      - redis
-      - postgres
-    networks:
-      - rasa-network
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://actions:5055/"]
+      test: ["CMD", "curl", "-f", "http://localhost:5055"]
       interval: 30s
       timeout: 10s
       retries: 3
+      start_period: 30s
+    logging: *logging
+    networks:
+      - rasanet
 
+  # Redis for Rasa Tracker Store and Lock Store
   redis:
-    image: redis:7.2-alpine
+    image: redis:7-alpine
     container_name: redis
     restart: unless-stopped
-    ports:
-      - "6379:6379"
+    command: redis-server --requirepass ${REDIS_PASSWORD:-}
     volumes:
       - redis_data:/data
-    command: redis-server --appendonly yes
-    networks:
-      - rasa-network
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 10s
       timeout: 5s
       retries: 5
+    logging: *logging
+    networks:
+      - rasanet
 
+  # PostgreSQL for Rasa Tracker Store
   postgres:
-    image: postgres:15-alpine
+    image: postgres:14-alpine
     container_name: postgres
     restart: unless-stopped
-    env_file:
-      - .env
     environment:
-      - POSTGRES_DB=${POSTGRES_DB}
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      POSTGRES_USER: ${POSTGRES_USER:-rasa}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-rasa123}
+      POSTGRES_DB: ${POSTGRES_DB:-rasa}
+      PGDATA: /var/lib/postgresql/data/pgdata
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
-      - "5432:5432"
-    networks:
-      - rasa-network
+      - "${POSTGRES_PORT:-5432}:5432"
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-rasa} -d ${POSTGRES_DB:-rasa}"]
       interval: 10s
       timeout: 5s
       retries: 5
+    logging: *logging
+    networks:
+      - rasanet
 
+  # Frontend (Next.js)
   frontend:
     build:
       context: ./frontend
       dockerfile: Dockerfile.prod
     container_name: frontend
     restart: unless-stopped
-    ports:
-      - "3000:80"
+    env_file: .env
     environment:
       - NODE_ENV=production
-      - REACT_APP_RASA_URL=http://localhost:5005
+      - NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL:-http://localhost:5005}
+    ports:
+      - "3000:3000"
     depends_on:
       - rasa
+    logging: *logging
     networks:
-      - rasa-network
+      - rasanet
 
+  # Prometheus for metrics
   prometheus:
     image: prom/prometheus:latest
     container_name: prometheus
     restart: unless-stopped
-    ports:
-      - "9090:9090"
-    volumes:
-      - ./monitoring/prometheus:/etc/prometheus
-      - prometheus_data:/prometheus
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
       - '--storage.tsdb.path=/prometheus'
       - '--web.console.libraries=/usr/share/prometheus/console_libraries'
       - '--web.console.templates=/usr/share/prometheus/consoles'
+      - '--storage.tsdb.retention.time=30d'
+    volumes:
+      - ./monitoring/prometheus:/etc/prometheus
+      - prometheus_data:/prometheus
+    ports:
+      - "${PROMETHEUS_METRICS_PORT:-9090}:9090"
+    depends_on:
+      - rasa
+      - actions
+    logging: *logging
     networks:
-      - rasa-network
+      - rasanet
 
+  # Grafana for visualization
   grafana:
     image: grafana/grafana:latest
     container_name: grafana
     restart: unless-stopped
-    ports:
-      - "3001:3000"
-    volumes:
-      - grafana_data:/var/lib/grafana
-      - ./monitoring/grafana/provisioning:/etc/grafana/provisioning
     environment:
-      - GF_SECURITY_ADMIN_USER=admin
-      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_SECURITY_ADMIN_USER=${GRAFANA_ADMIN_USER:-admin}
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD:-admin}
       - GF_USERS_ALLOW_SIGN_UP=false
+    volumes:
+      - ./monitoring/grafana/provisioning:/etc/grafana/provisioning
+      - grafana_data:/var/lib/grafana
+    ports:
+      - "${GRAFANA_PORT:-3001}:3000"
     depends_on:
       - prometheus
+    logging: *logging
     networks:
-      - rasa-network
+      - rasanet
 
+# Define networks
 networks:
-  rasa-network:
+  rasanet:
     driver: bridge
 
+# Define volumes
 volumes:
-  redis_data:
   postgres_data:
+  redis_data:
   prometheus_data:
   grafana_data:

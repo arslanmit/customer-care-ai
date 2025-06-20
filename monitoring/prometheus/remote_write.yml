@@ -1,0 +1,13 @@
+remote_write:
+  - url: ${GRAFANA_CLOUD_METRICS_URL}
+    basic_auth:
+      username: ${GRAFANA_CLOUD_USERNAME}
+      password: ${GRAFANA_CLOUD_PASSWORD}
+    queue_config:
+      max_samples_per_send: 1000
+      max_shards: 200
+      capacity: 2500
+    write_relabel_configs:
+      - source_labels: [__name__]
+        regex: 'up|process_.*|prometheus_.*|puma_.*|rack_.*|rails_.*|ruby_.*|sidekiq_.*|redis_.*|resque_.*|http_.*|node_.*|go_.*|process_cpu_seconds_total|process_open_fds|process_resident_memory_bytes|process_start_time_seconds|process_virtual_memory_bytes|process_max_fds'
+        action: keep
