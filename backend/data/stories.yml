@@ -34,6 +34,7 @@ stories:
       - action: utter_support_help
       - intent: request_human_agent
       - action: utter_transfer_to_agent
+      - action: action_handoff_to_human
       - intent: goodbye
       - action: utter_goodbye
 
@@ -51,6 +52,7 @@ stories:
   - story: language change request
     steps:
       - intent: change_language
+      - action: action_set_language
       - action: utter_language_changed
       - intent: ask_info
       - action: utter_info

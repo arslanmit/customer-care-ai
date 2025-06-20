@@ -117,6 +117,12 @@ responses:
   utter_tell_joke:
     - text: "Why don't scientists trust atoms? Because they make up everything!"
     - text: "Did you hear about the mathematician who's afraid of negative numbers? He'll stop at nothing to avoid them!"
+    
+  # Transfer to agent responses
+  utter_transfer_to_agent:
+    - text: "I'll transfer you to a human agent who can assist you further."
+    - text: "Let me connect you with one of our support agents who can help you better."
+    - text: "I'll transfer you to a customer service representative now."
   
   # Support responses
   utter_support_request:
