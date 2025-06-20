@@ -39,7 +39,6 @@ nlu:
 
   - intent: goodbye
     examples: |
-      # English goodbyes
       - bye
       - goodbye
       - see you later
@@ -51,29 +50,27 @@ nlu:
       - later
       - farewell
       - thanks for your help
-      
-      # Spanish goodbyes
       - adiós
       - hasta luego
       - hasta pronto
       - chao
       - nos vemos
-      
-      # French goodbyes
       - au revoir
       - à bientôt
       - salut
       - à plus tard
-      
-      # German goodbyes
       - tschüss
       - auf wiedersehen
       - bis später
       - bis bald
+      - goodbye [en]
+      - bye bye [en]
+      - adiós [es]
+      - au revoir [fr]
+      - tschüss [de]
 
   - intent: ask_info
     examples: |
-      # English queries
       - what can you do?
       - how can you help me?
       - what are your features?
@@ -85,19 +82,15 @@ nlu:
       - what are you for?
       - what help can you offer?
       - who created you?
-      
-      # Spanish queries
-      - ¿qué puedes hacer?
-      - ¿cómo puedes ayudarme?
-      - ¿cuáles son tus funciones?
-      - háblame de ti
-      
-      # French queries
-      - que peux-tu faire?
-      - comment peux-tu m'aider?
-      - quelles sont tes fonctionnalités?
-      
-      # German queries
+      - ¿qué puedes hacer? [es]
+      - ¿cómo puedes ayudarme? [es]
+      - ¿cuáles son tus funciones? [es]
+      - háblame de ti [es]
+      - que peux-tu faire? [fr]
+      - comment peux-tu m'aider? [fr]
+      - quelles sont tes fonctionnalités? [fr]
+      - was kannst du? [de]
+      - wie kannst du mir helfen? [de]
       - was kannst du tun?
       - wie kannst du mir helfen?
       - was sind deine funktionen?
@@ -296,6 +289,12 @@ nlu:
       - what time is it
       - what's the time
       - tell me the time
+      - what time is it? [en]
+      - what's the current time? [en]
+      - qué hora es [es]
+      - quelle heure est-il [fr]
+      - wie spät ist es [de]
+      - saat kaç [tr]
       - could you tell me the current time
       - time please
       - what time do you have
