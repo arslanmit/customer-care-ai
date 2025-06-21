@@ -4,18 +4,28 @@ import './chatbot.css';
 import Analytics from './Analytics';
 import { useAuth, LoginForm, AuthProvider } from './Auth';
 import './i18n';
+import supabase from './supabaseClient';
 
 const RASA_BASE_URL = import.meta.env.VITE_RASA_URL || "http://localhost:5005";
 
 const LanguageSwitcher = () => {
   const { i18n, t } = useTranslation();
+  const { isAuthenticated, user } = useAuth();
+
   const languages = ['en', 'es', 'fr', 'de', 'tr'];
 
   return (
     <div className="language-switcher">
       <select 
         value={i18n.language} 
-        onChange={(e) => i18n.changeLanguage(e.target.value)}
+        onChange={(e) => {
+          const lng = e.target.value;
+          i18n.changeLanguage(lng);
+          localStorage.setItem('language', lng);
+          if (isAuthenticated && supabase && user?.id) {
+            supabase.from('profiles').upsert({ id: user.id, preferred_language: lng }).then();
+          }
+        }}
         aria-label={t('chatbot.selectLanguage')}
         className="language-select"
       >
@@ -126,7 +136,7 @@ const ChatbotContainer = () => {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',
-          'Accept-Language': navigator.language || 'en'
+          'Accept-Language': i18n.language
         },
         body: JSON.stringify({ 
           sender: isAuthenticated ? localStorage.getItem('auth_token') : 'guest-user',
