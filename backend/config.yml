@@ -11,6 +11,8 @@ languages:
 
 # NLU Pipeline Configuration
 pipeline:
+  # Automatic language detection
+  - name: backend.language_detector.LanguageDetector
   # Language model for word vectors and tokenization
   - name: SpacyNLP
     model: "en_core_web_sm"  # Using small model for compatibility

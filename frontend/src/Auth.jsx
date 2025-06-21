@@ -1,6 +1,7 @@
 import React, { useState, createContext, useContext, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import './auth.css';
+import supabase from './supabaseClient';
 
 const AuthContext = createContext();
 
@@ -11,92 +12,58 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Mock authentication - in production, replace with real authentication
+  const supa = supabase;
+
+  // Supabase Auth session check
   useEffect(() => {
-    // Check local storage for existing auth token
-    const token = localStorage.getItem('auth_token');
-    if (token) {
-      // Mock user data
-      setUser({
-        id: '1',
-        name: 'Demo User',
-        email: 'user@example.com'
-      });
-      setIsAuthenticated(true);
-    }
-    setLoading(false);
+    const init = async () => {
+      const { data: { session } } = await supa.auth.getSession();
+      if (session) {
+        const supaUser = session.user;
+        setUser({ id: supaUser.id, name: supaUser.user_metadata?.name || supaUser.email, email: supaUser.email });
+        setIsAuthenticated(true);
+        // Fetch preferred language
+        const { data: profile } = await supa.from('profiles').select('preferred_language').eq('id', supaUser.id).single();
+        if (profile?.preferred_language) {
+          import('./i18n').then(({ default: i18n }) => {
+            i18n.changeLanguage(profile.preferred_language);
+            localStorage.setItem('language', profile.preferred_language);
+          });
+        }
+      }
+      setLoading(false);
+    };
+    init();
   }, []);
 
-  const login = (email, password) => {
-    return new Promise((resolve, reject) => {
-      setLoading(true);
-      // In production, this would be a real API call
-      setTimeout(() => {
-        try {
-          if (email === 'user@example.com' && password === 'password') {
-            const token = 'mock-jwt-token-' + Math.random().toString(36).substring(2);
-            localStorage.setItem('auth_token', token);
-            
-            const userData = {
-              id: '1',
-              name: 'Demo User',
-              email
-            };
-            
-            setUser(userData);
-            setIsAuthenticated(true);
-            resolve(userData);
-          } else {
-            reject(new Error('Invalid credentials'));
-          }
-        } catch (err) {
-          console.error('Login error:', err);
-          reject(err);
-        } finally {
-          setLoading(false);
-        }
-      }, 500);
-    });
+  const login = async (email, password) => {
+    setLoading(true);
+    const { data, error } = await supa.auth.signInWithPassword({ email, password });
+    setLoading(false);
+    if (error) throw error;
+    const u = data.user;
+    setUser({ id: u.id, name: u.email, email: u.email });
+    setIsAuthenticated(true);
+    return u;
   };
 
-  const logout = () => {
-    localStorage.removeItem('auth_token');
+  const logout = async () => {
+    await supa.auth.signOut();
     setUser(null);
     setIsAuthenticated(false);
   };
 
-  const register = (name, email, password) => {
-    return new Promise((resolve, reject) => {
-      setLoading(true);
-      // Mock registration
-      setTimeout(() => {
-        try {
-          // Basic validation
-          if (!email.includes('@') || password.length < 6) {
-            reject(new Error('Invalid email or password (min 6 characters)'));
-            return;
-          }
-          
-          const token = 'mock-jwt-token-' + Math.random().toString(36).substring(2);
-          localStorage.setItem('auth_token', token);
-          
-          const userData = {
-            id: Math.random().toString(36).substring(2),
-            name,
-            email
-          };
-          
-          setUser(userData);
-          setIsAuthenticated(true);
-          resolve(userData);
-        } catch (err) {
-          console.error('Registration error:', err);
-          reject(err);
-        } finally {
-          setLoading(false);
-        }
-      }, 500);
-    });
+  const register = async (name, email, password) => {
+    setLoading(true);
+    const { data, error } = await supa.auth.signUp({ email, password, options: { data: { name } } });
+    setLoading(false);
+    if (error) throw error;
+    const u = data.user;
+    // insert profile row
+    await supa.from('profiles').upsert({ id: u.id, name, preferred_language: localStorage.getItem('language') || 'en' });
+    setUser({ id: u.id, name, email });
+    setIsAuthenticated(true);
+    return u;
   };
 
   const value = {
