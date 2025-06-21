@@ -28,6 +28,7 @@ intents:
   - return_item
   - contact_support
   - ask_return_policy
+  - complain
 
 # ===== ENTITIES =====
 entities:
@@ -80,6 +81,24 @@ slots:
     initial_value: 0
     mappings: []
 
+  # Complaint handling slots
+  complaint_description:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: from_text
+        conditions:
+          - active_loop: complaint_form
+            requested_slot: complaint_description
+  complaint_order_number:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: from_text
+        conditions:
+          - active_loop: complaint_form
+            requested_slot: complaint_order_number
+
 # ===== RESPONSES =====
 # Response templates used throughout the conversation
 responses:
@@ -88,99 +107,95 @@ responses:
     - text: "Hello! How can I help you today?"
     - text: "Hi there! How may I assist you?"
     - text: "Greetings! What can I do for you today?"
-  
   # Farewell responses
   utter_goodbye:
     - text: "Goodbye! Have a great day!"
     - text: "See you later! Take care!"
     - text: "Thanks for chatting. Goodbye!"
-  
   # Information requests
   utter_ask_info:
     - text: "I can help with various topics. What would you like to know?"
     - text: "I'm here to help. What information do you need?"
-  
   # Time and date responses
   utter_ask_time:
     - text: "The current time is {time}."
     - text: "It's {time} right now."
-  
   utter_ask_date:
     - text: "Today's date is {date}."
     - text: "It's {date} today."
-  
   utter_ask_datetime:
     - text: "The current date and time is {datetime}."
     - text: "It's {datetime} at the moment."
-  
   # Fun responses
   utter_tell_joke:
     - text: "Why don't scientists trust atoms? Because they make up everything!"
     - text: "Did you hear about the mathematician who's afraid of negative numbers? He'll stop at nothing to avoid them!"
-    
   # Transfer to agent responses
   utter_transfer_to_agent:
     - text: "I'll transfer you to a human agent who can assist you further."
     - text: "Let me connect you with one of our support agents who can help you better."
     - text: "I'll transfer you to a customer service representative now."
-  
   # Support responses
   utter_support_request:
     - text: "I'm here to help. What seems to be the issue?"
     - text: "I'd be happy to assist. Could you describe the problem?"
-  
   utter_support_help:
     - text: "I'm here to assist you. Could you please describe your issue in more detail?"
     - text: "To better assist you, could you provide more details about the problem?"
-  
   utter_escalate_to_agent:
     - text: "I'm having trouble understanding. Let me connect you with a human agent who can help you better."
     - text: "I want to make sure you get the best assistance. Let me transfer you to one of our support agents."
     - text: "I'm still learning and want to make sure you get the right help. Let me connect you with a human agent."
     - text: "Let me transfer you to one of our support agents who can help you further."
-    
   utter_request_human_agent:
     - text: "I'll connect you with a human agent right away."
     - text: "I'll transfer you to one of our support agents who can assist you."
-    
   # Acknowledgment responses
   utter_thank_you:
     - text: "You're welcome! Is there anything else I can help you with?"
     - text: "Happy to help! Let me know if you need anything else."
     - text: "My pleasure! Feel free to ask if you have more questions."
-    
   # Information responses
   utter_info:
     - text: "I'm here to help with any questions you have. What would you like to know?"
     - text: "I can provide information on various topics. What would you like to learn about?"
-  
   utter_product_info:
     - text: "We offer a range of products. What would you like to know?"
     - text: "I can tell you about our product line. What specifically interests you?"
-  
   # Language handling
   utter_ask_language:
     - text: "Which language would you prefer? (English, Spanish, French, German, Turkish)"
     - text: "Please choose your preferred language: English, Spanish, French, German, or Turkish"
-  
   utter_language_changed:
     - text: "I've changed the language to {language}."
     - text: "Language updated to {language}."
-  
   # Fallback responses
   utter_default:
     - text: "I'm not sure I understand. Could you rephrase that?"
     - text: "I didn't quite get that. Could you say it differently?"
     - text: "I'm still learning. Could you try asking in a different way?"
-  
   utter_out_of_scope:
     - text: "I'm not trained to help with that yet. Is there something else I can assist you with?"
     - text: "I don't have the information to help with that. Can I help you with something else?"
-    
   utter_ask_order_number:
     - text: "Could you please provide your order number so I can check the status for you?"
     - text: "I'd be happy to help with that. May I have your order number, please?"
     - text: "To check your order status, I'll need your order number. Could you share it with me?"
+  # Complaint handling responses
+  utter_ask_complaint_description:
+    - text: "Could you please describe the issue you're experiencing?"
+  utter_ask_complaint_order_number:
+    - text: "If your complaint is about a specific order, please provide the order number. Otherwise, you can skip this step."
+  utter_apologize_for_issue:
+    - text: "I'm sorry to hear that you're having an issue. Let's get this sorted out."
+  utter_escalation_confirmation:
+    - text: "I'm transferring you to a human agent now. Please hold on a moment."
+
+forms:
+  complaint_form:
+    required_slots:
+      - complaint_description
+      - complaint_order_number
 
 # ===== ACTIONS =====
 actions:
@@ -197,3 +212,11 @@ actions:
   - action_increment_fallback_count
   - action_ask_order_number
   - name_form
+  - action_escalate_to_human
+  # Registered missing actions for test coverage
+  - action_check_order_status
+  - action_ask_how_can_i_help
+  - action_return_item
+  - action_contact_support
+  - action_provide_return_policy
+  - action_provide_order_status

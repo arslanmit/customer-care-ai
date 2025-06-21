@@ -438,3 +438,53 @@ class ActionDefaultFallback(Action):
             
         # Revert user message which led to fallback.
         return [UserUtteranceReverted()]
+
+
+# === Placeholder implementations for missing actions ===
+class ActionCheckOrderStatus(Action):
+    def name(self) -> Text:
+        return "action_check_order_status"
+
+    async def run(self, dispatcher, tracker, domain):
+        dispatcher.utter_message(text="[Placeholder] This is action_check_order_status.")
+        return []
+
+class ActionAskHowCanIHelp(Action):
+    def name(self) -> Text:
+        return "action_ask_how_can_i_help"
+
+    async def run(self, dispatcher, tracker, domain):
+        dispatcher.utter_message(text="[Placeholder] This is action_ask_how_can_i_help.")
+        return []
+
+class ActionReturnItem(Action):
+    def name(self) -> Text:
+        return "action_return_item"
+
+    async def run(self, dispatcher, tracker, domain):
+        dispatcher.utter_message(text="[Placeholder] This is action_return_item.")
+        return []
+
+class ActionContactSupport(Action):
+    def name(self) -> Text:
+        return "action_contact_support"
+
+    async def run(self, dispatcher, tracker, domain):
+        dispatcher.utter_message(text="[Placeholder] This is action_contact_support.")
+        return []
+
+class ActionProvideReturnPolicy(Action):
+    def name(self) -> Text:
+        return "action_provide_return_policy"
+
+    async def run(self, dispatcher, tracker, domain):
+        dispatcher.utter_message(text="[Placeholder] This is action_provide_return_policy.")
+        return []
+
+class ActionProvideOrderStatus(Action):
+    def name(self) -> Text:
+        return "action_provide_order_status"
+
+    async def run(self, dispatcher, tracker, domain):
+        dispatcher.utter_message(text="[Placeholder] This is action_provide_order_status.")
+        return []

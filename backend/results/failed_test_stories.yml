@@ -1,1 +1,41 @@
-# None of the test stories failed - all good!
+version: "3.1"
+stories:
+- story: Order status inquiry with order number (/Users/umitarslan/customer-care-ai/backend/tests/test_stories.yml)
+  steps:
+  - intent: check_order_status
+  - action: action_ask_order_number
+  - intent: provide_order_number
+  - action: action_check_order_status  # predicted: action_default_fallback
+  - action: utter_order_status  # predicted: action_listen
+- story: Multiple intents with context (/Users/umitarslan/customer-care-ai/backend/tests/test_stories.yml)
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: need_help
+  - action: action_ask_how_can_i_help  # predicted: action_default_fallback
+  - intent: return_item
+  - action: action_ask_order_number  # predicted: action_default_fallback
+  - action: action_listen  # predicted: utter_language_changed
+  - intent: contact_support
+  - action: utter_contact_support  # predicted: action_default_fallback
+- story: Complex order inquiry with interruptions (/Users/umitarslan/customer-care-ai/backend/tests/test_stories.yml)
+  steps:
+  - intent: check_order_status
+  - action: action_ask_order_number
+  - intent: ask_return_policy
+  - action: utter_return_policy  # predicted: action_set_language
+  - action: action_listen  # predicted: utter_language_changed
+  - intent: check_order_status
+  - action: action_ask_order_number
+  - intent: provide_order_number
+  - action: action_check_order_status  # predicted: action_default_fallback
+  - action: utter_order_status  # predicted: action_listen
+- story: Fallback and recovery (/Users/umitarslan/customer-care-ai/backend/tests/test_stories.yml)
+  steps:
+  - intent: nlu_fallback
+  - action: action_default_fallback  # predicted: action_increment_fallback_count
+  - intent: check_order_status
+  - action: action_ask_order_number
+  - intent: provide_order_number
+  - action: action_check_order_status  # predicted: action_default_fallback
+  - action: utter_order_status  # predicted: action_listen

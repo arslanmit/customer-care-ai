@@ -110,3 +110,21 @@ rules:
     steps:
       - action: utter_escalate_to_agent
       - action: action_handoff_to_human
+
+  # ===== COMPLAINT HANDLING RULES =====
+  - rule: Handle customer complaint
+    steps:
+      - intent: complain
+      - action: utter_apologize_for_issue
+      - action: complaint_form
+      - active_loop: complaint_form
+
+  - rule: Submit complaint form and escalate
+    condition:
+      - active_loop: complaint_form
+    steps:
+      - action: complaint_form
+      - active_loop: null
+      - slot_was_set:
+          - requested_slot: null
+      - action: action_escalate_to_human

@@ -1,1 +1,99 @@
-{}
+{
+  "action_ask_how_can_i_help": {
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1-score": 0.0,
+    "support": 1
+  },
+  "utter_greet": {
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1-score": 1.0,
+    "support": 2
+  },
+  "utter_return_policy": {
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1-score": 0.0,
+    "support": 1
+  },
+  "utter_order_status": {
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1-score": 0.0,
+    "support": 3
+  },
+  "action_check_order_status": {
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1-score": 0.0,
+    "support": 3
+  },
+  "utter_language_changed": {
+    "precision": 0.3333333333333333,
+    "recall": 1.0,
+    "f1-score": 0.5,
+    "support": 1
+  },
+  "action_set_language": {
+    "precision": 0.5,
+    "recall": 1.0,
+    "f1-score": 0.6666666666666666,
+    "support": 1
+  },
+  "action_listen": {
+    "precision": 0.8235294117647058,
+    "recall": 0.875,
+    "f1-score": 0.8484848484848485,
+    "support": 16
+  },
+  "action_ask_order_number": {
+    "precision": 1.0,
+    "recall": 0.8,
+    "f1-score": 0.888888888888889,
+    "support": 5
+  },
+  "utter_goodbye": {
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1-score": 1.0,
+    "support": 1
+  },
+  "action_default_fallback": {
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1-score": 0.0,
+    "support": 1
+  },
+  "utter_contact_support": {
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1-score": 0.0,
+    "support": 1
+  },
+  "micro avg": {
+    "precision": 0.6571428571428571,
+    "recall": 0.6388888888888888,
+    "f1-score": 0.647887323943662,
+    "support": 36
+  },
+  "macro avg": {
+    "precision": 0.38807189542483655,
+    "recall": 0.47291666666666665,
+    "f1-score": 0.4086700336700337,
+    "support": 36
+  },
+  "weighted avg": {
+    "precision": 0.6113834422657951,
+    "recall": 0.6388888888888888,
+    "f1-score": 0.6163019079685745,
+    "support": 36
+  },
+  "accuracy": 0.6388888888888888,
+  "conversation_accuracy": {
+    "accuracy": 0.3333333333333333,
+    "correct": 2,
+    "with_warnings": 0,
+    "total": 6
+  }
+}
