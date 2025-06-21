@@ -31,6 +31,16 @@ coverage.xml
 
 # Environment variables
 .env
+.env.*
+!.env.example
+
+# Certificate files
+*.crt
+*.pem
+*.key
+
+# Supabase credentials
+*supabase*
 
 # IDE settings
 .vscode/

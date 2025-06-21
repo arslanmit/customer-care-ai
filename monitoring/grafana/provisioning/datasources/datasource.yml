@@ -15,13 +15,13 @@ datasources:
   - name: PostgreSQL
     type: postgres
     access: proxy
-    url: postgres:5432
-    database: ${POSTGRES_DB:-rasa}
-    user: ${POSTGRES_USER:-rasa}
+    url: db.hxgubyfliwweobjysblh.supabase.co:5432
+    database: postgres
+    user: postgres
     secureJsonData:
-      password: "${POSTGRES_PASSWORD:-rasa123}"
+      password: "!5yn4cH5gJRccN4"
     jsonData:
-      sslmode: "disable"
+      sslmode: "require"
       maxOpenConns: 10
       maxIdleConns: 10
       connMaxLifetime: 14400
