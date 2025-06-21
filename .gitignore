@@ -39,8 +39,6 @@ coverage.xml
 *.pem
 *.key
 
-# Supabase credentials
-*supabase*
 
 # IDE settings
 .vscode/
