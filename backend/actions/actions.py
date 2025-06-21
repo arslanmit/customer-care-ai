@@ -313,9 +313,17 @@ class ActionIncrementFallbackCount(Action):
         tracker: Tracker,
         domain: Dict[Text, Any],
     ) -> List[Dict[Text, Any]]:
-        # Get current fallback count
-        fallback_count = tracker.get_slot("num_fallbacks") or 0
+        # Persist fallback count to Supabase
+        from backend.supabase_client import get_supabase_client
+        supabase = get_supabase_client()
+        user_id = tracker.sender_id
+        # Fetch current fallback count from Supabase, default to 0 if not found
+        resp = supabase.table("fallbacks").select("count").eq("user_id", user_id).single().execute()
+        fallback_count = (resp.data.get("count") if resp.data else 0) if resp.status_code == 200 else 0
+        # Update local tracker slot fallback count
         fallback_count += 1
+        # Upsert the new count back to Supabase
+        supabase.table("fallbacks").upsert({"user_id": user_id, "count": fallback_count}).execute()
         
         # Reset fallback count if we had a successful interaction
         last_intent = tracker.latest_message.get("intent", {}).get("name")
