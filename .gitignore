@@ -39,6 +39,9 @@ coverage.xml
 *.pem
 *.key
 
+# Migration environment
+migration.env
+
 
 # IDE settings
 .vscode/
