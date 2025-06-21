@@ -327,3 +327,16 @@ nlu:
       - Can we switch to Spanish?
       - I want to use French
       - Change to German please
+
+  - intent: complain
+    examples: |
+      - I want to make a complaint
+      - I have a complaint
+      - I want to report an issue
+      - I’m not happy with my order
+      - I’m dissatisfied with your service
+      - I want to escalate my issue
+      - I need to speak to a manager
+      - I’m upset about my recent experience
+      - I want to file a complaint
+      - I have a serious issue
