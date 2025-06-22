@@ -21,7 +21,6 @@ fi
 REPO="$(gh repo view --json nameWithOwner -q .nameWithOwner)"
 
 # Create environment if it does not exist
-# wait_timer=0 disables required wait timer (optional)
 gh api \
   --method PUT \
   -H "Accept: application/vnd.github+json" \
@@ -29,11 +28,23 @@ gh api \
 
 echo "Uploading secrets from ${ENV_FILE} to environment '${GH_ENV}' in ${REPO} …"
 
-# Iterate over lines VAR=VALUE (skip comments/blanks)
-while IFS='=' read -r key value || [[ -n "$key" ]]; do
-  [[ -z "$key" || "$key" == \#* ]] && continue
+# Process .env file line by line
+while IFS= read -r line || [[ -n "$line" ]]; do
+  # Skip comments and empty lines
+  [[ -z "$line" || "$line" =~ ^[[:space:]]*# ]] && continue
+  
+  # Extract key and value (handling values with = and #)
+  key=$(echo "$line" | cut -d= -f1 | xargs)
+  value=$(echo "$line" | cut -d= -f2- | sed 's/^[[:space:]]*//;s/[[:space:]]*$//' | sed 's/#.*$//' | xargs)
+  
+  # Skip if no valid key=value pair found
+  [[ -z "$key" || -z "$value" ]] && continue
+  
   echo "  • $key"
-  gh secret set "$key" --env "$GH_ENV" --body "${value}"
-done < <(grep -v '^#' "$ENV_FILE" | grep -v '^\s*$')
+  
+  # Use GitHub CLI to set the secret
+  echo -n "$value" | gh secret set "$key" --env "$GH_ENV" --body - || \
+    echo "  ❌ Failed to set $key"
+done < "$ENV_FILE"
 
-echo "Done ✅"
+echo "✅ All secrets uploaded to GitHub Environment '${GH_ENV}'"
