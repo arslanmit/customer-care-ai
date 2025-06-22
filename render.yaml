@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: customer-care-ai
+    env: docker
+    plan: free  # Free tier
+    region: frankfurt  # Choose the closest region to you
+    build:
+      dockerfile: Dockerfile
+    envVars:
+      - key: PORT
+        value: 5005
+      - key: PYTHONUNBUFFERED
+        value: true
+      - key: RASA_ACTIONS_URL
+        value: http://localhost:5055/webhook
+      - key: RASA_ACTIONS_PORT
+        value: "5055"
+    healthCheckPath: /health
+    autoDeploy: true
+    numInstances: 1
+    buildCommand: |
+      chmod +x entrypoint.sh
+      pip install -r requirements.txt
+    startCommand: ./entrypoint.sh
