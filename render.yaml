@@ -1,16 +1,13 @@
 services:
   - type: web
     name: customer-care-ai
-    env: docker
     plan: free  # Free tier
     region: frankfurt  # Choose the closest region to you
-    build:
-      dockerfile: Dockerfile
     envVars:
       - key: PORT
-        value: 5005
+        value: "5005"  # Must be string for Render
       - key: PYTHONUNBUFFERED
-        value: true
+        value: "true"  # Must be string for Render
       - key: RASA_ACTIONS_URL
         value: http://localhost:5055/webhook
       - key: RASA_ACTIONS_PORT
@@ -19,6 +16,12 @@ services:
     autoDeploy: true
     numInstances: 1
     buildCommand: |
+      # Make entrypoint executable
       chmod +x entrypoint.sh
+      # Install dependencies
       pip install -r requirements.txt
-    startCommand: ./entrypoint.sh
+    startCommand: |
+      # Start Rasa actions server in background
+      rasa run actions --port 5055 &
+      # Start Rasa server
+      rasa run -m models --enable-api --cors "*" --port ${PORT:-5005}

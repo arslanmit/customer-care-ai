@@ -4,25 +4,21 @@ FROM rasa/rasa:3.6.0-full
 # Set working directory
 WORKDIR /app
 
-# Copy only necessary files first to leverage Docker cache
-COPY requirements.txt ./
+# Set environment variables
+ENV PYTHONUNBUFFERED=1
 
-COPY entrypoint.sh /app/
-
-# Make entrypoint script executable
-RUN chmod +x /app/entrypoint.sh
-
-# Install additional Python dependencies
+# Install additional Python dependencies first for better caching
+COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the rest of the application
+# Copy the application code
 COPY . .
+
+# Make sure the entrypoint script has execute permissions
+RUN chmod +x /app/entrypoint.sh || true
 
 # Expose Rasa and action server ports
 EXPOSE 5005 5055
-
-# Set environment variables
-ENV PYTHONUNBUFFERED=1
 
 # Use the entrypoint script
 ENTRYPOINT ["/app/entrypoint.sh"]
