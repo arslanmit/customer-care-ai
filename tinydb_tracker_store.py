@@ -12,7 +12,7 @@ import os.path
 
 from tinydb import TinyDB, Query
 from rasa.core.tracker_store import TrackerStore
-from rasa.core.trackers import DialogueStateTracker
+from rasa.shared.core.trackers import DialogueStateTracker, EventVerbosity
 
 logger = logging.getLogger(__name__)
 
@@ -49,6 +49,7 @@ class TinyDBTrackerStore(TrackerStore):
         self.lock = threading.Lock()
         
         logger.debug(f"Initialized TinyDBTrackerStore with db_path={db_path}")
+        print("[TinyDBTrackerStore] Initialized with db_path=", db_path)
 
     def save(self, tracker: DialogueStateTracker) -> None:
         """Save the conversation tracker to TinyDB.
@@ -62,8 +63,8 @@ class TinyDBTrackerStore(TrackerStore):
         """
         sender_id = tracker.sender_id
         
-        # Serialize tracker to a dict
-        serialized_tracker = tracker.current_state()
+        # Serialize tracker to a dict, always including all events
+        serialized_tracker = tracker.current_state(event_verbosity=EventVerbosity.ALL)
         
         # Use mutex to ensure only one thread accesses the DB at a time
         with self.lock:

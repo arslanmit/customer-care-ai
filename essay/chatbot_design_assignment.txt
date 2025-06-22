@@ -8,6 +8,8 @@ Rasa most importıng part.
 * Runtime stack is trimmed to the single critical service: Rasa (NLU + Core + Action server in one container).
 * No Mobile PWA, no extra micro‑services.
 
+* Use the FileEventBroker (for a full append-only log) and a TinyDB-backed TrackerStore (so Rasa can reload conversation state) in your Rasa project
+
 use https://streamlit.io/
 
 
