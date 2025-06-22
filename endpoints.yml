@@ -1,0 +1,12 @@
+# Endpoint configuration for Rasa
+
+action_endpoint:
+  url: "http://localhost:5055/webhook"
+
+tracker_store:
+  type: tinydb_tracker_store.TinyDBTrackerStore
+  db_path: data/rasa_conversations.json
+
+event_broker:
+  type: FileEventBroker
+  path: data/events.json
