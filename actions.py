@@ -4,6 +4,7 @@ from rasa_sdk.events import SlotSet, SessionStarted, ActionExecuted, EventType
 from rasa_sdk.executor import CollectingDispatcher
 from datetime import datetime
 import random
+from supabase_logger import log_event
 
 class ActionTellTime(Action):
     """Action to tell the current time."""
@@ -14,7 +15,15 @@ class ActionTellTime(Action):
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         now = datetime.now().strftime("%H:%M")
-        dispatcher.utter_message(text=f"The current time is {now}.")
+        response = f"The current time is {now}."
+        dispatcher.utter_message(text=response)
+        log_event({
+            "session_id": tracker.sender_id,
+            "sender": "bot",
+            "message_text": response,
+            "intent": "tell_time",
+            "timestamp": datetime.utcnow().isoformat(),
+        })
         return []
 
 class ActionTellDate(Action):
@@ -26,7 +35,15 @@ class ActionTellDate(Action):
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         today = datetime.now().strftime("%Y-%m-%d")
-        dispatcher.utter_message(text=f"Today's date is {today}.")
+        response = f"Today's date is {today}."
+        dispatcher.utter_message(text=response)
+        log_event({
+            "session_id": tracker.sender_id,
+            "sender": "bot",
+            "message_text": response,
+            "intent": "tell_date",
+            "timestamp": datetime.utcnow().isoformat(),
+        })
         return []
 
 class ActionTellDateTime(Action):
@@ -38,7 +55,15 @@ class ActionTellDateTime(Action):
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         now = datetime.now().strftime("%Y-%m-%d %H:%M")
-        dispatcher.utter_message(text=f"The current date and time is {now}.")
+        response = f"The current date and time is {now}."
+        dispatcher.utter_message(text=response)
+        log_event({
+            "session_id": tracker.sender_id,
+            "sender": "bot",
+            "message_text": response,
+            "intent": "tell_datetime",
+            "timestamp": datetime.utcnow().isoformat(),
+        })
         return []
 
 class ActionTellJoke(Action):
@@ -57,6 +82,13 @@ class ActionTellJoke(Action):
         ]
         joke = random.choice(jokes)
         dispatcher.utter_message(text=joke)
+        log_event({
+            "session_id": tracker.sender_id,
+            "sender": "bot",
+            "message_text": joke,
+            "intent": "tell_joke",
+            "timestamp": datetime.utcnow().isoformat(),
+        })
         return []
 
 class ActionSetLanguage(Action):
