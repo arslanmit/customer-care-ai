@@ -1,0 +1,45 @@
+name: Database Migrations
+
+on:
+  workflow_dispatch:
+    inputs:
+      migration_name:
+        description: 'Name of the migration'
+        required: true
+        default: 'auto_migration'
+      environment:
+        description: 'Target environment'
+        required: true
+        default: 'production'
+
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.environment || 'production' }}
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+          
+      - name: Install dependencies
+        run: |
+          pip install -r backend/requirements.txt
+          
+      - name: Run migrations
+        env:
+          SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+        run: |
+          cd backend
+          # Install psycopg2 if not already in requirements.txt
+          pip install psycopg2-binary
+          # Run migrations using the Supabase connection URL
+          ALEMBIC_DATABASE_URL="$SUPABASE_DB_URL" alembic upgrade head
+          
+      - name: Notify success
+        if: success()
+        run: |
+          echo "✅ Database migrations applied successfully to ${{ github.event.inputs.environment || 'production' }}"
