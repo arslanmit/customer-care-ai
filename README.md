@@ -1,53 +1,183 @@
 # Customer Care AI Chatbot
 
-A full-stack conversational AI chatbot built with Rasa (backend) and React (frontend), designed to handle customer service inquiries with multilingual support and advanced conversation management.
+A full-stack conversational AI chatbot built with Rasa (backend) and React (frontend), designed to handle customer service inquiries with multilingual support and advanced conversation management. The application is containerized with Docker and follows microservices architecture principles for scalability and maintainability.
 
 ## 🚀 Key Features
 
-- **Multilingual Support**: English, Spanish, French, German, and Turkish
-- **Advanced Conversation Flow**: Stateful conversations with context management
-- **Production-Ready**: Containerized with Docker and Kubernetes support
-- **Enterprise-Grade Security**: Secure by default with industry best practices
-- **Scalable Architecture**: Microservices-based design with Redis for caching
-- **Monitoring**: Integrated with Prometheus and Grafana
-- **CI/CD**: Automated testing and deployment with GitHub Actions
+- **Multilingual Support**: Native support for English, Spanish, French, German, and Turkish with spaCy language models
+- **Advanced Conversation Flow**: Stateful conversations with context management using Rasa's dialogue management
+- **Production-Ready**: Containerized with Docker Compose for easy deployment
+- **Enterprise Security**: JWT authentication, secure environment variables, and HTTPS support
+- **Scalable Architecture**: Microservices-based design with Supabase for data storage
+- **Comprehensive Monitoring**: Integrated with Prometheus metrics and Grafana dashboards
+- **CI/CD Pipeline**: Automated testing and deployment with GitHub Actions
+- **Multi-channel Support**: Web interface with potential for additional channels (Slack, MS Teams, etc.)
+- **Advanced NLP**: Utilizes spaCy and transformer models for improved understanding
+- **Custom Actions**: Extensible action server for complex business logic
 
 ## 🏗️ Project Structure
 
 ```text
 customer-care-ai/
-├── .github/              # GitHub Actions workflows
-├── actions/              # Custom Rasa actions
-│   └── actions.py        # Action server implementation
-├── backend/              # Rasa backend
-│   ├── data/             # NLU training data, stories, rules
-│   ├── models/           # Trained Rasa models
-│   ├── tests/            # Backend tests
-│   ├── config.yml        # Rasa configuration
-│   ├── credentials.yml   # Channel credentials
-│   ├── domain.yml        # Domain definition
-│   └── endpoints.yml     # Endpoint configurations
-├── frontend/             # React application
-│   ├── public/           # Static files
-│   ├── src/              # React source code
-│   └── tests/            # Frontend tests
-├── monitoring/           # Monitoring setup
-│   ├── prometheus/       # Prometheus config
-│   └── grafana/          # Grafana dashboards
-├── scripts/              # Utility scripts
-│   └── generate-secrets.sh # Secure secret generation
-├── .env.example         # Environment variables template
-├── docker-compose.yml    # Local development
+├── .github/                # GitHub Actions workflows
+├── backend/                # Rasa backend implementation
+│   ├── actions/            # Custom Rasa actions
+│   ├── api/                # API endpoints and FastAPI application
+│   ├── data/               # NLU training data, stories, rules
+│   ├── models/             # Trained Rasa models
+│   └── tests/              # Backend tests
+├── frontend/               # React application
+│   ├── public/             # Static files
+│   ├── src/                # React source code
+│   └── Dockerfile*         # Frontend Docker configurations
+├── monitoring/             # Monitoring setup
+│   ├── grafana/            # Grafana dashboards and provisioning
+│   └── prometheus/         # Prometheus configuration
+├── scripts/                # Utility scripts
+│   ├── generate-secrets.sh # Secure secret generation
+│   └── monitor_logs.sh     # Log monitoring utility
+├── .env.example           # Environment variables template
+├── docker-compose.yml      # Local development
 ├── docker-compose.prod.yml # Production deployment
-├── Dockerfile.rasa       # Rasa production Dockerfile
-├── Dockerfile.actions    # Actions server Dockerfile
-├── requirements.txt     # Python dependencies
-└── setup.sh            # Setup script
+├── Dockerfile              # Main application Dockerfile
+├── requirements.txt        # Python dependencies
+├── setup.sh               # Project setup script
+└── setup_local.sh         # Local development setup
 ```
 
 ## 🛠️ Prerequisites
 
-- Python 3.10+
+- Docker 20.10+ and Docker Compose 2.0+
+- Python 3.10+ (for local development)
+- Node.js 16+ (for frontend development)
+- Supabase account (for database and authentication)
+- Git
+
+## 🚀 Quick Start
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/yourusername/customer-care-ai.git
+   cd customer-care-ai
+   ```
+
+2. Set up environment variables:
+   ```bash
+   cp .env.example .env
+   # Update the .env file with your configuration
+   ```
+
+3. Start the application in development mode:
+   ```bash
+   docker-compose up --build
+   ```
+
+4. Access the application:
+   - Frontend: http://localhost:3000
+   - Rasa API: http://localhost:5005
+   - Prometheus: http://localhost:9090
+   - Grafana: http://localhost:3001
+
+## 🔧 Configuration
+
+### Environment Variables
+
+Key environment variables to configure:
+
+- `SUPABASE_URL`: Your Supabase project URL
+- `SUPABASE_KEY`: Your Supabase anon/public key
+- `JWT_SECRET`: Secret key for JWT token generation
+- `RASA_ENVIRONMENT`: Set to 'production' or 'development'
+- `NEXT_PUBLIC_API_URL`: URL for the frontend to reach the backend API
+
+## 🛠 Development
+
+### Backend Development
+
+1. Set up a virtual environment:
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   pip install -r requirements.txt
+   ```
+
+2. Start the Rasa server:
+   ```bash
+   cd backend
+   rasa run --enable-api --cors "*" --debug
+   ```
+
+### Frontend Development
+
+1. Install dependencies:
+   ```bash
+   cd frontend
+   npm install
+   ```
+
+2. Start the development server:
+   ```bash
+   npm run dev
+   ```
+
+## 🧪 Testing
+
+Run the test suite:
+
+```bash
+# Run backend tests
+cd backend
+pytest
+
+# Run frontend tests
+cd frontend
+npm test
+```
+
+## 🚀 Deployment
+
+### Production Deployment
+
+1. Build and start the production containers:
+   ```bash
+   docker-compose -f docker-compose.prod.yml up --build -d
+   ```
+
+2. Set up monitoring:
+   - Access Grafana at http://your-domain:3001
+   - Default credentials: admin/admin (change immediately after first login)
+
+## 📊 Monitoring
+
+The application includes built-in monitoring with:
+
+- **Prometheus** for metrics collection
+- **Grafana** for visualization
+- **Health check endpoints** at `/health`
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- [Rasa](https://rasa.com/) for the open-source conversational AI framework
+- [React](https://reactjs.org/) for the frontend library
+- [Supabase](https://supabase.com/) for the open-source Firebase alternative
+- [Docker](https://www.docker.com/) for containerization
+
+## 📞 Support
+
+For support, please open an issue in the GitHub repository or contact the maintainers.
+
 - Node.js 18+
 - Docker & Docker Compose
 - Redis 6.0+
