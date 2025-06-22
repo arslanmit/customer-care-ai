@@ -1,0 +1,44 @@
+name: Update Dependencies
+
+on:
+  schedule:
+    - cron: '0 0 * * 0'  # Weekly on Sunday
+  workflow_dispatch:
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+          
+      - name: Update Python dependencies
+        run: |
+          pip install pip-review
+          pip-review --auto
+          pip freeze > requirements.txt
+          
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          
+      - name: Update Node.js dependencies
+        run: |
+          cd frontend
+          npm install -g npm-check-updates
+          ncu -u
+          npm install
+          
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "chore(deps): update dependencies"
+          title: "Update Dependencies"
+          body: "Automated dependency updates"
+          branch: "dependencies/update-$(date +%s)"
