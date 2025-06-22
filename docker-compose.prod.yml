@@ -120,13 +120,6 @@ services:
       dockerfile: Dockerfile
     environment:
       - RASA_ENVIRONMENT=production
-    command: python run.py --enable-api --cors "*" --debug
-    container_name: rasa_actions
-    hostname: actions
-    domainname: customer-care-ai.local
-    restart: unless-stopped
-    env_file: .env
-    environment:
       <<: *common-env
       SANIC_WORKERS: ${SANIC_WORKERS:-1}
       RASA_ACTIONS_PORT: ${RASA_ACTIONS_PORT:-5055}
@@ -138,6 +131,12 @@ services:
       REDIS_PASSWORD: ${REDIS_PASSWORD}
       REDIS_SSL: ${REDIS_SSL:-true}
       JWT_SECRET: ${JWT_SECRET}
+    command: python run.py --enable-api --cors "*" --debug
+    container_name: rasa_actions
+    hostname: actions
+    domainname: customer-care-ai.local
+    restart: unless-stopped
+    env_file: .env
       JWT_ALGORITHM: ${JWT_ALGORITHM:-HS256}
     <<: *security-defaults
     user: "1000:1000"
