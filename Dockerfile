@@ -1,4 +1,4 @@
-# Use Python 3.10 slim base image
+# Use Python 3.10 slim base image for builder stage
 FROM python:3.10-slim as builder
 
 # Set environment variables
@@ -24,7 +24,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # Install Poetry
 RUN curl -sSL https://install.python-poetry.org | python3 -
 
-
 # Set working directory
 WORKDIR /app
 
@@ -49,36 +48,27 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     PIP_DEFAULT_TIMEOUT=100 \
     PATH="/root/.local/bin:$PATH"
 
-# Install runtime dependencies
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    libpq5 \
-    && rm -rf /var/lib/apt/lists/*
-
 # Set working directory
 WORKDIR /app
 
-# Copy installed packages from builder
-COPY --from=builder /usr/local/lib/python3.10/site-packages /usr/local/lib/python3.10/site-packages
-COPY --from=builder /usr/local/bin /usr/local/bin
+# Copy requirements first to leverage Docker cache
+COPY requirements.txt ./
 
-# Copy application code
-COPY actions /app/actions
-COPY pyproject.toml poetry.lock* ./
+# Install additional Python dependencies
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Install only the main package without dev dependencies
-RUN pip install --no-cache-dir --user .
+# Copy Rasa project files
+COPY . .
 
-# Create a non-root user and switch to it
-RUN useradd -m -u 1001 appuser && \
-    chown -R appuser:appuser /app
-USER appuser
+# Switch to a non-root user
+USER 1001
 
-# Expose the port the action server runs on
-EXPOSE 5055
+# Set environment variables
+ENV PYTHONPATH=/app
+ENV PORT=5005
 
-# Copy the entrypoint script and make it executable
-COPY entrypoint.sh .
-RUN chmod +x entrypoint.sh
+# Expose the port the app runs on
+EXPOSE $PORT
 
-# Set the entrypoint
-ENTRYPOINT ["/app/entrypoint.sh"]
+# Command to run the Rasa server
+CMD ["python", "run.py", "--enable-api", "--cors", "*", "--debug", "--port", "$PORT"]

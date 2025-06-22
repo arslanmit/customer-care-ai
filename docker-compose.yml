@@ -1,15 +1,19 @@
-version: "3.9"
+version: "3.8"
 services:
   rasa-backend:
     build:
-      context: ..
-      dockerfile: Dockerfile/Dockerfile
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/app
     ports:
       - "5005:5005"
-    # Backend is reachable at http://rasa-backend:5005 from other containers
+    environment:
+      - RASA_ENVIRONMENT=development
+    command: python run.py --enable-api --cors "*" --debug-backend
   frontend:
     build:
-      context: ../frontend
+      context: ./frontend
       dockerfile: Dockerfile
     ports:
       - "8080:80"
