@@ -4,6 +4,8 @@ import './chatbot.css';
 import Analytics from './Analytics';
 import { useAuth, LoginForm, AuthProvider } from './Auth';
 import './i18n';
+import { logEvent } from './analyticsService';
+import Feedback from './Feedback';
 import supabase from './supabaseClient';
 
 const RASA_BASE_URL = import.meta.env.VITE_RASA_URL || "http://localhost:5005";
@@ -95,9 +97,12 @@ const ChatInterface = ({ messages, input, setInput, handleSend, handleKeyPress, 
   );
 };
 
+
+
 const ChatbotContainer = () => {
   const { t, i18n } = useTranslation();
   const [messages, setMessages] = useState([]);
+  const [showFeedback, setShowFeedback] = useState(false);
   const [input, setInput] = useState('');
   const [showAnalytics, setShowAnalytics] = useState(false);
   const [showLoginForm, setShowLoginForm] = useState(false);
@@ -119,6 +124,14 @@ const ChatbotContainer = () => {
     if (!input.trim()) return;
 
     const userMessage = { sender: 'user', text: input };
+    // Log user event to Supabase
+    logEvent({
+      session_id: localStorage.getItem('session_id') || 'anonymous',
+      sender: 'user',
+      message_text: input,
+      intent: null,
+      timestamp: new Date().toISOString(),
+    });
     setMessages((prev) => [...prev, userMessage]);
     const currentInput = input;
     setInput('');
@@ -147,17 +160,30 @@ const ChatbotContainer = () => {
       
       const data = await res.json();
       if (Array.isArray(data)) {
+        const now = Date.now();
         data.forEach((msg) => {
           if (msg.text) {
-            setMessages((prev) => [
-              ...prev, 
-              { 
-                sender: 'bot', 
-                text: msg.text,
-                intent: msg.intent || 'unknown',
-                confidence: msg.confidence || 0
-              }
-            ]);
+            const botMsg = {
+              sender: 'bot',
+              text: msg.text,
+              intent: msg.intent || 'unknown',
+              confidence: msg.confidence || 0
+            };
+            setMessages((prev) => [...prev, botMsg]);
+
+            // Log bot event
+            logEvent({
+              session_id: localStorage.getItem('session_id') || 'anonymous',
+              sender: 'bot',
+              message_text: botMsg.text,
+              intent: botMsg.intent,
+              timestamp: new Date().toISOString(),
+            });
+
+            // Show feedback prompt on goodbye or fallback intents
+            if (['goodbye', 'nlu_fallback'].includes(botMsg.intent)) {
+              setShowFeedback(true);
+            }
           }
         });
       }
@@ -207,6 +233,12 @@ const ChatbotContainer = () => {
           )}
         </>
       )}
+        {showFeedback && (
+          <Feedback
+            sessionId={localStorage.getItem('session_id') || 'anonymous'}
+            onClose={() => setShowFeedback(false)}
+          />
+        )}
     </div>
   );
 };

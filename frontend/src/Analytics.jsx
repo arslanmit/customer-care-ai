@@ -23,6 +23,8 @@ ChartJS.register(
   ArcElement
 );
 
+import { fetchAggregatedStats } from './analyticsService';
+
 const Analytics = ({ conversationHistory }) => {
   const { t } = useTranslation();
   const [messageStats, setMessageStats] = useState({
@@ -33,7 +35,17 @@ const Analytics = ({ conversationHistory }) => {
   });
 
   useEffect(() => {
-    if (!conversationHistory || conversationHistory.length === 0) return;
+    // Prefer server-side aggregated stats. If unavailable, we fall back to the
+    // old in-memory calculation (useful during local development when the DB
+    // is not yet provisioned).
+    fetchAggregatedStats().then((serverStats) => {
+      if (serverStats) {
+        setMessageStats(serverStats);
+        return;
+      }
+
+      // ---- Fallback: legacy client-side stats ----
+      if (!conversationHistory || conversationHistory.length === 0) return;
     
     try {
       // Calculate basic message statistics
@@ -71,6 +83,7 @@ const Analytics = ({ conversationHistory }) => {
     } catch (error) {
       console.error('Error analyzing conversation history:', error);
     }
+    }); // close fetchAggregatedStats().then
   }, [conversationHistory]);
 
   const messageCountData = {
