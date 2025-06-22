@@ -43,7 +43,11 @@ class TinyDBTrackerStore(TrackerStore):
         
         # Initialize database
         self.db_path = db_path
-        self.db = TinyDB(db_path)
+        # Use JSONStorage directly with indent=2 for pretty printing
+        from tinydb.storages import JSONStorage
+        self.db = TinyDB(db_path, storage=lambda fp: JSONStorage(fp, indent=2))
+        print(f"[TinyDBTrackerStore] Initialized with db_path={db_path}")
+        logger.debug(f"[TinyDBTrackerStore] Initialized with db_path={db_path}")
         
         # Create a lock for thread-safe operations
         self.lock = threading.Lock()
@@ -62,20 +66,20 @@ class TinyDBTrackerStore(TrackerStore):
             tracker: The dialogue tracker to save
         """
         sender_id = tracker.sender_id
-        
-        # Serialize tracker to a dict, always including all events
+        print(f"[TinyDBTrackerStore] save() called for sender_id={sender_id}")
+        logger.debug(f"[TinyDBTrackerStore] save() called for sender_id={sender_id}")
         serialized_tracker = tracker.current_state(event_verbosity=EventVerbosity.ALL)
-        
-        # Use mutex to ensure only one thread accesses the DB at a time
-        with self.lock:
-            # Remove existing entries for this sender
-            User = Query()
-            self.db.remove(User.sender_id == sender_id)
-            
-            # Insert the new tracker
-            self.db.insert(serialized_tracker)
-            
-        logger.debug(f"Saved tracker for sender_id={sender_id} to TinyDB")
+        try:
+            with self.lock:
+                # Remove existing entries for this sender
+                User = Query()
+                self.db.remove(User.sender_id == sender_id)
+                self.db.insert(serialized_tracker)
+            logger.debug(f"Saved tracker for sender_id={sender_id} to TinyDB")
+            print(f"[TinyDBTrackerStore] Saved tracker for sender_id={sender_id} to TinyDB")
+        except Exception as e:
+            logger.error(f"TinyDBTrackerStore save error: {e}")
+            print(f"[TinyDBTrackerStore] ERROR during save: {e}")
 
     def retrieve(self, sender_id: Text) -> Optional[DialogueStateTracker]:
         """Retrieve a specific tracker from TinyDB.

@@ -1,1 +1,54 @@
-{"_default": {"1": {"sender_id": "test_user", "slots": {"session_started_metadata": null}, "latest_message": {"intent": {"name": "greet", "confidence": 1.0}, "entities": [], "text": "hello", "message_id": null, "metadata": {}}, "latest_event_time": 1750629469.250628, "followup_action": null, "paused": false, "events": [{"event": "user", "timestamp": 1750629469.2506182, "text": "hello", "parse_data": {"intent": {"name": "greet", "confidence": 1.0}, "entities": [], "text": "hello", "message_id": null, "metadata": {}}, "input_channel": null, "message_id": null, "metadata": {}}, {"event": "bot", "timestamp": 1750629469.250628, "text": "Hi there!", "data": {}, "metadata": {}}], "latest_input_channel": null, "active_loop": {}, "latest_action": {}, "latest_action_name": null}}}
+{
+  "_default": {
+    "1": {
+      "sender_id": "test_user",
+      "slots": {
+        "session_started_metadata": null
+      },
+      "latest_message": {
+        "intent": {
+          "name": "greet",
+          "confidence": 1.0
+        },
+        "entities": [],
+        "text": "hello",
+        "message_id": null,
+        "metadata": {}
+      },
+      "latest_event_time": 1750631597.322933,
+      "followup_action": null,
+      "paused": false,
+      "events": [
+        {
+          "event": "user",
+          "timestamp": 1750631597.322907,
+          "text": "hello",
+          "parse_data": {
+            "intent": {
+              "name": "greet",
+              "confidence": 1.0
+            },
+            "entities": [],
+            "text": "hello",
+            "message_id": null,
+            "metadata": {}
+          },
+          "input_channel": null,
+          "message_id": null,
+          "metadata": {}
+        },
+        {
+          "event": "bot",
+          "timestamp": 1750631597.322933,
+          "text": "Hi there!",
+          "data": {},
+          "metadata": {}
+        }
+      ],
+      "latest_input_channel": null,
+      "active_loop": {},
+      "latest_action": {},
+      "latest_action_name": null
+    }
+  }
+}
