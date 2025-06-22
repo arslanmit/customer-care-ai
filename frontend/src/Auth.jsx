@@ -10,26 +10,54 @@ export const useAuth = () => useContext(AuthContext);
 export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null);
+  const [role, setRole] = useState('user');
   const [loading, setLoading] = useState(true);
 
   const supa = supabase;
+  const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
-  // Supabase Auth session check
+  // Check existing JWT with backend /me
   useEffect(() => {
     const init = async () => {
-      const { data: { session } } = await supa.auth.getSession();
-      if (session) {
+      const token = localStorage.getItem('auth_token');
+      if (!token) {
+        setLoading(false);
+        return;
+      }
+      try {
+        const res = await fetch(`${API_BASE_URL}/me`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (!res.ok) throw new Error('Invalid token');
+        const me = await res.json();
         const supaUser = session.user;
-        setUser({ id: supaUser.id, name: supaUser.user_metadata?.name || supaUser.email, email: supaUser.email });
+        // Fetch profile including role
+        const { data: profile } = await supa
+          .from('profiles')
+          .select('preferred_language, role, name')
+          .eq('id', supaUser.id)
+          .single();
+
+        setUser({ id: supaUser.id, name: profile?.name || supaUser.user_metadata?.name || supaUser.email, email: supaUser.email });
+        setRole(profile?.role || 'user');
         setIsAuthenticated(true);
-        // Fetch preferred language
-        const { data: profile } = await supa.from('profiles').select('preferred_language').eq('id', supaUser.id).single();
-        if (profile?.preferred_language) {
+        // Persist JWT for backend calls
+        localStorage.setItem('auth_token', session.access_token);
+        // Fetch preferred language separately to avoid variable shadowing
+        const { data: langProfile } = await supa.from('profiles').select('preferred_language').eq('id', supaUser.id).single();
+        if (langProfile?.preferred_language) {
           import('./i18n').then(({ default: i18n }) => {
-            i18n.changeLanguage(profile.preferred_language);
-            localStorage.setItem('language', profile.preferred_language);
+            i18n.changeLanguage(langProfile.preferred_language);
+            localStorage.setItem('language', langProfile.preferred_language);
           });
         }
+        setUser({ id: me.id, name: me.name || me.email, email: me.email });
+        setRole(me.role || 'user');
+        setIsAuthenticated(true);
+        // language fetch from Supabase profile if supabase cred still valid
+      } catch (e) {
+        console.warn('Session init failed', e);
+        localStorage.removeItem('auth_token');
       }
       setLoading(false);
     };
@@ -38,37 +66,60 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     setLoading(true);
-    const { data, error } = await supa.auth.signInWithPassword({ email, password });
+    const res = await fetch(`${API_BASE_URL}/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
+    });
     setLoading(false);
-    if (error) throw error;
-    const u = data.user;
-    setUser({ id: u.id, name: u.email, email: u.email });
+    if (!res.ok) throw new Error('Invalid credentials');
+    const { access_token } = await res.json();
+    localStorage.setItem('auth_token', access_token);
+    // fetch user details
+    const meRes = await fetch(`${API_BASE_URL}/me`, { headers: { 'Authorization': `Bearer ${access_token}` } });
+    const me = await meRes.json();
+    setUser({ id: me.id, name: me.name || me.email, email: me.email });
+    setRole(me.role || 'user');
     setIsAuthenticated(true);
-    return u;
+    return me;
   };
 
   const logout = async () => {
-    await supa.auth.signOut();
+    // No backend logout required for stateless JWT
+    localStorage.removeItem('auth_token');
     setUser(null);
+    setRole('user');
     setIsAuthenticated(false);
+
   };
 
   const register = async (name, email, password) => {
     setLoading(true);
-    const { data, error } = await supa.auth.signUp({ email, password, options: { data: { name } } });
+    const res = await fetch(`${API_BASE_URL}/register`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, email, password })
+    });
     setLoading(false);
-    if (error) throw error;
-    const u = data.user;
+    if (!res.ok) {
+      const err = await res.json();
+      throw new Error(err.detail || 'Registration failed');
+    }
+    const { access_token } = await res.json();
+    localStorage.setItem('auth_token', access_token);
+    const meRes = await fetch(`${API_BASE_URL}/me`, { headers: { 'Authorization': `Bearer ${access_token}` } });
+    const me = await meRes.json();
     // insert profile row
-    await supa.from('profiles').upsert({ id: u.id, name, preferred_language: localStorage.getItem('language') || 'en' });
-    setUser({ id: u.id, name, email });
+    setUser({ id: me.id, name: me.name || name, email: me.email });
+    setRole(me.role || 'user');
     setIsAuthenticated(true);
-    return u;
+    return me;
   };
 
   const value = {
     isAuthenticated,
     user,
+    role,
     login,
     logout,
     register,

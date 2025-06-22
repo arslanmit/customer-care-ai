@@ -1,0 +1,53 @@
+name: Train RASA Model
+
+on:
+  push:
+    paths:
+      - 'rasa/**'
+  workflow_dispatch:
+    inputs:
+      force_retrain:
+        description: 'Force retrain model (even if no changes)'
+        required: false
+        default: 'false'
+
+jobs:
+  train:
+    name: Train RASA Model
+    runs-on: ubuntu-latest
+    environment: production
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+
+    - name: Install RASA
+      run: |
+        python -m pip install --upgrade pip
+        pip install rasa[full]
+
+    - name: Train RASA model
+      working-directory: rasa
+      env:
+        RASA_ENVIRONMENT: ${{ secrets.RASA_ENVIRONMENT }}
+        RASA_JWT_SECRET: ${{ secrets.RASA_JWT_SECRET }}
+      run: |
+        rasa train --quiet
+        
+    - name: Upload model artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: rasa-model
+        path: rasa/models/
+        retention-days: 5
+
+    # Optional: Push to model registry or deployment step here
+    # - name: Deploy model
+    #   run: |
+    #     # Your deployment logic here
+    #     echo "Model would be deployed here"
