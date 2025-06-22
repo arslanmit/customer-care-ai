@@ -19,7 +19,7 @@ intents:
   - support_request
   - request_human_agent
   - product_inquiry
-  - change_language
+  # change_language intent removed - English only now
   - nlu_fallback
   - out_of_scope
   - check_order_status
@@ -37,7 +37,6 @@ entities:
   - name
   - email
   - phone_number
-  - language
 
 # ===== SLOTS =====
 # Slots store information to keep track of conversation state
@@ -56,14 +55,7 @@ slots:
       - type: from_entity
         entity: name
   
-  # User's preferred language
-  language:
-    type: categorical
-    values: [en, es, fr, de, tr]  # Supported languages
-    influence_conversation: true   # Affects conversation flow
-    mappings:
-      - type: from_entity
-        entity: language
+  # User's preferred language removed - English only now
   
   # Stores session-specific metadata
   session_metadata:
@@ -162,13 +154,7 @@ responses:
   utter_product_info:
     - text: "We offer a range of products. What would you like to know?"
     - text: "I can tell you about our product line. What specifically interests you?"
-  # Language handling
-  utter_ask_language:
-    - text: "Which language would you prefer? (English, Spanish, French, German, Turkish)"
-    - text: "Please choose your preferred language: English, Spanish, French, German, or Turkish"
-  utter_language_changed:
-    - text: "I've changed the language to {language}."
-    - text: "Language updated to {language}."
+  # Language handling removed - English only now
   # Fallback responses
   utter_default:
     - text: "I'm not sure I understand. Could you rephrase that?"

@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { submitFeedback } from './analyticsService';
 
 const Feedback = ({ sessionId, onClose }) => {
-  const { t } = useTranslation();
+
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState('');
   const [submitted, setSubmitted] = useState(false);
@@ -23,21 +22,21 @@ const Feedback = ({ sessionId, onClose }) => {
   if (submitted) {
     return (
       <div className="feedback-modal">
-        <p>{t('feedback.thankYou')}</p>
+        <p>Thank you for your feedback!</p>
       </div>
     );
   }
 
   return (
     <div className="feedback-modal" role="dialog" aria-labelledby="feedback-title">
-      <h3 id="feedback-title">{t('feedback.title')}</h3>
-      <div className="rating-group" aria-label={t('feedback.ratingLabel')}>
+      <h3 id="feedback-title">Share Your Feedback</h3>
+      <div className="rating-group" aria-label="Rate your experience">
         {[1, 2, 3, 4, 5].map((n) => (
           <button
             key={n}
             className={`rating-star ${rating >= n ? 'selected' : ''}`}
             onClick={() => setRating(n)}
-            aria-label={t('feedback.giveRating', { n })}
+            aria-label={`Give a rating of ${n} stars`}
           >
             ★
           </button>
@@ -46,15 +45,15 @@ const Feedback = ({ sessionId, onClose }) => {
       <textarea
         value={comment}
         onChange={(e) => setComment(e.target.value)}
-        placeholder={t('feedback.commentPlaceholder')}
+        placeholder="Tell us your thoughts (optional)"
         rows={3}
       />
       <div className="feedback-actions">
         <button onClick={handleSubmit} className="send-button">
-          {t('feedback.submit')}
+          Submit
         </button>
         <button onClick={onClose} className="cancel-button">
-          {t('feedback.cancel')}
+          Cancel
         </button>
       </div>
     </div>

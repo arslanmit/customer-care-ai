@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
 import { 
   Chart as ChartJS, 
   CategoryScale, 
@@ -26,7 +25,6 @@ ChartJS.register(
 import { fetchAggregatedStats } from './analyticsService';
 
 const Analytics = ({ conversationHistory }) => {
-  const { t } = useTranslation();
   const [messageStats, setMessageStats] = useState({
     userCount: 0,
     botCount: 0,
@@ -87,10 +85,10 @@ const Analytics = ({ conversationHistory }) => {
   }, [conversationHistory]);
 
   const messageCountData = {
-    labels: [t('analytics.userMessages'), t('analytics.botResponses')],
+    labels: ['User Messages', 'Bot Responses'],
     datasets: [
       {
-        label: t('analytics.messageStats'),
+        label: 'Message Statistics',
         data: [messageStats.userCount, messageStats.botCount],
         backgroundColor: ['rgba(54, 162, 235, 0.6)', 'rgba(75, 192, 192, 0.6)'],
         borderColor: ['rgba(54, 162, 235, 1)', 'rgba(75, 192, 192, 1)'],
@@ -126,24 +124,24 @@ const Analytics = ({ conversationHistory }) => {
 
   return (
     <div className="analytics-container" role="region" aria-labelledby="analytics-title">
-      <h2 id="analytics-title">{t('analytics.title')}</h2>
+      <h2 id="analytics-title">Analytics Dashboard</h2>
       
       <div className="analytics-grid">
         <section className="analytics-card" aria-labelledby="message-stats-title">
-          <h3 id="message-stats-title">{t('analytics.messageStats')}</h3>
+          <h3 id="message-stats-title">Message Statistics</h3>
           <div className="stats-summary">
-            <p><strong>{t('analytics.userMessages')}:</strong> {messageStats.userCount}</p>
-            <p><strong>{t('analytics.botResponses')}:</strong> {messageStats.botCount}</p>
-            <p><strong>{t('analytics.avgResponseTime')}:</strong> {messageStats.avgResponseTime}ms</p>
+            <p><strong>User Messages:</strong> {messageStats.userCount}</p>
+            <p><strong>Bot Responses:</strong> {messageStats.botCount}</p>
+            <p><strong>Average Response Time:</strong> {messageStats.avgResponseTime}ms</p>
           </div>
-          <div className="chart-container" role="img" aria-label={t('analytics.messageDistribution')}>
+          <div className="chart-container" role="img" aria-label="Message Distribution">
             <Bar 
               data={messageCountData} 
               options={{
                 responsive: true,
                 plugins: {
                   legend: { position: 'top' },
-                  title: { display: true, text: t('analytics.messageDistribution') }
+                  title: { display: true, text: 'Message Distribution' }
                 },
                 scales: {
                   y: {
@@ -158,15 +156,15 @@ const Analytics = ({ conversationHistory }) => {
         </section>
         
         <section className="analytics-card" aria-labelledby="intent-dist-title">
-          <h3 id="intent-dist-title">{t('analytics.intentDistribution')}</h3>
-          <div className="chart-container" role="img" aria-label={t('analytics.intentDistribution')}>
+          <h3 id="intent-dist-title">Intent Distribution</h3>
+          <div className="chart-container" role="img" aria-label="Intent Distribution">
             <Pie 
               data={intentData}
               options={{
                 responsive: true,
                 plugins: {
                   legend: { position: 'right' },
-                  title: { display: true, text: t('analytics.intentTypes') },
+                  title: { display: true, text: 'Intent Types' },
                   tooltip: {
                     callbacks: {
                       label: (context) => {

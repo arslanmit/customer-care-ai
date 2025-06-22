@@ -1,18 +1,11 @@
 version: "3.1"
 
-# Primary language and additional languages for multilingual support
+# Language configuration - English only
 language: en
-languages:
-  - en  # English
-  - es  # Spanish
-  - fr  # French
-  - de  # German
-  - tr  # Turkish
 
 # NLU Pipeline Configuration
 pipeline:
-  # Automatic language detection
-  - name: backend.language_detector.LanguageDetector
+  # Language detection removed - English only
   # Language model for word vectors and tokenization
   - name: SpacyNLP
     model: "en_core_web_sm"  # Using small model for compatibility

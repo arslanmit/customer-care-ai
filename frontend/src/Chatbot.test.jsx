@@ -3,30 +3,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import Chatbot from './Chatbot.jsx';
 
-// Mock the useTranslation hook with specific translations for Chatbot
-vi.mock('react-i18next', () => ({
-  useTranslation: () => ({
-    t: (key) => {
-      const translations = {
-        'chatbot.placeholder': 'Type your message...',
-        'chatbot.sendButton': 'Send',
-        'chatbot.viewAnalytics': 'View Analytics',
-        'chatbot.backToChat': 'Back to Chat',
-        'chatbot.login': 'Login',
-        'chatbot.logout': 'Logout',
-        'chatbot.selectLanguage': 'Select language',
-        'chatbot.welcome': 'Welcome to the Chatbot',
-        'chatbot.errorSending': 'Error sending message',
-        'chatbot.typing': 'typing...'
-      };
-      return translations[key] || key;
-    },
-    i18n: {
-      changeLanguage: vi.fn(),
-      language: 'en',
-    },
-  }),
-}));
+// No longer need to mock i18n/translations since we're English-only now
 
 // Mock the AuthContext
 vi.mock('../contexts/AuthContext', () => ({
@@ -106,19 +83,5 @@ describe('Chatbot Component', () => {
     expect(screen.getByText('Back to Chat')).toBeInTheDocument();
   });
 
-  it('handles language switching', async () => {
-    const user = userEvent.setup();
-    render(<Chatbot />);
-
-    // Find the language selector
-    const languageSelect = screen.getByLabelText('Select language');
-    expect(languageSelect).toBeInTheDocument();
-    
-    // Change language
-    await user.selectOptions(languageSelect, 'es');
-    
-    // i18n change language should have been called
-    const { i18n } = vi.mocked(useTranslation(), true)();
-    expect(i18n.changeLanguage).toHaveBeenCalledWith('es');
-  });
+  // Language switching test removed since we're English-only now
 });
