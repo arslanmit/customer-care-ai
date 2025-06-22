@@ -4,147 +4,120 @@ A full-stack conversational AI chatbot built with Rasa (backend) and React (fron
 
 ## 🚀 Key Features
 
-- **Multilingual Support**: Native support for English, Spanish, French, German, and Turkish with spaCy language models
-- **Advanced Conversation Flow**: Stateful conversations with context management using Rasa's dialogue management
-- **Production-Ready**: Containerized with Docker Compose for easy deployment
-- **Enterprise Security**: JWT authentication, secure environment variables, and HTTPS support
-- **Scalable Architecture**: Microservices-based design with Supabase for data storage
-- **Comprehensive Monitoring**: Integrated with Prometheus metrics and Grafana dashboards
-- **CI/CD Pipeline**: Automated testing and deployment with GitHub Actions
-- **Multi-channel Support**: Web interface with potential for additional channels (Slack, MS Teams, etc.)
-- **Advanced NLP**: Utilizes spaCy and transformer models for improved understanding
-- **Custom Actions**: Extensible action server for complex business logic
+- **Multilingual Support**: Native support for English, Spanish, French, German, and Turkish (spaCy language models)
+- **Advanced Conversation Flow**: Stateful conversations with Rasa dialogue management
+- **Custom Actions**: Includes `ActionAskOrderNumber`, `ActionTellJoke`, `ActionAskHowCanIHelp`, and more for rich, extensible logic
+- **Feedback & Analytics**: Real-time analytics dashboard (frontend) and user feedback modal; feedback and event data logged to Supabase
+- **Supabase Integration**: Conversation events, user feedback, and analytics stored securely with RLS (Row Level Security) and policies
+- **Production-Ready**: Docker Compose for local/prod, GKE/Cloud Run for cloud deployment
+- **Enterprise Security**: JWT authentication, secure secrets, HTTPS, and database-level RLS
+- **Comprehensive Monitoring**: Prometheus, Grafana dashboards, log monitoring scripts
+- **CI/CD Pipeline**: Automated with GitHub Actions
+- **Multi-channel Support**: Web UI, extensible to Slack, MS Teams, etc.
+- **Modern Frontend**: React 18, Vite, Chart.js, Supabase Auth, ESLint, Prettier, Vitest
+- **Testing & Code Quality**: Backend (pytest), Frontend (Vitest, ESLint, Prettier)
+- **Scripts & Utilities**: Secret generation, log monitoring, DB migrations
+
+---
+
+**New since last update:**
+
+- Analytics dashboard and feedback modal (frontend)
+- Supabase event logging, RLS, and analytics
+- New custom actions in backend
+- Enhanced security and monitoring
+- Modernized frontend stack (React 18, Vite, Chart.js)
+- Improved code quality tooling (Vitest, ESLint, Prettier)
 
 ## 🏗️ Project Structure
 
 ```text
-customer-care-ai/
-├── .github/                # GitHub Actions workflows
-├── backend/                # Rasa backend implementation
-│   ├── actions/            # Custom Rasa actions
-│   ├── api/                # API endpoints and FastAPI application
-│   ├── data/               # NLU training data, stories, rules
-│   ├── models/             # Trained Rasa models
-│   └── tests/              # Backend tests
-├── frontend/               # React application
-│   ├── public/             # Static files
-│   ├── src/                # React source code
-│   └── Dockerfile*         # Frontend Docker configurations
-├── monitoring/             # Monitoring setup
-│   ├── grafana/            # Grafana dashboards and provisioning
-│   └── prometheus/         # Prometheus configuration
-├── scripts/                # Utility scripts
-│   ├── generate-secrets.sh # Secure secret generation
-│   └── monitor_logs.sh     # Log monitoring utility
-├── .env.example           # Environment variables template
-├── docker-compose.yml      # Local development
-├── docker-compose.prod.yml # Production deployment
-├── Dockerfile              # Main application Dockerfile
-├── requirements.txt        # Python dependencies
-├── setup.sh               # Project setup script
-└── setup_local.sh         # Local development setup
+customer-care-ai/​
+├── .github/                  # GitHub Actions workflows
+├── backend/                  # Rasa backend implementation
+│   ├── actions/              # Custom Rasa actions (incl. ActionAskOrderNumber, ActionTellJoke, etc.)
+│   ├── api/                  # API endpoints (FastAPI)
+│   ├── data/                 # NLU data, stories, rules
+│   ├── models/               # Trained Rasa models
+│   ├── results/              # Test and analytics reports
+│   └── tests/                # Backend tests
+├── frontend/                 # React 18 + Vite app
+│   ├── src/                  # Main source code
+│   │   ├── Analytics.jsx     # Analytics dashboard
+│   │   ├── Feedback.jsx      # Feedback modal
+│   │   ├── Auth.jsx          # Supabase Auth context/hooks
+│   │   ├── Chatbot.jsx       # Main chatbot UI
+│   │   └── ...
+│   ├── public/               # Static files
+│   ├── Dockerfile*           # Frontend Docker configs
+│   ├── package.json          # Frontend deps/scripts
+│   ├── vite.config.js        # Vite config
+│   └── ...
+├── monitoring/               # Monitoring setup
+│   ├── grafana/              # Grafana dashboards
+│   └── prometheus/           # Prometheus config
+├── scripts/                  # Utility scripts
+│   ├── generate-secrets.sh   # Secure secret generation
+│   └── monitor_logs.sh       # Log monitoring utility
+├── supabase/                 # Supabase migrations & DB setup
+│   └── migrations/           # SQL migrations (event logging, RLS, analytics)
+├── .env.example              # Env var template
+├── docker-compose.yml        # Local dev
+├── docker-compose.prod.yml   # Production
+├── Dockerfile                # Backend Dockerfile
+├── requirements.txt          # Python deps
+├── setup.sh                  # Project setup script
+└── setup_local.sh            # Local dev setup
 ```
+
+_Note: See `ARCHITECTURE.md` for a detailed architecture overview._
 
 ## 🛠️ Prerequisites
 
 - Docker 20.10+ and Docker Compose 2.0+
-- Python 3.10+ (for local development)
-- Node.js 16+ (for frontend development)
-- Supabase account (for database and authentication)
+- Python 3.10+ (for backend/local dev)
+- Node.js 18+ (for frontend dev)
+- React 18+
+- Vite (bundler, included in frontend)
+- Chart.js (frontend analytics)
+- Supabase account (for DB/auth)
 - Git
+- (Optional) Google Cloud CLI for GKE/Cloud Run deployment
 
-## 🚀 Quick Start
-
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/yourusername/customer-care-ai.git
-   cd customer-care-ai
-   ```
-
-2. Set up environment variables:
-   ```bash
-   cp .env.example .env
-   # Update the .env file with your configuration
-   ```
-
-3. Start the application in development mode:
-   ```bash
-   docker-compose up --build
-   ```
-
-4. Access the application:
-   - Frontend: http://localhost:3000
-   - Rasa API: http://localhost:5005
-   - Prometheus: http://localhost:9090
-   - Grafana: http://localhost:3001
-
-## 🔧 Configuration
-
-### Environment Variables
-
-Key environment variables to configure:
-
-- `SUPABASE_URL`: Your Supabase project URL
-- `SUPABASE_KEY`: Your Supabase anon/public key
-- `JWT_SECRET`: Secret key for JWT token generation
-- `RASA_ENVIRONMENT`: Set to 'production' or 'development'
-- `NEXT_PUBLIC_API_URL`: URL for the frontend to reach the backend API
-
-## 🛠 Development
-
-### Backend Development
-
-1. Set up a virtual environment:
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
-   pip install -r requirements.txt
-   ```
-
-2. Start the Rasa server:
-   ```bash
-   cd backend
-   rasa run --enable-api --cors "*" --debug
-   ```
-
-### Frontend Development
-
-1. Install dependencies:
-   ```bash
-   cd frontend
-   npm install
-   ```
-
-2. Start the development server:
-   ```bash
-   npm run dev
-   ```
-
-## 🧪 Testing
+## 🧪 Testing & Code Quality
 
 Run the test suite:
 
 ```bash
-# Run backend tests
+# Backend tests
 cd backend
 pytest
 
-# Run frontend tests
+# Frontend tests
 cd frontend
-npm test
+npm run test
+npm run lint
+npm run format
 ```
+
+- **Vitest**: Unit and integration tests for frontend
+- **ESLint**: Linting for React code
+- **Prettier**: Code formatting
+- **Test Reports**: Backend intent/story analytics in `backend/results/`
 
 ## 🚀 Deployment
 
 ### Production Deployment
 
 1. Build and start the production containers:
+
    ```bash
    docker-compose -f docker-compose.prod.yml up --build -d
    ```
 
 2. Set up monitoring:
-   - Access Grafana at http://your-domain:3001
+
+   - Access Grafana at [http://your-domain:3001](http://your-domain:3001)
    - Default credentials: admin/admin (change immediately after first login)
 
 ## 📊 Monitoring
@@ -155,7 +128,7 @@ The application includes built-in monitoring with:
 - **Grafana** for visualization
 - **Health check endpoints** at `/health`
 
-## 🤝 Contributing
+## Contributing
 
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
@@ -163,29 +136,22 @@ The application includes built-in monitoring with:
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-## 📄 License
+## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - [Rasa](https://rasa.com/) for the open-source conversational AI framework
 - [React](https://reactjs.org/) for the frontend library
 - [Supabase](https://supabase.com/) for the open-source Firebase alternative
 - [Docker](https://www.docker.com/) for containerization
 
-## 📞 Support
+## Support
 
 For support, please open an issue in the GitHub repository or contact the maintainers.
 
-- Node.js 18+
-- Docker & Docker Compose
-- Redis 6.0+
-- PostgreSQL 13+
-- OpenSSL (for certificate generation)
-- jq (for JSON processing in scripts)
-
-## 🚀 Quick Start
+## Quick Start
 
 ### 1. Clone the repository
 
@@ -210,11 +176,13 @@ source venv/bin/activate  # On Windows: .\venv\Scripts\activate
 ### 3. Configure environment variables
 
 1. Copy the example environment file:
+
    ```bash
    cp .env.example .env
    ```
 
 2. Generate secure secrets using the provided script:
+
    ```bash
    chmod +x scripts/generate-secrets.sh
    ./scripts/generate-secrets.sh
@@ -233,6 +201,7 @@ source venv/bin/activate  # On Windows: .\venv\Scripts\activate
    ```
 
 4. Set secure file permissions:
+
    ```bash
    chmod 600 .env
    chmod 700 scripts/
@@ -261,14 +230,11 @@ Or manually:
 # Start Redis
 redis-server &
 
-
 # Start Rasa actions server
 rasa run actions &
 
-
 # Start Rasa API server
 rasa run --enable-api --cors "*" &
-
 
 # Start frontend (from frontend directory)
 cd frontend
@@ -276,7 +242,7 @@ npm install
 npm run dev
 ```
 
-## 🧪 Testing
+## Testing
 
 ### Backend Tests
 
@@ -298,9 +264,9 @@ cd frontend
 npm test
 ```
 
-## 🔒 Security Best Practices
+## Security Best Practices
 
-### 🔐 Security Features
+### Security Features
 
 - **Secure by Default**:
   - All services run as non-root users
@@ -318,7 +284,7 @@ npm test
   - Configurable data retention policies
   - Audit logging for all sensitive operations
 
-### 🛡️ Security Controls
+### Security Controls
 
 1. **Container Security**:
    - Image signing and verification
@@ -335,7 +301,7 @@ npm test
    - Multi-factor authentication (MFA) support
    - IP whitelisting
 
-### 🚨 Incident Response
+### Incident Response
 
 - **Monitoring**:
   - Real-time security monitoring
@@ -347,44 +313,49 @@ npm test
   - Automated remediation
   - Forensic capabilities
 
-### 📝 Security Documentation
+### Security Documentation
 
 - [Security Policy](SECURITY.md)
 - [Incident Response Plan](docs/INCIDENT_RESPONSE.md)
 - [Compliance Documentation](docs/COMPLIANCE.md)
 
-### 🔄 Security Updates
+### Security Updates
 
 - Regular dependency updates
 - Security patch management
 - CVE monitoring and response
 
-## 🛠️ Development Security
+## Development
 
-### Pre-commit Hooks
+### Backend
 
-```bash
-# Install pre-commit hooks
-pip install pre-commit
-pre-commit install
-```
+- Rasa actions: Add new actions in `backend/actions/`
+- Intent analytics: Results in `backend/results/`
+- Supabase event logging: All conversation events and feedback are logged (see `supabase/migrations/`)
+- Security: RLS enabled on event tables, policies for read/insert
 
-### Security Scanning
+### Frontend
 
-```bash
-# Run security scans
-./scripts/security-scan.sh
-```
+- React 18 + Vite
+- Analytics dashboard: `src/Analytics.jsx`
+- Feedback modal: `src/Feedback.jsx`
+- Supabase Auth: `src/Auth.jsx`
+- Code quality: ESLint, Prettier, Vitest
 
-### Dependency Auditing
+### Scripts & Utilities
 
-```bash
-# Check for vulnerable dependencies
-npm audit
-pip-audit
-```
+- `scripts/generate-secrets.sh`: Generate strong secrets for env
+- `scripts/monitor_logs.sh`: Real-time log monitoring
+- DB migrations: `supabase/migrations/`
 
-## 🔍 Security Monitoring
+### Configuration
+
+- Environment variables: `.env` (see `.env.example`)
+- Supabase: Set up project, apply migrations, configure RLS
+
+_Note: See `ARCHITECTURE.md` for more details on the system design._
+
+## Security Monitoring
 
 ### Logging
 
@@ -398,17 +369,17 @@ pip-audit
 - Escalation policies
 - On-call rotations
 
-## 📚 Additional Resources
+## Additional Resources
 
 - [OWASP Top 10](https://owasp.org/www-project-top-ten/)
 - [NIST Cybersecurity Framework](https://www.nist.gov/cyberframework)
 - [CIS Benchmarks](https://www.cisecurity.org/cis-benchmarks/)
 
----
+## Contact
 
-> **Note**: This application includes security features that should be configured according to your organization's security policies and compliance requirements. Always consult with your security team before deploying to production.
+Project Link: [GitHub Repository](https://github.com/yourusername/customer-care-ai)
 
-### 1. Secure Configuration
+## Secure Configuration
 
 - **Secrets Management**:
   - All secrets are stored in `.env` (never committed to version control)
@@ -421,7 +392,7 @@ pip-audit
   - Minimal base images
   - Regular security scanning of container images
 
-### 2. Network Security
+## Network Security
 
 - **TLS/SSL**:
   - Enable HTTPS with valid certificates (use Let's Encrypt in production)
@@ -433,7 +404,7 @@ pip-audit
   - Use VPC peering for internal communication
   - Implement network policies in Kubernetes
 
-### 3. Authentication & Authorization
+## Authentication & Authorization
 
 - **JWT Authentication**:
   - Secure token storage
@@ -444,19 +415,7 @@ pip-audit
   - Implemented at the API gateway level
   - Configurable rate limits per endpoint
 
-### 4. Monitoring & Logging
-
-- **Security Monitoring**:
-  - Log all authentication attempts
-  - Monitor for suspicious activities
-  - Set up alerts for security events
-
-- **Audit Logs**:
-  - Log all administrative actions
-  - Centralized log management
-  - Long-term storage with rotation
-
-## 🚀 Deployment
+## Deployment
 
 ### Docker Compose (Production)
 
@@ -488,25 +447,10 @@ gcloud run deploy customer-care-ai \
   --allow-unauthenticated
 ```
 
-## 📊 Monitoring
+## Monitoring & Analytics
 
-Access monitoring dashboards:
-
-- Prometheus: http://localhost:9090
-- Grafana: http://localhost:3000 (admin/admin)
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 📧 Contact
-
-Project Link: [https://github.com/yourusername/customer-care-ai](https://github.com/yourusername/customer-care-ai)
+- **Prometheus**: [http://localhost:9090](http://localhost:9090)
+- **Grafana**: [http://localhost:3001](http://localhost:3001) (admin/admin)
+- **Analytics Dashboard**: In-app (frontend) for intent distribution, response times, etc.
+- **Log Monitoring**: `scripts/monitor_logs.sh` (real-time error/warning tailing)
+- **Event Logging**: Conversation and feedback events are stored in Supabase (see `supabase/migrations/` for schema and RLS policies)
