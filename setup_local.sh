@@ -1,164 +1,293 @@
 #!/usr/bin/env bash
-set -e
+set -eo pipefail
 
 # ---------------------------------------------------------------------------
-# Customer Care AI local setup script (Supabase-first, non-Docker)
-# Idempotent: safely skips steps if already completed.
+# Customer Care AI Local Development Setup Script
+# Version: 2.0.0
+# Description: Sets up the Customer Care AI development environment with Rasa backend and Node.js frontend
+# Context7 Integration: This script is part of the Customer Care AI project documentation
 # ---------------------------------------------------------------------------
 
+# Import Context7 documentation helper
+source_context7_docs() {
+    # This function would be populated by the Context7 CLI during CI/CD
+    # For local development, it will fall back to local documentation
+    if [ -f ".context7/docs.sh" ]; then
+        source .context7/docs.sh
+    else
+        # Fallback documentation
+        CONTEXT7_DOCS_URL="https://docs.context7.io/api/v1/docs"
+        echo -e "\n${YELLOW}ℹ️  Running in local mode. For full Context7 integration, install the Context7 CLI.${NC}"
+    fi
+}
+
+# Initialize Context7 documentation
+source_context7_docs
+
+# --- Install spaCy English model from local wheel if available ---
+SPACY_MODEL_WHL="models/spacy/en_core_web_sm-3.7.1-py3-none-any.whl"
+if [ -f "$SPACY_MODEL_WHL" ]; then
+    echo -e "\n\033[1;33mInstalling spaCy model from local wheel: $SPACY_MODEL_WHL\033[0m"
+    pip install "$SPACY_MODEL_WHL"
+else
+    echo -e "\n\033[0;31mWARNING: spaCy model wheel not found at $SPACY_MODEL_WHL. Please download it and place it there.\033[0m"
+    echo "Download with: wget https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.7.1/en_core_web_sm-3.7.1-py3-none-any.whl -O $SPACY_MODEL_WHL"
+    # Optionally, fall back to pip download here if desired
+    # python -m spacy download en_core_web_sm
+fi
+
+
+# Colors and formatting
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+RED='\033[0;31m'
+BLUE='\033[0;34m'
+NC='\033[0m' # No Color
+BOLD='\033[1m'
+UNDERLINE='\033[4m'
+
+# Logging functions
+log_info() { echo -e "${BLUE}ℹ️  $1${NC}"; }
+log_success() { echo -e "${GREEN}✅ $1${NC}"; }
+log_warning() { echo -e "${YELLOW}⚠️  $1${NC}"; }
+log_error() { echo -e "${RED}❌ $1${NC}"; }
+log_step() { echo -e "\n${BOLD}${UNDERLINE}$1${NC}\n"; }
+
+# Check for required tools
+check_requirements() {
+    local missing=0
+    local tools=("python3" "node" "npm" "git")
+    
+    log_step "🔍 Checking System Requirements"
+    
+    for tool in "${tools[@]}"; do
+        if ! command -v "$tool" &> /dev/null; then
+            log_error "$tool is required but not installed"
+            missing=$((missing + 1))
+        else
+            log_success "Found $tool: $($tool --version 2>&1 | head -n 1)"
+        fi
+    done
+    
+    if [ $missing -gt 0 ]; then
+        log_error "Missing $missing required tools. Please install them and try again."
+        exit 1
+    fi
+}
+
+# Main script execution
+log_step "🚀 Customer Care AI Development Environment Setup"
+
+# Setup environment
+setup_environment() {
+    log_step "🔧 Environment Setup"
+    
+    # Create .env file if it doesn't exist
+    if [ ! -f .env ]; then
+        if [ -f .env.example ]; then
+            cp .env.example .env
+            log_success "Created .env file from example"
+            log_warning "Please update the .env file with your configuration"
+        else
+            log_warning "No .env.example file found. Creating empty .env file"
+            touch .env
+        fi
+    else
+        log_success ".env file already exists"
+    fi
+    
+    # Create virtual environment if it doesn't exist
+    if [ ! -d "venv" ]; then
+        log_info "Creating Python virtual environment..."
+        python3 -m venv venv
+        log_success "Virtual environment created"
+    else
+        log_success "Virtual environment already exists"
+    fi
+    
+    # Activate virtual environment
+    source venv/bin/activate
+}
+
+# Setup Python backend
+setup_python_backend() {
+    log_step "🐍 Python Backend Setup"
+    
+    # Check Python version
+    PYTHON_VERSION=$(python3 --version 2>&1)
+    if [[ ! $PYTHON_VERSION =~ Python\s3\.[8-9]|3\.[0-9]{2,} ]]; then
+        log_error "Python 3.8 or higher is required. Found: $PYTHON_VERSION"
+        log_warning "You can install Python 3.8+ using pyenv or from python.org"
+        exit 1
+    fi
+    log_success "Using $PYTHON_VERSION"
+    
+    # Install/upgrade pip and setuptools
+    log_info "Upgrading pip and setuptools..."
+    pip install --upgrade pip setuptools wheel
+    
+    # Check for Rasa installation
+    if command -v rasa &> /dev/null; then
+        log_success "Found Rasa: $(rasa --version | head -n 1)"
+    else
+        log_warning "Rasa not found. You can install it with:"
+        echo "  1. Using Docker (recommended): docker-compose up -d"
+        echo "  2. Manual install: pip install rasa"
+        return 1
+    fi
+    
+    # Install Python dependencies
+    if [ -f "requirements.txt" ]; then
+        log_info "Installing Python dependencies..."
+        pip install -r requirements.txt
+        log_success "Python dependencies installed"
+    else
+        log_warning "No requirements.txt found. Skipping Python dependencies."
+    fi
+    
+    # Install spaCy models if needed
+    if command -v python -m spacy &> /dev/null; then
+        log_info "Downloading spaCy language models..."
+        python -m spacy download en_core_web_md || log_warning "Failed to download en_core_web_md"
+        python -m spacy download de_core_news_md || log_warning "Failed to download de_core_news_md"
+    fi
+}
+echo -e "\n${YELLOW}📋 Setting up Node.js frontend...${NC}"
+
+# Setup Node.js frontend
+setup_node_frontend() {
+    log_step "🖥️  Node.js Frontend Setup"
+    
+    # Check Node.js version
+    NODE_VERSION=$(node --version 2>&1)
+    if [[ ! $NODE_VERSION =~ v(1[4-9]|[2-9][0-9]+) ]]; then
+        log_error "Node.js 14+ is required. Found: $NODE_VERSION"
+        log_warning "You can install Node.js using nvm (recommended) or from nodejs.org"
+        return 1
+    fi
+    log_success "Using Node.js $NODE_VERSION"
+    
+    # Check npm version
+    NPM_VERSION=$(npm --version)
+    log_success "Using npm $NPM_VERSION"
+    
+    # Install frontend dependencies
+    if [ -d "frontend" ]; then
+        log_info "Setting up frontend dependencies..."
+        cd frontend
+        
+        # Check for package.json
+        if [ -f "package.json" ]; then
+            # Check if node_modules exists
+            if [ ! -d "node_modules" ]; then
+                log_info "Installing npm packages..."
+                npm install --loglevel=error
+                log_success "Frontend dependencies installed"
+            else
+                log_info "Checking for npm package updates..."
+                npm update --loglevel=error
+                log_success "Frontend dependencies are up to date"
+            fi
+            
+            # Check for build step
+            if [ -f "vite.config.js" ] || [ -f "vite.config.ts" ]; then
+                log_info "Building frontend..."
+                npm run build --if-present
+            fi
+        else
+            log_warning "No package.json found in frontend directory"
+        fi
+        
+        cd ..
+    else
+        log_warning "Frontend directory not found. Skipping frontend setup."
+    fi
+}
+
+# Generate startup script
+generate_startup_script() {
+    log_step "🚀 Generating Startup Script"
+    
+    local script_name="start_dev.sh"
+    cat > "$script_name" << 'EOL'
+#!/usr/bin/env bash
+# Auto-generated by setup_local.sh
+# Start all services for Customer Care AI development
+
+# Define colors
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 NC='\033[0m'
 
-echo -e "${YELLOW}🚀 Customer Care AI one-time setup${NC}"
+# Function to start a service in a new terminal window
+start_service() {
+    local name="$1"
+    local cmd="$2"
+    
+    echo -e "${YELLOW}Starting $name...${NC}"
+    osascript -e "tell app \"Terminal\" to do script \"echo -e '${YELLOW}$name${NC}'; $cmd; exit"
+}
 
-# 1. Validate Python version (>=3.8)
-if ! python3 - <<'PY' ; then exit 1; fi
-import sys, re
-major, minor = sys.version_info[:2]
-print(f'Using Python {major}.{minor}')
-if (major, minor) < (3, 8):
-    print('Python 3.8+ required', file=sys.stderr)
-    sys.exit(1)
-PY
+# Start services in separate terminal windows
+start_service "Redis Server" "redis-server"
+start_service "Rasa Server" "cd $(pwd) && source venv/bin/activate && cd backend && rasa run --enable-api --cors \"*\" --debug"
+start_service "Rasa Actions" "cd $(pwd) && source venv/bin/activate && cd backend && rasa run actions"
 
-# 2. Create / activate venv
-if [ ! -d "venv" ]; then
-  echo -e "${GREEN}✅ Creating Python virtual environment...${NC}"
-  python3 -m venv venv
+# Start frontend in current terminal
+if [ -d "frontend" ]; then
+    echo -e "${GREEN}Starting frontend...${NC}"
+    cd frontend
+    if [ -f "package.json" ]; then
+        if grep -q "\"dev\"" package.json; then
+            npm run dev
+        elif grep -q "\"start\"" package.json; then
+            npm start
+        else
+            echo -e "${YELLOW}No dev or start script found in package.json${NC}"
+            bash
+        fi
+    else
+        echo -e "${YELLOW}No package.json found in frontend directory${NC}"
+        bash
+    fi
+else
+    echo -e "${YELLOW}Frontend directory not found. Starting shell...${NC}"
+    bash
 fi
-source venv/bin/activate
+EOL
 
-# 3. Ensure pip up to date
-python -m pip install --quiet --upgrade pip
+    chmod +x "$script_name"
+    log_success "Generated startup script: ./$script_name"
+}
 
-# 4. Backend Python deps
-if ! pip show rasa >/dev/null 2>&1; then
-  echo -e "${GREEN}✅ Installing backend requirements...${NC}"
-  pip install --quiet -r requirements.txt
-fi
+# Display completion message
+show_completion() {
+    log_step "✨ Setup Complete! ✨"
+    
+    echo -e "\n${GREEN}🎉 Development environment is ready!${NC}\n"
+    
+    echo -e "${BOLD}Next Steps:${NC}"
+    echo -e "1. Review your .env file configuration"
+    echo -e "2. Start the development services using: ${GREEN}./start_dev.sh${NC}"
+    
+    echo -e "\n${BOLD}Development URLs:${NC}"
+    echo -e "- Frontend:    ${GREEN}http://localhost:3000${NC}"
+    echo -e "- Rasa API:    ${GREEN}http://localhost:5005${NC}"
+    echo -e "- Rasa Actions:${GREEN}http://localhost:5055${NC}"
+    
+    echo -e "\n${YELLOW}Note:${NC} The startup script will open multiple terminal windows for each service."
+    echo -e "      You can also start services manually in separate terminals."
+}
 
-# Optional dev dependencies
-if [[ "$1" == "--dev" ]] && [ -f requirements-dev.txt ]; then
-  echo -e "${GREEN}✅ Installing development requirements...${NC}"
-  pip install --quiet -r requirements-dev.txt
-fi
+# Main execution
+main() {
+    check_requirements
+    setup_environment
+    setup_python_backend
+    setup_node_frontend
+    generate_startup_script
+    show_completion
+}
 
-# 5. spaCy language models (install only if missing)
-MODELS=(en_core_web_md es_core_news_md fr_core_news_md de_core_news_md)
-for model in "${MODELS[@]}"; do
-  if ! python -m spacy validate | grep -q "^$model"; then
-    echo -e "${GREEN}✅ Downloading language model $model...${NC}"
-    python -m spacy download "$model"
-  fi
-done
-
-# 6. Frontend dependencies
-pushd frontend >/dev/null
-if [ ! -d node_modules ]; then
-  echo -e "${GREEN}✅ Installing frontend npm packages...${NC}"
-  npm install --silent
-fi
-popd >/dev/null
-
-# 7. .env management
-if [ ! -f .env ]; then
-  echo -e "${GREEN}✅ Creating .env from example...${NC}"
-  cp .env.example .env
-fi
-
-# shellcheck disable=SC1091
-source .env || true
-if [[ -z "$SUPABASE_URL" || -z "$SUPABASE_KEY" || -z "$VITE_SUPABASE_URL" || -z "$VITE_SUPABASE_KEY" ]]; then
-  echo -e "${YELLOW}⚠️  Supabase environment variables are missing in .env. Please update them before running the app.${NC}"
-fi
-
-# 8. pre-commit hooks
-if command -v pre-commit >/dev/null 2>&1 && [ -f .pre-commit-config.yaml ]; then
-  echo -e "${GREEN}✅ Installing Git pre-commit hooks...${NC}"
-  pre-commit install
-fi
-
-# 9. Done
-cat << EOF
-${GREEN}✨ Setup complete! ✨${NC}
-
-Next steps:
-  ${YELLOW}1.${NC} Start Rasa backend:    rasa run --enable-api --cors "*" --debug
-  ${YELLOW}2.${NC} Start Rasa actions:    rasa run actions --actions actions.actions
-  ${YELLOW}3.${NC} Start frontend:        cd frontend && npm start
-
-Open the app at ${GREEN}http://localhost:3000${NC}
-EOF
-set -e  # Exit on error
-
-# Colors for output
-GREEN='\033[0;32m'
-YELLOW='\033[1;33m'
-NC='\033[0m' # No Color
-
-echo -e "${YELLOW}🚀 Starting Customer Care AI Setup (Non-Docker)${NC}"
-
-# Check Python version
-PYTHON_VERSION=$(python3 -c 'import sys; print("{".join(map(str, sys.version_info[:3])))')
-PYTHON_MAJOR=$(python3 -c 'import sys; print(sys.version_info[0])')
-PYTHON_MINOR=$(python3 -c 'import sys; print(sys.version_info[1])')
-
-if [ $PYTHON_MAJOR -lt 3 ] || { [ $PYTHON_MAJOR -eq 3 ] && [ $PYTHON_MINOR -lt 8 ]; }; then
-    echo -e "${YELLOW}⚠️  Python 3.8 or higher is required. Found Python $(python3 --version)${NC}"
-    exit 1
-fi
-
-# Create and activate virtual environment
-echo -e "${GREEN}✅ Creating Python virtual environment...${NC}"
-python3 -m venv venv
-source venv/bin/activate
-
-# Upgrade pip
-echo -e "${GREEN}✅ Upgrading pip...${NC}"
-pip install --upgrade pip
-
-# Install requirements
-echo -e "${GREEN}✅ Installing Python dependencies...${NC}
-pip install -r requirements.txt
-
-# Install development dependencies if requested
-if [[ "$1" == "--dev" ]]; then
-    echo -e "${GREEN}✅ Installing development dependencies...${NC}"
-    pip install -r requirements-dev.txt
-fi
-
-# Install language models
-echo -e "${GREEN}✅ Downloading language models...${NC}
-python -m spacy download en_core_web_md
-python -m spacy download es_core_news_md
-python -m spacy download fr_core_news_md
-python -m spacy download de_core_news_md
-
-# Install frontend dependencies
-echo -e "${GREEN}✅ Installing frontend dependencies...${NC}"
-cd frontend
-npm install
-cd ..
-
-# Create .env file if it doesn't exist
-if [ ! -f .env ]; then
-    echo -e "${GREEN}✅ Creating .env file...${NC}"
-    cp .env.example .env
-    echo -e "${YELLOW}ℹ️  Please update the .env file with your configuration${NC}"
-fi
-
-# Set up pre-commit hooks
-if [ -f "$(which pre-commit)" ] && [ -f ".pre-commit-config.yaml" ]; then
-    echo -e "${GREEN}✅ Setting up pre-commit hooks...${NC}"
-    pre-commit install
-fi
-
-echo -e "\n${GREEN}✨ Setup complete! ✨${NC}"
-echo -e "\nTo start the application, run:\n"
-echo -e "${YELLOW}1. Start Redis:${NC} redis-server"
-echo -e "${YELLOW}2. Ensure SUPABASE_DB_URL and SUPABASE_KEY are set in .env (Supabase Postgres is used)"
-echo -e "${YELLOW}3. Start Rasa server:${NC} rasa run --enable-api --cors \"*\" --debug"
-echo -e "${YELLOW}4. Start Rasa actions:${NC} rasa run actions --actions actions.actions"
-echo -e "${YELLOW}5. Start frontend:${NC} cd frontend && npm start"
-echo -e "\nAccess the application at ${GREEN}http://localhost:3000${NC}"
+# Run the main function
+main "$@"
