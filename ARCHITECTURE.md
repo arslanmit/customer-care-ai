@@ -1,26 +1,107 @@
 # Customer Care AI: Architecture Overview
 
-The Customer Care AI Chatbot implements an enterprise-grade architecture that ensures scalability, maintainability, and real-time responsiveness across cloud and on-premise environments. The system leverages Google Cloud Platform for core infrastructure while maintaining compatibility with hybrid deployments.
+This document outlines the current architecture of the Customer Care AI Chatbot, which is built on Rasa Open Source with a focus on simplicity and maintainability. The system uses local file-based storage for development and testing purposes.
+
+## System Architecture
 
 ```ascii
-+----------------+     HTTPS     +---------------------+     REST/WebSocket     +------------------+
-|                | <------------> |   Chatbot Backend   | <-------------------> | Integration     |
-|  User Client   |               |    (Rasa Server)    |                       | Layer (Node.js)  |
-|  (React)       |               |                     |                       |                  |
-+----------------+               +---------------------+                       +------------------+
-                                          |                                          |
-                                          | gRPC/HTTP                                | PostgreSQL/Firestore
-                                          v                                          v
-                         +------------+                           +------------------+
-                         |  Redis     |---------|                 |  External APIs   |
-                         |  (Cache)   |         |                 |  (GCP Services)  |
-                         +------------+         |                 +------------------+
-                                                v
-                                        +------------------+
-                                        | Google Cloud     |
-                                        | (AI/ML Services) |
-                                        +------------------+
++----------------+     HTTP      +---------------------+     File I/O     +------------------+
+|                | <------------> |   Rasa Server      | <--------------> |   TinyDB         |
+|  Rasa Shell   |               |   (v3.6.21)        |                  |   (tracker store) |
+|  or API       |               |                     |                  |                  |
++----------------+               +---------------------+                  +------------------+
+                                          |
+                                          | File I/O
+                                          v
+                                 +------------------+
+                                 |   FileEventBroker |
+                                 |   (events.json)   |
+                                 +------------------+
 ```
+
+## Components
+
+### 1. Rasa Server (v3.6.21)
+- **Natural Language Understanding (NLU)**
+  - Intent classification using DIET classifier
+  - Entity extraction
+  - Support for multiple languages
+
+- **Core Components**
+  - Dialogue management with TED Policy and Rule Policy
+  - Custom actions for business logic
+  - Fallback mechanisms
+
+### 2. Data Storage
+- **TinyDB Tracker Store**
+  - File-based storage for conversation state
+  - Located at `data/rasa_conversations.json`
+  - Simple JSON format for easy inspection
+
+- **FileEventBroker**
+  - Logs conversation events to `data/events.json`
+  - Useful for debugging and analysis
+
+### 3. Custom Actions
+- **ActionTellTime**
+  - Returns the current time
+  - Example: "What time is it?"
+
+- **ActionHandoffToHuman**
+  - Initiates handoff to a human agent
+  - (Placeholder for future implementation)
+
+## Development Setup
+
+### Dependencies
+- Python 3.10
+- Rasa 3.6.21
+- TinyDB
+- FileEventBroker (built-in with Rasa)
+
+### Configuration
+- **endpoints.yml**: Configures the tracker store and event broker
+  ```yaml
+  tracker_store:
+    type: tinydb_tracker_store.TinyDBTrackerStore
+    db_path: data/rasa_conversations.json
+
+  event_broker:
+    type: FileEventBroker
+    path: data/events.json
+  ```
+
+## Data Flow
+
+1. **User Input**
+   - User sends a message via Rasa shell or API
+   - Rasa processes the message through NLU pipeline
+
+2. **Dialogue Management**
+   - Rasa Core selects the next action
+   - Custom actions are executed if needed
+   - Response is generated and sent to user
+
+3. **Persistence**
+   - Conversation state is saved to TinyDB
+   - Events are logged to events.json
+
+## Future Enhancements
+
+1. **Scalability**
+   - Replace TinyDB with PostgreSQL for production
+   - Implement Redis for caching
+   - Add load balancing for high availability
+
+2. **Monitoring**
+   - Add Prometheus metrics
+   - Set up logging with ELK stack
+   - Implement health checks
+
+3. **Features**
+   - Integration with external APIs
+   - User authentication
+   - Multi-channel support (web, mobile, etc.)
 
 ## Components Breakdown
 
