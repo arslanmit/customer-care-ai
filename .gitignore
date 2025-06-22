@@ -50,6 +50,11 @@ migration.env
 # Rasa caches and models
 .rasa/
 models/
+# Re-ignore everything under models/spacy, then allow only the specific wheel
+# Allow the entire models/spacy directory to be tracked
+models/*
+!models/spacy/
+!models/spacy/**
 .python-version
 
 # Misc
