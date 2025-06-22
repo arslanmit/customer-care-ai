@@ -1,5 +1,4 @@
 import React, { useState, createContext, useContext, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
 import './auth.css';
 import supabase from './supabaseClient';
 
@@ -43,14 +42,7 @@ export const AuthProvider = ({ children }) => {
         setIsAuthenticated(true);
         // Persist JWT for backend calls
         localStorage.setItem('auth_token', session.access_token);
-        // Fetch preferred language separately to avoid variable shadowing
-        const { data: langProfile } = await supa.from('profiles').select('preferred_language').eq('id', supaUser.id).single();
-        if (langProfile?.preferred_language) {
-          import('./i18n').then(({ default: i18n }) => {
-            i18n.changeLanguage(langProfile.preferred_language);
-            localStorage.setItem('language', langProfile.preferred_language);
-          });
-        }
+        // No longer fetching language preferences as we're English-only
         setUser({ id: me.id, name: me.name || me.email, email: me.email });
         setRole(me.role || 'user');
         setIsAuthenticated(true);
@@ -138,7 +130,6 @@ const LoginForm = ({ onSuccess }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   
   const { login, register } = useAuth();
-  const { t } = useTranslation();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -148,7 +139,7 @@ const LoginForm = ({ onSuccess }) => {
     try {
       if (isRegister) {
         if (!name) {
-          setError(t('auth.nameRequired'));
+          setError('Name is required');
           setIsSubmitting(false);
           return;
         }
@@ -168,24 +159,24 @@ const LoginForm = ({ onSuccess }) => {
 
   return (
     <div className="auth-form-container">
-      <h2>{isRegister ? t('auth.register') : t('auth.login')}</h2>
+      <h2>{isRegister ? 'Register' : 'Login'}</h2>
       
       {error && <div className="auth-error" role="alert">{error}</div>}
       
       <form onSubmit={handleSubmit} className="auth-form" aria-labelledby="auth-form-title">
         <div id="auth-form-title" className="visually-hidden">
-          {isRegister ? t('auth.register') : t('auth.login')} {t('auth.formTitle')}
+          {isRegister ? 'Register' : 'Login'} Form
         </div>
         
         {isRegister && (
           <div className="form-group">
-            <label htmlFor="name">{t('auth.name')}</label>
+            <label htmlFor="name">Name</label>
             <input
               id="name"
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder={t('auth.name')}
+              placeholder="Your name"
               required
               aria-required="true"
               disabled={isSubmitting}
@@ -194,7 +185,7 @@ const LoginForm = ({ onSuccess }) => {
         )}
         
         <div className="form-group">
-          <label htmlFor="email">{t('auth.email')}</label>
+          <label htmlFor="email">Email</label>
           <input
             id="email"
             type="email"
@@ -209,7 +200,7 @@ const LoginForm = ({ onSuccess }) => {
         </div>
         
         <div className="form-group">
-          <label htmlFor="password">{t('auth.password')}</label>
+          <label htmlFor="password">Password</label>
           <input
             id="password"
             type="password"
@@ -235,21 +226,21 @@ const LoginForm = ({ onSuccess }) => {
       </form>
       
       <p className="auth-switch">
-        {isRegister ? t('auth.loginToggle') : t('auth.registerToggle')}
+        {isRegister ? 'Already have an account?' : 'Don\'t have an account?'}
         <button 
           className="auth-switch-button"
           onClick={() => setIsRegister(!isRegister)}
           type="button"
           disabled={isSubmitting}
         >
-          {isRegister ? t('auth.login') : t('auth.register')}
+          {isRegister ? 'Login' : 'Register'}
         </button>
       </p>
       
       <div className="auth-demo-info">
-        <p>{t('auth.demoCredentials')}</p>
-        <p>{t('auth.demoEmail')}</p>
-        <p>{t('auth.demoPassword')}</p>
+        <p>Demo Credentials:</p>
+        <p>Email: demo@example.com</p>
+        <p>Password: password123</p>
       </div>
     </div>
   );

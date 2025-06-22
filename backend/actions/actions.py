@@ -12,35 +12,7 @@ from rasa_sdk.events import SlotSet, UserUtteranceReverted
 logger = logging.getLogger(__name__)
 
 
-def get_language(tracker: Tracker) -> Text:
-    """Get the current language from tracker or default to English.
-    
-    Args:
-        tracker: The conversation tracker
-        
-    Returns:
-        The detected language code (en, es, fr, de, tr)
-    """
-    try:
-        # Check request language from header if available
-        language_header = next(
-            (e for e in tracker.events if e.get('event') == 'user' and e.get('metadata', {}).get('language')),
-            None
-        )
-        
-        if language_header:
-            lang_code = language_header.get('metadata', {}).get('language', 'en')
-            if lang_code in ['en', 'es', 'fr', 'de', 'tr']:
-                return lang_code
-        
-        # Get language from slot if set
-        language = tracker.get_slot('language')
-        if language and language in ['en', 'es', 'fr', 'de', 'tr']:
-            return language
-    except Exception as e:
-        logger.error(f"Error detecting language: {e}")
-        
-    return 'en'  # Default to English
+# Language detection removed - English only
 
 
 class ActionTellJoke(Action):
@@ -55,42 +27,17 @@ class ActionTellJoke(Action):
         tracker: Tracker,
         domain: Dict[Text, Any],
     ) -> List[Dict[Text, Any]]:
-        language = get_language(tracker)
+        language = 'en'  # English only
         
-        jokes = {
-            'en': [
-                "Why don't scientists trust atoms? Because they make up everything!",
-                "I told my computer I needed a break, and it said 'No problem — I'll go to sleep.'",
-                "Why did the scarecrow win an award? Because he was outstanding in his field!",
-                "I asked the IT guy, 'Why is my computer so slow?' He said, 'You have too many tabs open.' If only that worked for my life too.",
-                "Why don't programmers like nature? It has too many bugs."
-            ],
-            'es': [
-                "¿Por qué los científicos no confían en los átomos? ¡Porque lo componen todo!",
-                "Le dije a mi computadora que necesitaba un descanso y me dijo 'No hay problema, me voy a dormir'.",
-                "¿Por qué el espantapájaros ganó un premio? ¡Porque era sobresaliente en su campo!",
-                "¿Qué le dice un bit al otro? Nos vemos en el bus."
-            ],
-            'fr': [
-                "Pourquoi les scientifiques ne font pas confiance aux atomes ? Parce qu'ils inventent tout !",
-                "J'ai dit à mon ordinateur que j'avais besoin d'une pause, et il a dit 'Pas de problème — je vais dormir.'",
-                "Pourquoi l'épouvantail a-t-il gagné un prix ? Parce qu'il était excellent dans son domaine !"
-            ],
-            'de': [
-                "Warum vertrauen Wissenschaftler Atomen nicht? Weil sie alles erfinden!",
-                "Ich habe meinem Computer gesagt, dass ich eine Pause brauche, und er sagte 'Kein Problem — ich schlafe ein.'",
-                "Warum hat die Vogelscheuche einen Preis gewonnen? Weil sie auf ihrem Gebiet hervorragend war!"
-            ],
-            'tr': [
-                "Bilim insanları neden atomlara güvenmez? Çünkü her şeyi onlar uydurur!",
-                "Bilgisayarıma ara vermem gerektiğini söyledim, o da 'Sorun değil — ben uyuyacağım.' dedi.",
-                "Korkuluk neden ödül kazandı? Çünkü alanında üstündü!",
-                "Programcılar neden doğayı sevmez? Çünkü içinde çok fazla hata vardır."
-            ]
-        }
+        jokes = [
+            "Why don't scientists trust atoms? Because they make up everything!",
+            "I told my computer I needed a break, and it said 'No problem — I'll go to sleep.'",
+            "Why did the scarecrow win an award? Because he was outstanding in his field!",
+            "I asked the IT guy, 'Why is my computer so slow?' He said, 'You have too many tabs open.' If only that worked for my life too.",
+            "Why don't programmers like nature? It has too many bugs."
+        ]
         
-        # Fall back to English if the language is not supported
-        available_jokes = jokes.get(language, jokes['en'])
+        available_jokes = jokes
         joke = random.choice(available_jokes)
         
         # Add intent metadata for analytics
@@ -111,7 +58,7 @@ class ActionTellTime(Action):
         tracker: Tracker,
         domain: Dict[Text, Any],
     ) -> List[Dict[Text, Any]]:
-        language = get_language(tracker)
+        language = 'en'  # English only
         now = datetime.now()
         
         time_formats = {
@@ -162,7 +109,7 @@ class ActionTellDate(Action):
         tracker: Tracker,
         domain: Dict[Text, Any],
     ) -> List[Dict[Text, Any]]:
-        language = get_language(tracker)
+        language = 'en'  # English only
         now = datetime.now()
         
         # Format date based on language
@@ -214,7 +161,7 @@ class ActionTellDateTime(Action):
         tracker: Tracker,
         domain: Dict[Text, Any],
     ) -> List[Dict[Text, Any]]:
-        language = get_language(tracker)
+        language = 'en'  # English only
         now = datetime.now()
         
         # Format date and time based on language
@@ -264,41 +211,7 @@ class ActionTellDateTime(Action):
         return []
 
 
-class ActionSetLanguage(Action):
-    """Set the user's preferred language."""
-
-    def name(self) -> Text:
-        return "action_set_language"
-
-    def run(
-        self,
-        dispatcher: CollectingDispatcher,
-        tracker: Tracker,
-        domain: Dict[Text, Any],
-    ) -> List[Dict[Text, Any]]:
-        language = next(tracker.get_latest_entity_values("language"), None)
-        
-        if not language:
-            # If no language entity was found, try to extract from the latest message
-            language = tracker.latest_message.get('text', '').lower()
-            
-            # Simple language detection from text
-            if 'spanish' in language or 'español' in language or 'espanol' in language:
-                language = 'es'
-            elif 'french' in language or 'français' in language or 'francais' in language:
-                language = 'fr'
-            elif 'german' in language or 'deutsch' in language:
-                language = 'de'
-            elif 'turkish' in language or 'türkçe' in language or 'turkce' in language:
-                language = 'tr'
-            else:
-                language = 'en'  # Default to English
-        
-        # Ensure language is in our supported languages
-        if language not in ['en', 'es', 'fr', 'de', 'tr']:
-            language = 'en'
-        
-        return [SlotSet("language", language)]
+# ActionSetLanguage class removed - English only now
 
 
 class ActionIncrementFallbackCount(Action):
@@ -377,7 +290,7 @@ class ActionAskOrderNumber(Action):
         Ask the user for their order number to check the status.
         """
         # Get the language
-        language = get_language(tracker)
+        language = 'en'  # English only
         
         # For now, we'll use the default English response from domain.yml
         # In a real implementation, you might want to add multilingual support here
@@ -405,7 +318,7 @@ class ActionDefaultFallback(Action):
         logger.debug("Triggered default fallback action.")
         
         # Get the language
-        language = get_language(tracker)
+        language = 'en'  # English only
         
         # Get the latest user message
         latest_message = tracker.latest_message
@@ -420,29 +333,11 @@ class ActionDefaultFallback(Action):
         
         # Check if this is an out of scope message
         if intent == 'out_of_scope':
-            if language == 'es':
-                dispatcher.utter_message(response="utter_out_of_scope_es")
-            elif language == 'fr':
-                dispatcher.utter_message(response="utter_out_of_scope_fr")
-            elif language == 'de':
-                dispatcher.utter_message(response="utter_out_of_scope_de")
-            elif language == 'tr':
-                dispatcher.utter_message(response="utter_out_of_scope_tr")
-            else:
-                dispatcher.utter_message(response="utter_out_of_scope")
+            dispatcher.utter_message(response="utter_out_of_scope")
             return []
             
-        # For other fallbacks, try to respond based on language
-        if language == 'es':
-            dispatcher.utter_message(text="Lo siento, no estoy seguro de lo que quieres decir. ¿Podrías reformularlo?")
-        elif language == 'fr':
-            dispatcher.utter_message(text="Je suis désolé, je ne suis pas sûr de comprendre. Pourriez-vous reformuler ?")
-        elif language == 'de':
-            dispatcher.utter_message(text="Es tut mir leid, ich bin mir nicht sicher, was Sie meinen. Könnten Sie es anders formulieren?")
-        elif language == 'tr':
-            dispatcher.utter_message(text="Üzgünüm, ne demek istediğinizden emin değilim. Başka şekilde ifade edebilir misiniz?")
-        else:
-            dispatcher.utter_message(response="utter_default")
+        # Default fallback response (English only)
+        dispatcher.utter_message(response="utter_default")
             
         # Revert user message which led to fallback.
         return [UserUtteranceReverted()]

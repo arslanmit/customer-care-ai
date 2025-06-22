@@ -1,48 +1,16 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useTranslation } from 'react-i18next';
 import './chatbot.css';
 import Analytics from './Analytics';
 import { useAuth, LoginForm, AuthProvider } from './Auth';
-import './i18n';
 import { logEvent } from './analyticsService';
 import Feedback from './Feedback';
 import supabase from './supabaseClient';
 
 const RASA_BASE_URL = import.meta.env.VITE_RASA_URL || "http://localhost:5005";
 
-const LanguageSwitcher = () => {
-  const { i18n, t } = useTranslation();
-  const { isAuthenticated, user } = useAuth();
-
-  const languages = ['en', 'es', 'fr', 'de', 'tr'];
-
-  return (
-    <div className="language-switcher">
-      <select 
-        value={i18n.language} 
-        onChange={(e) => {
-          const lng = e.target.value;
-          i18n.changeLanguage(lng);
-          localStorage.setItem('language', lng);
-          if (isAuthenticated && supabase && user?.id) {
-            supabase.from('profiles').upsert({ id: user.id, preferred_language: lng }).then();
-          }
-        }}
-        aria-label={t('chatbot.selectLanguage')}
-        className="language-select"
-      >
-        {languages.map((lang) => (
-          <option key={lang} value={lang}>
-            {t(`chatbot.languages.${lang}`)}
-          </option>
-        ))}
-      </select>
-    </div>
-  );
-};
+// LanguageSwitcher component removed as we're focusing on English only
 
 const ChatInterface = ({ messages, input, setInput, handleSend, handleKeyPress, showLoginForm, setShowLoginForm }) => {
-  const { t } = useTranslation();
   const messagesEndRef = useRef(null);
   const { isAuthenticated, user, logout } = useAuth();
   
@@ -56,16 +24,15 @@ const ChatInterface = ({ messages, input, setInput, handleSend, handleKeyPress, 
   return (
     <div className="chat-interface">
       <div className="chat-header">
-        <h2>{t('chatbot.title')}</h2>
+        <h2>Customer Care Assistant</h2>
         <div className="chat-controls">
-          <LanguageSwitcher />
           {isAuthenticated ? (
             <button className="auth-button" onClick={logout}>
-              {t('chatbot.logout')} ({user?.name})
+              Logout ({user?.name})
             </button>
           ) : (
             <button className="auth-button" onClick={() => setShowLoginForm(true)}>
-              {t('chatbot.login')}
+              Login
             </button>
           )}
         </div>
@@ -86,11 +53,11 @@ const ChatInterface = ({ messages, input, setInput, handleSend, handleKeyPress, 
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKeyPress}
-          placeholder={t('chatbot.placeholder')}
+          placeholder="Type your message..."
           className="chat-input"
         />
         <button onClick={handleSend} className="send-button">
-          {t('chatbot.sendButton')}
+          Send
         </button>
       </div>
     </div>
@@ -100,7 +67,6 @@ const ChatInterface = ({ messages, input, setInput, handleSend, handleKeyPress, 
 
 
 const ChatbotContainer = () => {
-  const { t, i18n } = useTranslation();
   const [messages, setMessages] = useState([]);
   const [showFeedback, setShowFeedback] = useState(false);
   const [input, setInput] = useState('');
@@ -115,10 +81,10 @@ const ChatbotContainer = () => {
     }
   }, []);
 
-  // Initialize with welcome message translated based on current language
+  // Initialize with welcome message
   useEffect(() => {
-    setMessages([{ sender: 'bot', text: t('chatbot.welcomeMessage') }]);
-  }, [t]);
+    setMessages([{ sender: 'bot', text: "Hello! How can I assist you today?" }]);
+  }, []);
 
   const handleSend = async () => {
     if (!input.trim()) return;
@@ -144,12 +110,11 @@ const ChatbotContainer = () => {
     };
 
     try {
-      // Send current language to Rasa for potential multilingual processing
+      // Send request to Rasa (removed language header as we're English-only now)
       const res = await fetch(`${RASA_BASE_URL}/webhooks/rest/webhook`, {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',
-          'Accept-Language': i18n.language,
           ...(localStorage.getItem('auth_token') && { 'Authorization': `Bearer ${localStorage.getItem('auth_token')}` })
         },
         body: JSON.stringify({ 
@@ -189,7 +154,7 @@ const ChatbotContainer = () => {
       }
     } catch (err) {
       console.error('Error communicating with Rasa backend:', err);
-      setMessages((prev) => [...prev, { sender: 'bot', text: t('chatbot.errorMessage') }]);
+      setMessages((prev) => [...prev, { sender: 'bot', text: "Sorry, something went wrong." }]);
     }
   };
 
@@ -208,7 +173,7 @@ const ChatbotContainer = () => {
             className="toggle-view-button"
             onClick={() => setShowAnalytics(false)}
           >
-            {t('chatbot.backToChat')}
+            Back to Chat
           </button>
         </>
       ) : (
@@ -226,9 +191,9 @@ const ChatbotContainer = () => {
             <button 
               className="toggle-view-button"
               onClick={() => setShowAnalytics(true)}
-              aria-label={t('chatbot.viewAnalytics')}
+              aria-label="View Analytics"
             >
-              {t('chatbot.viewAnalytics')}
+              View Analytics
             </button>
           )}
         </>
