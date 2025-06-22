@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { render, screen, waitFor, renderHook, act } from '@testing-library/react';
+import { render, screen, waitFor, renderHook } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { AuthProvider, useAuth } from './Auth.jsx';
 
@@ -36,6 +36,16 @@ describe('Auth Context', () => {
   };
 
   beforeEach(() => {
+    // Mock fetch for API calls
+    global.fetch = vi.fn((url, opts) => {
+      if (url.endsWith('/login') || url.endsWith('/register')) {
+        return Promise.resolve({ ok: true, json: () => Promise.resolve({ access_token: 'mock-token' }) });
+      }
+      if (url.endsWith('/me')) {
+        return Promise.resolve({ ok: true, json: () => Promise.resolve({ id: '1', name: 'Demo User', email: 'user@example.com', role: 'user' }) });
+      }
+      return Promise.resolve({ ok: false, json: () => Promise.resolve({ detail: 'not found' }) });
+    });
     // Clear all mocks and localStorage before each test
     vi.clearAllMocks();
     
@@ -49,6 +59,7 @@ describe('Auth Context', () => {
   afterEach(() => {
     // Cleanup
     vi.restoreAllMocks();
+    global.fetch.mockRestore && global.fetch.mockRestore();
   });
 
   it('provides initial auth state', () => {

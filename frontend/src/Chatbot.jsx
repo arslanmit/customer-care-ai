@@ -96,12 +96,12 @@ const ChatInterface = ({ messages, input, setInput, handleSend, handleKeyPress, 
 };
 
 const ChatbotContainer = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const [showAnalytics, setShowAnalytics] = useState(false);
   const [showLoginForm, setShowLoginForm] = useState(false);
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, role } = useAuth();
 
   // Initialize session ID for analytics tracking if not exists
   useEffect(() => {
@@ -136,7 +136,8 @@ const ChatbotContainer = () => {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',
-          'Accept-Language': i18n.language
+          'Accept-Language': i18n.language,
+          ...(localStorage.getItem('auth_token') && { 'Authorization': `Bearer ${localStorage.getItem('auth_token')}` })
         },
         body: JSON.stringify({ 
           sender: isAuthenticated ? localStorage.getItem('auth_token') : 'guest-user',
@@ -174,7 +175,7 @@ const ChatbotContainer = () => {
     <div className="chatbot-container">
       {showLoginForm ? (
         <LoginForm onSuccess={() => setShowLoginForm(false)} />
-      ) : showAnalytics && isAuthenticated ? (
+      ) : showAnalytics && isAuthenticated && role === 'admin' ? (
         <>
           <Analytics conversationHistory={messages} />
           <button 
@@ -195,7 +196,7 @@ const ChatbotContainer = () => {
             showLoginForm={showLoginForm}
             setShowLoginForm={setShowLoginForm}
           />
-          {isAuthenticated && (
+          {isAuthenticated && role === 'admin' && (
             <button 
               className="toggle-view-button"
               onClick={() => setShowAnalytics(true)}
