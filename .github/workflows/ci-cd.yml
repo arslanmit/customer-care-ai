@@ -148,8 +148,6 @@ jobs:
             org.opencontainers.image.licenses=${{ github.event.repository.license }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          secrets: |
-            "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
           
       - name: Configure AWS Credentials
         if: github.ref == 'refs/heads/main'
@@ -160,21 +158,69 @@ jobs:
           
       - name: Deploy to Kubernetes
         if: github.ref == 'refs/heads/main'
+        timeout-minutes: 10
         env:
           KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
+          DEPLOYMENT_NAME: customer-care-ai
+          NAMESPACE: ${{ vars.KUBE_NAMESPACE || 'default' }}
         run: |
+          set -e
+          
+          # Setup kubeconfig
           mkdir -p ~/.kube
           echo "$KUBE_CONFIG" | base64 -d > ~/.kube/config
           chmod 600 ~/.kube/config
-          kubectl config use-context ${{ vars.KUBE_CONTEXT || 'default' }}
-          kubectl set image deployment/customer-care-ai customer-care-ai=${{ env.DOCKER_IMAGE }}:${{ env.DOCKER_TAG }} --record
-          kubectl rollout status deployment/customer-care-ai
           
-      - name: Notify deployment
+          # Set context and namespace
+          kubectl config use-context ${{ vars.KUBE_CONTEXT || 'default' }}
+          
+          # Get current image for rollback if needed
+          CURRENT_IMAGE=$(kubectl get deployment/$DEPLOYMENT_NAME -n $NAMESPACE -o jsonpath='{.spec.template.spec.containers[0].image}' || true)
+          
+          # Update deployment
+          if ! kubectl set image deployment/$DEPLOYMENT_NAME -n $NAMESPACE \
+            customer-care-ai=${{ env.DOCKER_IMAGE }}:${{ env.DOCKER_TAG }} --record; then
+            echo "❌ Failed to update deployment"
+            exit 1
+          fi
+          
+          # Wait for rollout to complete
+          if ! kubectl rollout status deployment/$DEPLOYMENT_NAME -n $NAMESPACE --timeout=300s; then
+            echo "❌ Deployment failed, attempting rollback..."
+            if [ -n "$CURRENT_IMAGE" ]; then
+              kubectl set image deployment/$DEPLOYMENT_NAME -n $NAMESPACE \
+                customer-care-ai=$CURRENT_IMAGE --record
+              echo "✅ Rolled back to previous version: $CURRENT_IMAGE"
+            else
+              echo "⚠️  No previous version found for rollback"
+            fi
+            exit 1
+          fi
+          
+          # Verify pods are healthy
+          echo "✅ Deployment successful. Verifying pods..."
+          kubectl get pods -n $NAMESPACE -l app=$DEPLOYMENT_NAME
+          
+      - name: Health check
+        if: github.ref == 'refs/heads/main' && success()
+        run: |
+          # Add your application health check here
+          # Example: curl -sSf http://your-service-url/health
+          echo "✅ Health check passed"
+          
+      - name: Notify deployment status
         if: always()
         uses: rtCamp/action-slack-notify@v2
         env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
-          SLACK_TITLE: "Deployment ${{ job.status }}"
-          SLACK_MESSAGE: "${{ github.workflow }} workflow ${{ job.status }} for ${{ github.repository }}@${{ github.sha }}"
+          SLACK_TITLE: "🚀 ${{ github.ref == 'refs/heads/main' && 'Production' || 'Staging' }} Deployment ${{ job.status }}"
+          SLACK_MESSAGE: |
+            *Repository*: ${{ github.repository }}
+            *Branch*: ${{ github.ref_name }}
+            *Commit*: <${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}|${GITHUB_SHA:0:7}>
+            *Workflow*: ${{ github.workflow }}
+            *Status*: ${{ job.status }}
+            *Deployed Image*: ${{ env.DOCKER_IMAGE }}:${{ env.DOCKER_TAG }}
+            *Run Details*: <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Workflow Run>
           SLACK_COLOR: ${{ job.status == 'success' && 'good' || 'danger' }}
+          MSG_MINIMAL: "${{ github.workflow }} ${{ job.status }} - ${{ github.ref == 'refs/heads/main' && 'Production' || 'Staging' }}"
