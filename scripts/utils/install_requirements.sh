@@ -28,6 +28,8 @@ cd "$PROJECT_ROOT"
 
 echo "Installing Python dependencies..."
 pip install -r requirements.txt
+echo "Installing Rasa..."
+pip install rasa==3.6.21 rasa-sdk==3.6.21
 
 echo "Checking for spaCy models..."
 MODEL_FILES=(
