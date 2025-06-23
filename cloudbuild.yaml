@@ -1,8 +1,7 @@
 # Configure build options
 options:
-  # Use regional user-owned bucket for build logs
+  # Use Cloud Logging only for build logs
   logging: CLOUD_LOGGING_ONLY
-  defaultLogsBucketBehavior: REGIONAL_USER_OWNED_BUCKET
 
 steps:
   # Build the container image
