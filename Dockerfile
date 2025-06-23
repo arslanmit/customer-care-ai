@@ -58,7 +58,7 @@ COPY --from=builder /app/requirements-clean.txt /app/requirements.txt
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install --no-cache-dir -r /app/requirements.txt && \
-    pip install --no-cache-dir rasa==3.5.0 rasa-sdk==3.5.0 && \
+    pip install --no-cache-dir rasa==3.6.21 rasa-sdk==3.6.21 && \
     python -m spacy download en_core_web_md && \
     python -m spacy download es_core_news_md && \
     python -m spacy download fr_core_news_md && \

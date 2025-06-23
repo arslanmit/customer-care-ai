@@ -1,7 +1,7 @@
 # Rasa dependencies are installed separately (e.g., via Docker or existing environment)
-# If you need to install Rasa manually, choose a compatible version for your Python setup, e.g.:
-# rasa==3.5.0
-# rasa-sdk==3.5.0
+# If you need to install Rasa manually, pin the version explicitly:
+# rasa==3.6.21
+# rasa-sdk==3.6.21
 
 # Natural Language Processing
 spacy==3.7.4  # compatible with models 3.7.x

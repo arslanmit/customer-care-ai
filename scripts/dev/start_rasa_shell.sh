@@ -198,12 +198,16 @@ if [ -z "$MODEL_PATH" ]; then
     if [ -d "models" ]; then
         MODEL_PATH=$(find models -type f -name "*.tar.gz" -exec ls -t {} + 2>/dev/null | head -n 1)
     fi
-    
+
     if [ -z "$MODEL_PATH" ] || [ ! -f "$MODEL_PATH" ]; then
-        log "ERROR" "No model found in the models/ directory. Please train a model first."
-        exit 1
+        log "WARNING" "No model found. Training a new model..."
+        if ! rasa train --quiet --fixed-model-name temp_model; then
+            log "ERROR" "Model training failed."
+            exit 1
+        fi
+        MODEL_PATH=$(find models -type f -name "temp_model.tar.gz" -print -quit)
     fi
-    
+
     log "SUCCESS" "Using model: $(basename "$MODEL_PATH")"
 else
     if [ ! -f "$MODEL_PATH" ]; then
