@@ -30,17 +30,12 @@ COPY requirements.txt .
 
 # Create a temporary requirements file without the model files
 RUN set -ex \
-    && grep -v '^models/' requirements.txt > /tmp/requirements.txt \
-    && echo "spacy>=3.7.0,<4.0.0" >> /tmp/requirements.txt
+    && grep -v '^models/' requirements.txt > /app/requirements-clean.txt \
+    && echo "spacy>=3.7.0,<4.0.0" >> /app/requirements-clean.txt
 
 # Install Python dependencies
 RUN set -ex \
-    && pip install --user -r /tmp/requirements.txt \
-    # Install spaCy models
-    && python -m spacy download en_core_web_md \
-    && python -m spacy download es_core_news_md \
-    && python -m spacy download fr_core_news_md \
-    && python -m spacy download de_core_news_md \
+    && pip install --user -r /app/requirements-clean.txt \
     # Clean up build dependencies
     && apt-get remove -y --auto-remove build-essential curl git \
     && apt-get clean \
@@ -82,14 +77,21 @@ RUN set -ex \
     && apt-get install -y --no-install-recommends libpq5 \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy requirements from builder
-COPY --from=builder /app/requirements.txt .
+# Copy the cleaned requirements file from the builder stage
+COPY --from=builder /app/requirements-clean.txt /app/requirements.txt
 
 # Install Python dependencies
 RUN set -ex \
-    && pip install --no-cache-dir -r requirements.txt \
-    && find /usr/local -depth \\( \\( -type d -a \\( -name test -o -name tests -o -name idle_test \\) \\) \
-                    -o \\( -type f -a \\( -name '*.pyc' -o -name '*.pyo' \\) \\) \\) -exec rm -rf '{}' +
+    && pip install --no-cache-dir -r /app/requirements.txt \
+    # Install spaCy models
+    && python -m spacy download en_core_web_md \
+    && python -m spacy download es_core_news_md \
+    && python -m spacy download fr_core_news_md \
+    && python -m spacy download de_core_news_md \
+    # Clean up
+    && find /usr/local -type d -name 'test*' -o -name 'tests' -o -name 'idle_test' | xargs rm -rf 2>/dev/null || true \
+    && find /usr/local -type f -name '*.pyc' -o -name '*.pyo' | xargs rm -f 2>/dev/null || true \
+    && rm -f /app/requirements-clean.txt
 
 # Copy application code
 COPY --chown=$APP_USER:$APP_USER backend/ ./backend/
