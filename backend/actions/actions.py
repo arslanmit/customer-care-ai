@@ -388,6 +388,19 @@ class ActionProvideOrderStatus(Action):
     def name(self) -> Text:
         return "action_provide_order_status"
 
-    async def run(self, dispatcher, tracker, domain):
-        dispatcher.utter_message(text="[Placeholder] This is action_provide_order_status.")
+    def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        dispatcher.utter_message(text="I'll check your order status. Could you please provide your order number?")
         return []
+
+
+# Favicon handler to suppress 404 errors
+from sanic import response
+from sanic.blueprints import Blueprint
+
+# Create a blueprint for favicon
+favicon_bp = Blueprint('favicon')
+
+@favicon_bp.get('/favicon.ico')
+async def favicon(request):
+    # Return a 204 No Content response with empty body
+    return response.raw(b'', status=204, headers={'Content-Type': 'image/x-icon'})
