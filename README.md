@@ -1,20 +1,20 @@
 # Customer Care AI
 
-An enterprise-ready conversational AI chatbot built with Rasa (backend), designed to handle customer service inquiries with enhanced fallback strategies, advanced analytics, and Context7 integration. The application can be deployed on-premise or in the cloud with Google Cloud integration.
+An enterprise-ready conversational AI chatbot built with Rasa (backend), designed to handle customer service inquiries with enhanced fallback strategies, advanced analytics, . The application can be deployed on-premise or in the cloud with Google Cloud integration.
 
 [![Rasa Version](https://img.shields.io/badge/Rasa-3.6%2B-5a17ee.svg)](https://rasa.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Context7 Compatible](https://img.shields.io/badge/Context7-Compatible-blue.svg)](https://context7.ai)
+
 [![Google Cloud Ready](https://img.shields.io/badge/Google%20Cloud-Ready-4285F4.svg)](https://cloud.google.com/)
 
 ## 🚀 Key Features
 
 - **Enhanced Fallback Strategies**: Multi-stage fallbacks with configurable confidence thresholds
 - **Multilingual Support**: Native support for multiple languages with automatic detection
-- **Advanced Analytics Dashboard**: Real-time metrics and conversation insights with Context7 integration
+- **Advanced Analytics Dashboard**: Real-time metrics and conversation insights
 - **RASA Watchdog**: Automatic monitoring and self-healing for high availability
 - **Google Cloud Integration**: Built-in deployment support for Google Cloud Run and Storage
-- **Context7 Framework**: Enhanced data processing and analytics capabilities
+
 - **High Availability**: Auto-restart capability with configurable retry limits
 
 ## 🚀 Quick Start
@@ -109,9 +109,9 @@ The enhanced fallback system provides improved handling of low-confidence and am
 
 Configuration is in `backend/config.yml` under the `policies` section.
 
-### Analytics Dashboard with Context7
+### Analytics Dashboard
 
-The Context7-integrated analytics dashboard provides real-time insights into your chatbot's performance:
+The analytics dashboard provides real-time insights into your chatbot's performance:
 
 - **Real-time metrics**: Track conversation volume, user satisfaction, and intent distribution
 - **Dynamic data loading**: Automatically locates and processes conversation data from multiple sources
@@ -184,7 +184,7 @@ customer-care-ai/​
 │   ├── results/                # Test and analytics reports
 │   ├── fallback_config/        # Enhanced fallback strategies configuration
 │   │   └── enhanced_fallbacks.yml # Enhanced fallback definitions
-│   ├── analytics_dashboard.py  # Context7-integrated analytics dashboard
+│   ├── analytics_dashboard.py  # Analytics dashboard
 │   └── tests/                  # Backend tests
 ├── monitoring/                 # Monitoring setup
 │   ├── grafana/                # Grafana dashboards
@@ -300,7 +300,7 @@ The application includes comprehensive monitoring and analytics:
 
 ### Analytics Dashboard
 
-- **Context7-integrated** analytics for conversation insights
+- Advanced analytics for conversation insights
 - **Real-time metrics**: User satisfaction, intent distribution, fallback rates
 - **Conversation viewer**: Detailed conversation history and analysis
 - **Export capabilities**: Download reports in CSV format
@@ -312,18 +312,18 @@ The application includes comprehensive monitoring and analytics:
 - **Google Cloud Logging**: Integration with cloud-based log analysis
 - **Alerting**: Configurable alerts for critical issues
 
-## Context7 Integration
 
-This project integrates with the Context7 framework to provide enhanced conversation analysis and data processing capabilities:
 
-### Key Context7 Features
+
+
+
 
 - **Dynamic Data Loading**: Automatically locate and load conversation data from multiple sources
 - **Format Detection**: Support for multiple conversation data formats
 - **Enhanced Analytics**: Advanced metrics and visualizations
 - **Flexible Path Resolution**: Environment variables and fallback paths for reliable data access
 
-### Using Context7
+
 
 1. Configure the data path:
 
@@ -332,7 +332,7 @@ This project integrates with the Context7 framework to provide enhanced conversa
    CONVERSATION_DATA_PATH=/path/to/your/conversation/data.json
    ```
 
-2. Start the Context7-integrated analytics dashboard:
+
 
    ```bash
    cd backend
@@ -362,7 +362,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## Acknowledgments
 
 - [RASA](https://rasa.com/) - The open source machine learning framework for automated text and voice-based conversations
-- [Context7](https://context7.ai) - For enhanced conversation analytics capabilities
+
 - [Streamlit](https://streamlit.io/) - For the analytics dashboard interface
 - [Google Cloud](https://cloud.google.com/) - For cloud deployment and storage solutions
 - [](https://.com/) - For the open-source Firebase alternative

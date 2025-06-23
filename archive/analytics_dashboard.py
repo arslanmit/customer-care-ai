@@ -46,10 +46,10 @@ if start_date > end_date:
     st.error("Error: End date must be after start date")
 
 
-# Function to load conversation data with Context7 integration - dynamic path resolution
+
 @st.cache_data
 def load_conversation_data(custom_path=None):
-    """Load and process the conversation data using Context7 framework.
+    """Load and process the conversation data.
 
     This function dynamically locates and loads conversation data using the following
     priority:
@@ -107,7 +107,7 @@ def load_conversation_data(custom_path=None):
             st.sidebar.error(err)
         return []
 
-    # Context7 format detection and processing
+
     # For direct JSON format with conversations array
     if "conversations" in data:
         return data["conversations"]
@@ -122,7 +122,7 @@ def load_conversation_data(custom_path=None):
             if not isinstance(tracker_data, dict) or "events" not in tracker_data:
                 continue
 
-            # Extract conversation events with Context7 processing
+
             events = tracker_data.get("events", [])
             sender_id = tracker_data.get("sender_id", "unknown")
 
@@ -232,7 +232,7 @@ filtered_conversations = [
     if "timestamp" in conv and start_date <= conv["timestamp"].date() <= end_date
 ]
 
-# Calculate metrics from the Context7 conversation data format
+# Calculate metrics from the conversation data format
 # Process data to get required metrics
 for conv in filtered_conversations:
     # Calculate number of user messages
@@ -303,12 +303,12 @@ with col4:
     ):
         st.metric("Avg. User Rating", "N/A")
 
-# Create charts with Context7 data format
+# Create charts with the data format
 st.subheader("Conversation Analytics")
 
 # Conversations by day
 if filtered_conversations:
-    # Extract dates from the timestamp field in the Context7 format
+    # Extract dates from the timestamp field
     conversation_dates = [
         (
             conv["timestamp"].date()
@@ -446,7 +446,7 @@ if filtered_conversations:
             conv_df = pd.DataFrame(table_data)
             st.dataframe(conv_df, use_container_width=True)
 
-            # Context7 Conversation Viewer
+
             st.subheader("Conversation Viewer")
 
             # Create a dropdown to select a conversation

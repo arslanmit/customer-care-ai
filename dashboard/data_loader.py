@@ -4,7 +4,7 @@ import streamlit as st
 from datetime import datetime
 
 def load_conversation_data(custom_path=None):
-    """Load and process the conversation data using Context7 framework.
+    """Load and process the conversation data.
 
     This function dynamically locates and loads conversation data using the following
     priority:
