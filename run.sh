@@ -136,4 +136,4 @@ print_service_status "Rasa actions server" 5055 "rasa run actions"
 
 echo -e "${YELLOW}To stop all services, use:${NC}"
 echo -e "  ${BLUE}docker-compose down${NC} (if using Docker)"
-echo -e "  ${BLUE}kill $(pgrep -f 'rasa|redis|vite')${NC} (if running locally)"
+echo -e "  ${BLUE}kill $(pgrep -f 'rasa|redis')${NC} (if running locally)"
