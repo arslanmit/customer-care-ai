@@ -16,11 +16,18 @@
    git clone https://github.com/your-username/customer-care-ai.git
    cd customer-care-ai
    pip install -r requirements.txt
-   ```
-   Optionally download spaCy models:
+  pip install rasa==3.6.21 rasa-sdk==3.6.21
+  ```
+  Optionally download spaCy models:
+  ```bash
+  python scripts/download_models.py
+  ./scripts/utils/install_requirements.sh
+  ```
+   Train an initial model:
    ```bash
-   python scripts/download_models.py
-   ./scripts/utils/install_requirements.sh
+   cd backend
+   rasa train
+   cd ..
    ```
 2. Copy `.env.example` to `.env` and adjust values.
 3. Start services with Docker (or use `./setup.sh`):

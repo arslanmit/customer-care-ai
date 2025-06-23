@@ -1,7 +1,7 @@
 services:
   # Rasa Core Service
   rasa:
-    image: rasa/rasa:3.6.0-full
+    image: rasa/rasa:3.6.21-full
     ports:
       - "5005:5005"
     volumes:
@@ -20,7 +20,7 @@ services:
 
   # Rasa Actions Server
   actions:
-    image: rasa/rasa-sdk:3.6.0
+    image: rasa/rasa-sdk:3.6.21
     volumes:
       - ./actions:/app/actions
     environment:
