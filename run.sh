@@ -2,10 +2,10 @@
 set -xeuo pipefail
 trap 'echo "${RED}ERROR: Script exited unexpectedly at line $LINENO${NC}"' ERR
 
-# Customer Care AI Unified Runner with Context7 Integration
+# Customer Care AI Unified Runner
 # This script launches all core services for local development.
 # Requirements: Python venv activated, Node.js, npm, Docker (for Rasa backend), Redis
-# Optional: Context7 CLI for enhanced developer experience
+
 
 # Color output helpers
 RED='\033[0;31m'
