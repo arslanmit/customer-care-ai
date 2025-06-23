@@ -40,12 +40,25 @@ coverage.xml
 *.pem
 *.key
 
-# Ignore models directory but track specific model files
+# Ignore all model binaries
 models/
-!models/de_core_news_md-3.7.0.tar.gz
-!models/en_core_web_md-3.7.1.tar.gz
-!models/es_core_news_md-3.7.0.tar.gz
-!models/fr_core_news_md-3.7.0.tar.gz
+models/*.tar.gz
+models/*.whl
+models/*.bin
+models/*.pt
+models/*.h5
+models/*.pkl
+models/*.zip
+models/*.gz
+models/*.bz2
+
+# Track only README and __init__.py in models/
+!models/README.md
+!models/__init__.py
+
+data/models/
+data/models/*
+!data/models/.gitkeep
 
 
 # Migration environment
@@ -58,17 +71,6 @@ migration.env
 
 # Rasa caches and models
 .rasa/
-
-# Ignore all model files by default
-models/**
-
-# Explicitly track the spaCy wheel file
-!models/spacy/
-!models/spacy/en_core_web_sm-3.7.1-py3-none-any.whl
-
-# Ignore Rasa model archives
-**/*.tar.gz
-.python-version
 
 # Misc
 *.swp

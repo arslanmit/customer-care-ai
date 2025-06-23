@@ -8,7 +8,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from jose import JWTError, jwt
 from pydantic import BaseModel, EmailStr
 
-from ..supabase_client import get_supabase_client
+
 
 # ---------------------------------------------------------------------------
 # Configuration
@@ -98,49 +98,16 @@ async def get_current_user(authorization: str = Header(None)) -> dict:
 # ---------------------------------------------------------------------------
 @app.post("/register", response_model=TokenOut, status_code=status.HTTP_201_CREATED)
 async def register(data: RegisterIn):
-    supa = get_supabase_client()
+    # Supabase registration removed. Implement your own user registration here.
+    raise HTTPException(status_code=501, detail="User registration is not implemented.")
 
-    # Create Supabase user
-    resp = supa.auth.sign_up(
-        {
-            "email": data.email,
-            "password": data.password,
-            "options": {"data": {"name": data.name}},
-        }
-    )
-    if resp["error"]:
-        raise HTTPException(status_code=400, detail=resp["error"]["message"])
-    user = resp["user"]
-    # Ensure a profile row with default role
-    supa.table("profiles").upsert(
-        {"id": user["id"], "name": data.name, "role": "user"}
-    ).execute()
-
-    # Issue custom JWT embedding role claim
-    token = _create_jwt({"id": user["id"], "email": data.email, "role": "user"})
-    return TokenOut(access_token=token)
 
 
 @app.post("/login", response_model=TokenOut)
 async def login(data: LoginIn):
-    supa = get_supabase_client()
-    resp = supa.auth.sign_in_with_password(
-        {"email": data.email, "password": data.password}
-    )
-    if resp["error"]:
-        raise HTTPException(status_code=400, detail="Invalid credentials")
-    user = resp["user"]
-    # Fetch user role from profile table
-    profile_query = (
-        supa.table("profiles")
-        .select("role, name")
-        .eq("id", user["id"])
-        .single()
-        .execute()
-    )
-    role = profile_query.data.get("role", "user") if profile_query.data else "user"
-    token = _create_jwt({"id": user["id"], "email": data.email, "role": role})
-    return TokenOut(access_token=token)
+    # Supabase login removed. Implement your own authentication here.
+    raise HTTPException(status_code=501, detail="User login is not implemented.")
+
 
 
 @app.get("/me", response_model=UserOut)

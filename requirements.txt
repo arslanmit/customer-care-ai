@@ -27,7 +27,6 @@ models/fr_core_news_md-3.7.0.tar.gz
 models/de_core_news_md-3.7.0.tar.gz
 
 # Database & Storage
-supabase>=2.0.0
 redis>=4.6.0,<5.0.0
 pymongo>=4.3.3,<5.0.0
 psycopg2-binary>=2.9.10,<3.0.0

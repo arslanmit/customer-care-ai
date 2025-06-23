@@ -1,4 +1,4 @@
-# Use Python 3.10 slim base image for builder stage
+# Use Python 3.10  image for builder stage
 FROM python:3.10-slim as builder
 
 # Set environment variables
