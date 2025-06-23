@@ -22,7 +22,7 @@ end_date = st.sidebar.date_input("End Date", today)
 if start_date > end_date:
     st.error("Error: End date must be after start date")
 
-conversations = load_conversation_data()
+conversations = data_loader.load_conversation_data()
 
 # Filter conversations by date range if timestamps are available
 if conversations:
@@ -42,8 +42,10 @@ if conversations:
 else:
     filtered_conversations = []
 
-show_conversation_table(filtered_conversations)
-show_conversation_viewer(filtered_conversations)
+visualization.show_conversation_table(filtered_conversations)
+visualization.show_conversation_viewer(filtered_conversations)
+
+
 
 st.sidebar.markdown("---")
 st.sidebar.subheader("Setup Requirements")
