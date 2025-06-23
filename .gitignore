@@ -32,12 +32,21 @@ coverage.xml
 # Environment variables
 .env
 .env.*
+.env.production
 !.env.example
 
 # Certificate files
 *.crt
 *.pem
 *.key
+
+# Ignore models directory but track specific model files
+models/
+!models/de_core_news_md-3.7.0.tar.gz
+!models/en_core_web_md-3.7.1.tar.gz
+!models/es_core_news_md-3.7.0.tar.gz
+!models/fr_core_news_md-3.7.0.tar.gz
+
 
 # Migration environment
 migration.env

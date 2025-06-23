@@ -17,9 +17,6 @@ services:
       - RASA_TELEMETRY_ENABLED=false
       - RASA_ACTIONS_URL=http://actions:5055/webhook
     restart: unless-stopped
-    depends_on:
-      - redis
-      - postgres
     networks:
       - rasa-network
 
@@ -65,64 +62,6 @@ services:
     restart: unless-stopped
     networks:
       - rasa-network
-
-  # Redis for Rasa Tracker Store
-  redis:
-    image: redis:6.2-alpine
-    command: redis-server --appendonly yes
-    volumes:
-      - redis_data:/data
-    restart: unless-stopped
-    networks:
-      - rasa-network
-
-  # PostgreSQL for Rasa Tracker Store
-  postgres:
-    image: postgres:13-alpine
-    environment:
-      - POSTGRES_USER=rasa
-      - POSTGRES_PASSWORD=your-secure-password
-      - POSTGRES_DB=rasa
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    restart: unless-stopped
-    networks:
-      - rasa-network
-
-  # Monitoring Stack
-  prometheus:
-    image: prom/prometheus:latest
-    ports:
-      - "9090:9090"
-    volumes:
-      - ./monitoring/prometheus:/etc/prometheus
-      - prometheus_data:/prometheus
-    command:
-      - '--config.file=/etc/prometheus/prometheus.yml'
-      - '--storage.tsdb.path=/prometheus'
-    restart: unless-stopped
-    networks:
-      - rasa-network
-
-  grafana:
-    image: grafana/grafana:latest
-    ports:
-      - "3001:3000"
-    volumes:
-      - grafana_data:/var/lib/grafana
-    environment:
-      - GF_SECURITY_ADMIN_PASSWORD=admin
-    restart: unless-stopped
-    depends_on:
-      - prometheus
-    networks:
-      - rasa-network
-
-volumes:
-  redis_data:
-  postgres_data:
-  prometheus_data:
-  grafana_data:
 
 networks:
   rasa-network:
