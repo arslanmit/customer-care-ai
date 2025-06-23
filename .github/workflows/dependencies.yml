@@ -1,5 +1,11 @@
 name: Update Dependencies
 
+# Set permissions for the workflow
+permissions:
+  contents: write  # Required to create PRs and push changes
+  pull-requests: write  # Required to create PRs
+  issues: write  # Required to comment on PRs/issues
+
 on:
   schedule:
     - cron: '0 0 * * 0'  # Weekly on Sunday
@@ -22,6 +28,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0  # Required for proper git history in PRs
+          token: ${{ secrets.GITHUB_TOKEN }}  # Explicitly use GITHUB_TOKEN
       
       - name: Cache Python dependencies
         uses: actions/cache@v3
@@ -176,9 +183,19 @@ jobs:
           branch: "deps/update-$(date +%s)"
           delete-branch: true
           labels: dependencies, automated
+          author: "GitHub Actions <action@github.com>"
+          committer: "GitHub Actions <action@github.com>"
+          signoff: true
           
       - name: Update status file
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          # Set up git config
+          git config --global user.name 'GitHub Actions'
+          git config --global user.email 'action@github.com'
+          
+          # Create or update status file
           mkdir -p .github
           echo "# 📦 Dependency Update Status" > .github/dependencies-status.md
           echo "" >> .github/dependencies-status.md
@@ -197,6 +214,12 @@ jobs:
           echo "" >> .github/dependencies-status.md
           echo "---" >> .github/dependencies-status.md
           echo "*Last updated: $(date -u +'%Y-%m-%d %H:%M:%S UTC') | [View Workflow Run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})*" >> .github/dependencies-status.md
+          
+          # Commit and push the status file
+          if [[ -n "$(git status --porcelain .github/dependencies-status.md)" ]]; then
+            git add .github/dependencies-status.md
+            git commit -m "docs: update dependency status"
+            git push origin HEAD:${GITHUB_REF#refs/heads/}
           
           # Add to git if there are changes
           git config --global user.name 'github-actions[bot]'
