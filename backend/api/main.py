@@ -98,14 +98,14 @@ async def get_current_user(authorization: str = Header(None)) -> dict:
 # ---------------------------------------------------------------------------
 @app.post("/register", response_model=TokenOut, status_code=status.HTTP_201_CREATED)
 async def register(data: RegisterIn):
-    # Supabase registration removed. Implement your own user registration here.
+
     raise HTTPException(status_code=501, detail="User registration is not implemented.")
 
 
 
 @app.post("/login", response_model=TokenOut)
 async def login(data: LoginIn):
-    # Supabase login removed. Implement your own authentication here.
+
     raise HTTPException(status_code=501, detail="User login is not implemented.")
 
 

@@ -1,0 +1,12 @@
+version: "3.1"
+
+# Stories for information inquiry flows
+stories:
+  - story: basic info inquiry
+    steps:
+      - intent: greet
+      - action: utter_greet
+      - intent: ask_info
+      - action: utter_info
+      - intent: goodbye
+      - action: utter_goodbye

@@ -693,6 +693,6 @@ gcloud run deploy customer-care-ai \
 
 - **Prometheus**: [http://localhost:9090](http://localhost:9090)
 - **Grafana**: [http://localhost:3001](http://localhost:3001) (admin/admin)
-- **Analytics Dashboard**: In-app (frontend) for intent distribution, response times, etc.
+- **Analytics Dashboard**: All dashboard code is now in `dashboard/`. Run with `streamlit run dashboard/dashboard_app.py` for intent distribution, response times, and more.
 - **Log Monitoring**: `scripts/monitor_logs.sh` (real-time error/warning tailing)
-- **Event Logging**: Conversation and feedback events are stored in  (see `/migrations/` for schema and RLS policies)
+- **Event Logging**: Conversation and feedback events are stored in (see `/migrations/` for schema and RLS policies)
