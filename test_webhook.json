@@ -1,0 +1,66 @@
+{
+  "next_action": "action_tell_time",
+  "sender_id": "test_user",
+  "tracker": {
+    "sender_id": "test_user",
+    "slots": {},
+    "latest_message": {
+      "text": "what time is it"
+    },
+    "latest_event_time": 1624371234.0,
+    "paused": false,
+    "events": [
+      {
+        "event": "action",
+        "timestamp": 1624371234.0,
+        "name": "action_listen",
+        "policy": null,
+        "confidence": null
+      },
+      {
+        "event": "user",
+        "timestamp": 1624371234.0,
+        "text": "what time is it",
+        "parse_data": {
+          "intent": {
+            "name": "ask_time",
+            "confidence": 1.0
+          },
+          "entities": [],
+          "text": "what time is it"
+        },
+        "input_channel": "test"
+      },
+      {
+        "event": "action",
+        "timestamp": 1624371234.0,
+        "name": "action_tell_time",
+        "policy": "policy_1_SomePolicy",
+        "confidence": 0.9
+      }
+    ]
+  },
+  "domain": {
+    "config": {},
+    "session_config": {
+      "session_expiration_time": 60,
+      "carry_over_slots_to_new_session": true
+    },
+    "intents": [
+      {
+        "ask_time": {
+          "triggers": []
+        }
+      }
+    ],
+    "entities": [],
+    "slots": {},
+    "responses": {},
+    "actions": [
+      "action_tell_time"
+    ],
+    "forms": {},
+    "e2e_actions": []
+  },
+  "version": "3.6.21"
+}
