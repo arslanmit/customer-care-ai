@@ -29,3 +29,5 @@ The dashboard can be started with:
 streamlit run dashboard_app.py
 ```
 Conversation logs are read from `data/rasa_conversations.json` or the path specified by `CONVERSATION_DATA_PATH`.
+
+Additional documentation can be found in the [project docs](../docs/).
