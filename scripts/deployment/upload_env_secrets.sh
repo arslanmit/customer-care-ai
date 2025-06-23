@@ -1,3 +1,18 @@
+
+show_help() {
+    echo "Usage: ./upload_env_secrets.sh [options]"
+    echo "  -h, --help   Show this help message and exit"
+}
+
+for arg in "$@"; do
+    case $arg in
+        -h|--help)
+            show_help
+            exit 0
+            ;;
+    esac
+done
+
 #!/usr/bin/env bash
 # Upload all variables from a local .env file to a GitHub Environment as secrets.
 # Usage: GH_ENV=production ENV_FILE=.env ./upload-env-secrets.sh

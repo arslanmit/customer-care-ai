@@ -12,13 +12,21 @@ MYPY = mypy
 
 # Default target
 help:
-	@echo "Available targets:"
-	@echo "  install     Install development dependencies"
-	@echo "  test        Run tests with coverage"
-	@echo "  test-fast   Run tests without coverage"
-	@echo "  lint        Run all linters"
-	@echo "  format      Format code with black and isort"
-	@echo "  check-style Check code style without making changes"
+	@echo "\nAvailable targets:"
+	@echo "  install        Install development dependencies (requirements.txt, requirements-test.txt, pre-commit)"
+	@echo "  test           Run all tests with coverage report"
+	@echo "  test-fast      Run tests without coverage (faster)"
+	@echo "  lint           Run all Python linters (mypy, black, isort, flake8)"
+	@echo "  format         Format code with black and isort"
+	@echo "  check-style    Check code style without making changes"
+	@echo "  clean          Remove Python cache, build, and test artifacts"
+	@echo "  run            Run the Rasa server"
+	@echo "  actions        Run the Rasa actions server"
+	@echo "  docker-up      Start all services with Docker Compose"
+	@echo "  docker-down    Stop and remove all Docker Compose services"
+	@echo "  docker-logs    View logs from Docker Compose services"
+	@echo "  pre-commit-all Run pre-commit on all files"
+	@echo "\nFor script utilities, see: scripts/help.sh\n"
 	@echo "  clean       Remove build artifacts and caches"
 	@echo "  help        Show this help message"
 

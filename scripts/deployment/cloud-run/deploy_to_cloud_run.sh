@@ -1,4 +1,21 @@
+
+show_help() {
+    echo "Usage: ./deploy_to_cloud_run.sh [options]"
+    echo "  -h, --help   Show this help message and exit"
+}
+
+for arg in "$@"; do
+    case $arg in
+        -h|--help)
+            show_help
+            exit 0
+            ;;
+    esac
+done
+
 #!/bin/bash
+# Usage: ./scripts/deployment/cloud-run/deploy_to_cloud_run.sh [options]
+# Run with -h or --help for usage information
 
 # ANSI color codes
 RED='\033[0;31m'

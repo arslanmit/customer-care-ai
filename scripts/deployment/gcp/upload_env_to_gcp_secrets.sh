@@ -1,3 +1,18 @@
+
+show_help() {
+    echo "Usage: ./upload_env_to_gcp_secrets.sh [options]"
+    echo "  -h, --help   Show this help message and exit"
+}
+
+for arg in "$@"; do
+    case $arg in
+        -h|--help)
+            show_help
+            exit 0
+            ;;
+    esac
+done
+
 #!/usr/bin/env bash
 # Usage: ./upload-env-to-gcp-secrets.sh .env customer-care-ai-463420
 

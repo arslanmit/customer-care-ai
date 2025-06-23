@@ -77,17 +77,17 @@ start_services() {
     print_section "Starting Services with Docker Compose"
     
     echo -e "${YELLOW}Pulling the latest images...${NC}"
-    docker-compose -f docker-compose.prod.yml pull
+    docker-compose pull
     
     echo -e "\n${YELLOW}Building and starting containers...${NC}"
-    docker-compose -f docker-compose.prod.yml up -d --build
+    docker-compose up -d --build
     
     echo -e "\n${GREEN}✓${NC} Services are starting in the background"
     echo -e "${YELLOW}This might take a few minutes for the first run...${NC}"
     
     # Show status
     echo -e "\n${YELLOW}Checking service status...${NC}"
-    docker-compose -f docker-compose.prod.yml ps
+    docker-compose ps
 }
 
 # Function to display post-setup information
@@ -104,10 +104,10 @@ show_post_setup_info() {
     echo -e "  • Grafana:         http://localhost:3001 (admin/admin)"
     echo ""
     echo -e "${YELLOW}Useful commands:${NC}"
-    echo -e "  • View logs:        ${GREEN}docker-compose -f docker-compose.prod.yml logs -f${NC}"
-    echo -e "  • Stop services:    ${GREEN}docker-compose -f docker-compose.prod.yml down${NC}"
-    echo -e "  • Restart services: ${GREEN}docker-compose -f docker-compose.prod.yml restart${NC}"
-    echo -e "  • Rebuild services: ${GREEN}docker-compose -f docker-compose.prod.yml up -d --build${NC}"
+    echo -e "  • View logs:        ${GREEN}docker-compose logs -f${NC}"
+    echo -e "  • Stop services:    ${GREEN}docker-compose down${NC}"
+    echo -e "  • Restart services: ${GREEN}docker-compose restart${NC}"
+    echo -e "  • Rebuild services: ${GREEN}docker-compose up -d --build${NC}"
     echo ""
     echo -e "${YELLOW}Next steps:${NC}"
     echo "1. Access the admin dashboard to configure your bot"
