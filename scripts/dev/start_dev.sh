@@ -34,7 +34,6 @@ BOLD='\033[1m'
 # Default ports
 RASA_SERVER_PORT=5005
 RASA_ACTIONS_PORT=5055
-FRONTEND_PORT=3000
 
 # Check if Python virtual environment is activated
 if [[ "$VIRTUAL_ENV" == "" ]]; then
@@ -64,20 +63,10 @@ start_actions() {
     echo $ACTIONS_PID > /tmp/rasa_actions.pid
 }
 
-# Function to start frontend
-start_frontend() {
-    echo -e "${BLUE}🚀 Starting frontend server on port ${FRONTEND_PORT}...${NC}
-    cd ../dashboard && npm run dev &
-    FRONTEND_PID=$!
-    echo $FRONTEND_PID > /tmp/frontend.pid
-    cd ..
-}
-
 # Main execution
 trap 'echo -e "\n${YELLOW}🛑 Stopping all services...${NC}"; \
     kill $(cat /tmp/rasa_server.pid 2>/dev/null) 2>/dev/null; \
     kill $(cat /tmp/rasa_actions.pid 2>/dev/null) 2>/dev/null; \
-    kill $(cat /tmp/frontend.pid 2>/dev/null) 2>/dev/null; \
     rm -f /tmp/*.pid' EXIT
 
 # Check and start services
@@ -93,18 +82,12 @@ else
     start_actions
 fi
 
-if port_in_use $FRONTEND_PORT; then
-    echo -e "${YELLOW}⚠️  Port ${FRONTEND_PORT} is already in use.${NC}"
-else
-    start_frontend
-fi
-
 # Show status
 echo -e "\n${GREEN}✅ Development environment started successfully!${NC}"
 echo -e "${BOLD}Services:${NC}"
 echo -e "  • Rasa Server:      http://localhost:${RASA_SERVER_PORT}"
 echo -e "  • Rasa Actions:     http://localhost:${RASA_ACTIONS_PORT}"
-echo -e "  • Frontend:         http://localhost:${FRONTEND_PORT}"
+
 echo -e "\n${YELLOW}Press Ctrl+C to stop all services${NC}"
 
 # Keep the script running

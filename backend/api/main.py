@@ -20,7 +20,7 @@ ACCESS_TOKEN_EXPIRE_SECONDS = int(os.getenv("JWT_EXPIRE", "3600"))
 origins = [
     "http://localhost",
     "http://localhost:5173",  # Vite dev server
-    os.getenv("FRONTEND_URL", "http://localhost:5173"),
+    
 ]
 
 app = FastAPI(title="Customer-Care AI Auth API", version="1.0.0")

@@ -1,6 +1,6 @@
 # Customer Care AI
 
-An enterprise-ready conversational AI chatbot built with Rasa (backend) and React (frontend), designed to handle customer service inquiries with enhanced fallback strategies, advanced analytics, and Context7 integration. The application can be deployed on-premise or in the cloud with Google Cloud integration.
+An enterprise-ready conversational AI chatbot built with Rasa (backend), designed to handle customer service inquiries with enhanced fallback strategies, advanced analytics, and Context7 integration. The application can be deployed on-premise or in the cloud with Google Cloud integration.
 
 [![Rasa Version](https://img.shields.io/badge/Rasa-3.6%2B-5a17ee.svg)](https://rasa.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -67,7 +67,6 @@ An enterprise-ready conversational AI chatbot built with Rasa (backend) and Reac
    ```
 
 6. **Access the application**
-   - Frontend: [http://localhost:8080](http://localhost:8080)
    - API: [http://localhost:5005](http://localhost:5005)
    - Analytics Dashboard: [http://localhost:8501](http://localhost:8501)
 
@@ -187,18 +186,6 @@ customer-care-ai/​
 │   │   └── enhanced_fallbacks.yml # Enhanced fallback definitions
 │   ├── analytics_dashboard.py  # Context7-integrated analytics dashboard
 │   └── tests/                  # Backend tests
-├── frontend/                   # React 18 + Vite app
-│   ├── src/                    # Main source code
-│   │   ├── Analytics.jsx       # Analytics dashboard frontend
-│   │   ├── Feedback.jsx        # Feedback modal
-│   │   ├── Auth.jsx            #  Auth context/hooks
-│   │   ├── Chatbot.jsx         # Main chatbot UI
-│   │   └── ...
-│   ├── public/                 # Static files
-│   ├── Dockerfile*             # Frontend Docker configs
-│   ├── package.json            # Frontend deps/scripts
-│   ├── vite.config.js          # Vite config
-│   └── ...
 ├── monitoring/                 # Monitoring setup
 │   ├── grafana/                # Grafana dashboards
 │   └── prometheus/             # Prometheus config
@@ -222,10 +209,6 @@ _Note: See `ARCHITECTURE.md` for a detailed architecture overview._
 
 - Docker 20.10+ and Docker Compose 2.0+
 - Python 3.10+ (for backend/local dev)
-- Node.js 18+ (for frontend dev)
-- React 18+
-- Vite (bundler, included in frontend)
-- Chart.js (frontend analytics)
 -  account (for DB/auth)
 - Git
 - (Optional) Google Cloud CLI for GKE/Cloud Run deployment
@@ -239,14 +222,11 @@ Run the test suite:
 cd backend
 pytest
 
-# Frontend tests
-cd frontend
 npm run test
 npm run lint
 npm run format
 ```
 
-- **Vitest**: Unit and integration tests for frontend
 - **ESLint**: Linting for React code
 - **Prettier**: Code formatting
 - **Test Reports**: Backend intent/story analytics in `backend/results/`
@@ -385,7 +365,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - [Context7](https://context7.ai) - For enhanced conversation analytics capabilities
 - [Streamlit](https://streamlit.io/) - For the analytics dashboard interface
 - [Google Cloud](https://cloud.google.com/) - For cloud deployment and storage solutions
-- [React](https://reactjs.org/) - For the frontend library
 - [](https://.com/) - For the open-source Firebase alternative
 - [Docker](https://www.docker.com/) - For containerization
 
@@ -478,8 +457,6 @@ rasa run actions &
 # Start Rasa API server
 rasa run --enable-api --cors "*" &
 
-# Start frontend (from frontend directory)
-cd frontend
 npm install
 npm run dev
 ```
@@ -499,7 +476,6 @@ pytest tests/test_actions.py -v
 pytest --cov=actions tests/
 ```
 
-### Frontend Tests
 
 ```bash
 cd frontend
@@ -576,7 +552,6 @@ npm test
 -  event logging: All conversation events and feedback are logged (see `/migrations/`)
 - Security: RLS enabled on event tables, policies for read/insert
 
-### Frontend
 
 - React 18 + Vite
 - Analytics dashboard: `src/Analytics.jsx`
