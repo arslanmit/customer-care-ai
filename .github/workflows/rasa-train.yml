@@ -1,5 +1,13 @@
 name: 🚀 Train RASA Model
 
+# Set permissions for the workflow
+permissions:
+  contents: read
+  packages: write  # If pushing Docker images
+  actions: write  # For workflow dispatch
+  checks: write   # For status checks
+  statuses: write # For commit statuses
+
 on:
   push:
     paths:
@@ -31,6 +39,9 @@ jobs:
     steps:
     - name: 🔄 Checkout repository
       uses: actions/checkout@v4
+      with:
+        fetch-depth: 2  # Required for git diff in the training step
+        token: ${{ secrets.GITHUB_TOKEN }}  # Explicitly use GITHUB_TOKEN
 
     - name: 🐍 Set up Python ${{ env.PYTHON_VERSION }}
       uses: actions/setup-python@v4
@@ -119,6 +130,9 @@ jobs:
         retention-days: 5
         if-no-files-found: error
         compression-level: 9
+        overwrite: true
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Ensure artifact upload uses token
 
     - name: 🚨 Notify on failure
       if: failure()
@@ -129,12 +143,17 @@ jobs:
         SLACK_TITLE: '❌ Rasa Training Failed'
         SLACK_MESSAGE: 'Workflow ${{ github.workflow }} failed on ${{ github.ref }}'
         MSG_MINIMAL: 'View the run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}'
+      continue-on-error: true  # Don't fail the workflow if notification fails
 
     # Uncomment and configure when ready for deployment
     # - name: 🚀 Deploy model
     #   if: success() && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
     #   env:
+    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # For API access
     #     DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
     #   run: |
     #     # Add your deployment script here
     #     echo "Deploying model to production..."
+    #     # Example: gh release create v1.0.0 ./path/to/model.tar.gz --generate-notes
+    #   permissions:
+    #     contents: write  # Required for creating releases
