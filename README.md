@@ -7,6 +7,7 @@
 - **Streamlit dashboard** to explore conversation logs
 - **Helper scripts** for development and deployment
 - **Docker Compose and Cloud Run** configuration
+- **Documentation in [`docs/`](docs/)**
 
  
 
@@ -22,13 +23,14 @@
    ./scripts/utils/install_requirements.sh
    ```
 2. Copy `.env.example` to `.env` and adjust values.
-3. Start services with Docker:
+3. Start services with Docker (or use `./setup.sh`):
    ```bash
    docker-compose up --build -d
    ```
    Rasa API is available at <http://localhost:5005> and the dashboard at <http://localhost:8501>.
 
 For local development without Docker use `scripts/dev/start_dev.sh`.
+Additional documentation can be found in the [`docs/`](docs/) folder.
 
 ## Environment Variables
 
@@ -38,12 +40,10 @@ RASA_ENVIRONMENT=production
 RASA_ACTIONS_PORT=5055
 STREAMLIT_SERVER_PORT=8501
 CONVERSATION_DATA_PATH=backend/data/rasa_conversations.json
-JWT_SECRET=change-me
+JWT_SECRET=CHANGE_ME
 ```
 
- 
-```
-See `ARCHITECTURE.md` for more details.
+See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) for more details.
 
 ## Testing
 
