@@ -1,25 +1,31 @@
 # Backend
 
-This directory contains the backend logic for the Customer Care AI project, including:
+This directory holds the Rasa server, custom actions and the optional FastAPI authentication API.
 
-- Rasa custom actions (in `actions/`)
-- Analytics dashboard code (`dashboard_app.py`, `data_loader.py`, `visualization.py`)
-- Configuration, data handling, and utility scripts
+## Contents
 
-## Structure
+- `actions/` – modular Rasa action classes
+- `api/` – small FastAPI app for JWT auth
+- `data/` – training examples and conversation logs
+- `rasa/` – Rasa config and training data
+- `tinydb_tracker_store.py` – local tracker store implementation
+- `dashboard_app.py` – Streamlit analytics entry point
 
-- `actions/` — Modular Rasa custom actions
-- `dashboard_app.py` — Streamlit dashboard app entry point
-- `data_loader.py` — Data loading and processing utilities
-- `visualization.py` — Visualization and UI utilities for the dashboard
+## Usage
 
-## Running the Dashboard
-
-```sh
-pip install streamlit pandas matplotlib altair
-streamlit run dashboard_app.py
+Start the backend with Docker:
+```bash
+docker-compose up --build
 ```
 
-## Notes
+For local development:
+```bash
+rasa run --enable-api &
+rasa run actions &
+```
 
-- Place conversation data in `data/rasa_conversations.json` or set the `CONVERSATION_DATA_PATH` environment variable.
+The dashboard can be started with:
+```bash
+streamlit run dashboard_app.py
+```
+Conversation logs are read from `data/rasa_conversations.json` or the path specified by `CONVERSATION_DATA_PATH`.
