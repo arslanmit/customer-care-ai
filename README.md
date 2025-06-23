@@ -1,8 +1,6 @@
 # Customer Care AI
 
-Customer Care AI is a Rasa based chatbot with optional authentication API and an analytics dashboard. It supports multilingual intent recognition and can run locally with Docker Compose or be deployed to Google Cloud Run.
-
-## Features
+ 
 
 - **Rasa 3.6+ backend** with modular custom actions
 - **TinyDB tracker store** for local conversation history
@@ -10,7 +8,7 @@ Customer Care AI is a Rasa based chatbot with optional authentication API and an
 - **Helper scripts** for development and deployment
 - **Docker Compose and Cloud Run** configuration
 
-## Getting Started
+ 
 
 1. Clone the repository and install Python dependencies:
    ```bash
@@ -43,14 +41,7 @@ CONVERSATION_DATA_PATH=backend/data/rasa_conversations.json
 JWT_SECRET=change-me
 ```
 
-## Project Layout
-```
-backend/    - Rasa actions and API
-backend/rasa/ - Training data
-dashboard/  - Streamlit app
-scripts/    - Helper scripts (run `scripts/help.sh`)
-docker-compose.yml
-Dockerfile
+ 
 ```
 See `ARCHITECTURE.md` for more details.
 
