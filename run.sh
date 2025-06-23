@@ -20,7 +20,7 @@ echo -e "=============================${NC}"
 
 # --- Kill all related running services before startup ---
 SCRIPT_PID=$$
-SERVICES=("rasa" "rasa run" "rasa run actions" "rasa_sdk" "vite" "node frontend" "npm run dev")
+SERVICES=("rasa" "rasa run" "rasa run actions" "rasa_sdk" )
 for svc in "${SERVICES[@]}"; do
   pids=$(pgrep -f "$svc" || true)
   if [ -n "$pids" ]; then
@@ -108,15 +108,6 @@ else
   fi
 fi
 
-# Start Node.js frontend
-if [ -d frontend ]; then
-  echo -e "${BLUE}Starting frontend (Vite)...${NC}"
-  cd frontend
-  npm run dev &
-  cd ..
-else
-  echo -e "${RED}Frontend directory not found!${NC}"
-fi
 
 # Show detailed status of all core services
 sleep 2
@@ -142,7 +133,6 @@ print_service_status() {
 print_service_status "Redis server" 6379 "redis-server"
 print_service_status "Rasa backend" 5005 "rasa run --enable-api"
 print_service_status "Rasa actions server" 5055 "rasa run actions"
-print_service_status "Frontend (Vite)" 3000 "vite"
 
 echo -e "${YELLOW}To stop all services, use:${NC}"
 echo -e "  ${BLUE}docker-compose down${NC} (if using Docker)"

@@ -52,7 +52,6 @@ stop_service() {
 # Stop all services
 stop_service "Rasa Server" "/tmp/rasa_server.pid"
 stop_service "Rasa Actions" "/tmp/rasa_actions.pid"
-stop_service "Frontend" "/tmp/frontend.pid"
 
 # Additional cleanup
 pkill -f "rasa run" 2>/dev/null
