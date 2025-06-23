@@ -1,0 +1,103 @@
+version: "3.1"
+
+stories:
+  - story: simple greeting and goodbye
+    steps:
+      - intent: greet
+      - action: utter_greet
+      - intent: goodbye
+      - action: utter_goodbye
+
+  - story: basic info inquiry
+    steps:
+      - intent: greet
+      - action: utter_greet
+      - intent: ask_info
+      - action: utter_info
+      - intent: goodbye
+      - action: utter_goodbye
+
+  - story: joke interaction
+    steps:
+      - intent: greet
+      - action: utter_greet
+      - intent: tell_joke
+      - action: action_tell_joke
+      - intent: goodbye
+      - action: utter_goodbye
+      
+  - story: customer support request
+    steps:
+      - intent: greet
+      - action: utter_greet
+      - intent: support_request
+      - action: utter_support_help
+      - intent: request_human_agent
+      - action: utter_transfer_to_agent
+      - action: action_handoff_to_human
+      - intent: goodbye
+      - action: utter_goodbye
+
+  - story: customer support with product inquiry
+    steps:
+      - intent: greet
+      - action: utter_greet
+      - intent: product_inquiry
+      - action: utter_product_info
+      - intent: support_request
+      - action: utter_support_help
+      - intent: goodbye
+      - action: utter_goodbye
+      
+  - story: language change request
+    steps:
+      - intent: change_language
+      - action: action_set_language
+      - action: utter_language_changed
+      - intent: ask_info
+      - action: utter_info
+      
+  - story: time inquiry with joke
+    steps:
+      - intent: greet
+      - action: utter_greet
+      - intent: ask_time
+      - action: action_tell_time
+      - intent: tell_joke
+      - action: action_tell_joke
+      - intent: goodbye
+      - action: utter_goodbye
+
+  - story: date inquiry
+    steps:
+      - intent: ask_date
+      - action: action_tell_date
+
+  - story: date inquiry with follow up
+    steps:
+      - intent: greet
+      - action: utter_greet
+      - intent: ask_date
+      - action: action_tell_date
+      - intent: ask_time
+      - action: action_tell_time
+      - intent: tell_joke
+      - action: action_tell_joke
+      - intent: goodbye
+      - action: utter_goodbye
+
+  - story: datetime inquiry
+    steps:
+      - intent: ask_datetime
+      - action: action_tell_datetime
+
+  - story: datetime inquiry with follow up
+    steps:
+      - intent: greet
+      - action: utter_greet
+      - intent: ask_datetime
+      - action: action_tell_datetime
+      - intent: tell_joke
+      - action: action_tell_joke
+      - intent: goodbye
+      - action: utter_goodbye

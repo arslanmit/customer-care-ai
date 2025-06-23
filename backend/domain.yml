@@ -19,190 +19,247 @@ intents:
   - support_request
   - request_human_agent
   - product_inquiry
-  # change_language intent removed - English only now
-  - nlu_fallback
-  - out_of_scope
-  - check_order_status
-  - provide_order_number
-  - need_help
-  - return_item
-  - contact_support
-  - ask_return_policy
   - complain
+  # Added missing intents from NLU data
+  - check_balance
+  - affirm
+  - complaint
+  - thank
+  - deny
+  - change_language
+  - ask_return_policy
+  - contact_support
+  - need_help
+  - provide_order_number
+  - return_item
+  - check_order_status
 
 # ===== ENTITIES =====
 entities:
-  - time
-  - date
-  - name
+  - order_number
+  - product_id
   - email
   - phone_number
+  - date
+  - time
+  - language
+  - amount
 
 # ===== SLOTS =====
-# Slots store information to keep track of conversation state
 slots:
-  # Tracks which form slot is currently being requested
-  requested_slot:
-    type: any
-    influence_conversation: false
-    mappings: []
-    
-  # User's personal information
-  name:
+  order_number:
+    type: text
+    influence_conversation: true
+    mappings:
+    - type: from_entity
+      entity: order_number
+  
+  product_id:
+    type: text
+    influence_conversation: true
+    mappings:
+    - type: from_entity
+      entity: product_id
+  
+  email:
     type: text
     influence_conversation: false
     mappings:
-      - type: from_entity
-        entity: name
+    - type: from_entity
+      entity: email
   
-  # User's preferred language removed - English only now
-  
-  # Stores session-specific metadata
-  session_metadata:
-    type: any
+  phone_number:
+    type: text
     influence_conversation: false
-    mappings: []
-    initial_value: {}
+    mappings:
+    - type: from_entity
+      entity: phone_number
   
-  # Tracks number of fallback responses in current conversation
+  requested_date:
+    type: text
+    influence_conversation: true
+    mappings:
+    - type: from_entity
+      entity: date
+  
+  requested_time:
+    type: text
+    influence_conversation: true
+    mappings:
+    - type: from_entity
+      entity: time
+  
+  language:
+    type: text
+    influence_conversation: true
+    mappings:
+    - type: from_entity
+      entity: language
+      
+  # Added form slots
+  first_name:
+    type: text
+    influence_conversation: false
+    mappings:
+    - type: from_entity
+      entity: first_name
+  
+  last_name:
+    type: text
+    influence_conversation: false
+    mappings:
+    - type: from_entity
+      entity: last_name
+  
+  complaint_type:
+    type: text
+    influence_conversation: true
+    mappings:
+    - type: from_entity
+      entity: complaint_type
+  
+  complaint_details:
+    type: text
+    influence_conversation: true
+    mappings:
+    - type: from_entity
+      entity: complaint_details
+  
+  customer_email:
+    type: text
+    influence_conversation: false
+    mappings:
+    - type: from_entity
+      entity: email
+      
   num_fallbacks:
     type: float
-    influence_conversation: true  # Used to trigger escalation after multiple fallbacks
-    min_value: 0
-    max_value: 10                 # Maximum fallbacks before escalation
     initial_value: 0
-    mappings: []
-
-  # Complaint handling slots
-  complaint_description:
-    type: text
-    influence_conversation: false
+    influence_conversation: true
     mappings:
-      - type: from_text
-        conditions:
-          - active_loop: complaint_form
-            requested_slot: complaint_description
-  complaint_order_number:
-    type: text
-    influence_conversation: false
-    mappings:
-      - type: from_text
-        conditions:
-          - active_loop: complaint_form
-            requested_slot: complaint_order_number
+    - type: custom
 
 # ===== RESPONSES =====
-# Response templates used throughout the conversation
 responses:
-  # Greeting responses
   utter_greet:
-    - text: "Hello! How can I help you today?"
-    - text: "Hi there! How may I assist you?"
-    - text: "Greetings! What can I do for you today?"
-  # Farewell responses
+    - text: "Hello! How can I assist you today?"
+    - text: "Hi there! How may I help you?"
+    - text: "Welcome! What can I do for you?"
+  
   utter_goodbye:
     - text: "Goodbye! Have a great day!"
-    - text: "See you later! Take care!"
-    - text: "Thanks for chatting. Goodbye!"
-  # Information requests
-  utter_ask_info:
-    - text: "I can help with various topics. What would you like to know?"
-    - text: "I'm here to help. What information do you need?"
-  # Time and date responses
-  utter_ask_time:
-    - text: "The current time is {time}."
-    - text: "It's {time} right now."
-  utter_ask_date:
-    - text: "Today's date is {date}."
-    - text: "It's {date} today."
-  utter_ask_datetime:
-    - text: "The current date and time is {datetime}."
-    - text: "It's {datetime} at the moment."
-  # Fun responses
-  utter_tell_joke:
-    - text: "Why don't scientists trust atoms? Because they make up everything!"
-    - text: "Did you hear about the mathematician who's afraid of negative numbers? He'll stop at nothing to avoid them!"
-  # Transfer to agent responses
-  utter_transfer_to_agent:
-    - text: "I'll transfer you to a human agent who can assist you further."
-    - text: "Let me connect you with one of our support agents who can help you better."
-    - text: "I'll transfer you to a customer service representative now."
-  # Support responses
-  utter_support_request:
-    - text: "I'm here to help. What seems to be the issue?"
-    - text: "I'd be happy to assist. Could you describe the problem?"
-  utter_support_help:
-    - text: "I'm here to assist you. Could you please describe your issue in more detail?"
-    - text: "To better assist you, could you provide more details about the problem?"
-  utter_escalate_to_agent:
-    - text: "I'm having trouble understanding. Let me connect you with a human agent who can help you better."
-    - text: "I want to make sure you get the best assistance. Let me transfer you to one of our support agents."
-    - text: "I'm still learning and want to make sure you get the right help. Let me connect you with a human agent."
-    - text: "Let me transfer you to one of our support agents who can help you further."
-  utter_request_human_agent:
-    - text: "I'll connect you with a human agent right away."
-    - text: "I'll transfer you to one of our support agents who can assist you."
-  # Acknowledgment responses
-  utter_thank_you:
-    - text: "You're welcome! Is there anything else I can help you with?"
-    - text: "Happy to help! Let me know if you need anything else."
-    - text: "My pleasure! Feel free to ask if you have more questions."
-  # Information responses
-  utter_info:
-    - text: "I'm here to help with any questions you have. What would you like to know?"
-    - text: "I can provide information on various topics. What would you like to learn about?"
-  utter_product_info:
-    - text: "We offer a range of products. What would you like to know?"
-    - text: "I can tell you about our product line. What specifically interests you?"
-  # Language handling removed - English only now
-  # Fallback responses
-  utter_default:
-    - text: "I'm not sure I understand. Could you rephrase that?"
-    - text: "I didn't quite get that. Could you say it differently?"
-    - text: "I'm still learning. Could you try asking in a different way?"
-  utter_out_of_scope:
-    - text: "I'm not trained to help with that yet. Is there something else I can assist you with?"
-    - text: "I don't have the information to help with that. Can I help you with something else?"
+    - text: "See you later! Feel free to return if you need more assistance."
+    - text: "Take care! Contact us anytime you need help."
+  
   utter_ask_order_number:
-    - text: "Could you please provide your order number so I can check the status for you?"
-    - text: "I'd be happy to help with that. May I have your order number, please?"
-    - text: "To check your order status, I'll need your order number. Could you share it with me?"
-  # Complaint handling responses
-  utter_ask_complaint_description:
-    - text: "Could you please describe the issue you're experiencing?"
-  utter_ask_complaint_order_number:
-    - text: "If your complaint is about a specific order, please provide the order number. Otherwise, you can skip this step."
-  utter_apologize_for_issue:
-    - text: "I'm sorry to hear that you're having an issue. Let's get this sorted out."
-  utter_escalation_confirmation:
-    - text: "I'm transferring you to a human agent now. Please hold on a moment."
+    - text: "Could you please provide your order number?"
+    - text: "To check your order, I'll need your order number. Can you share it with me?"
+  
+  utter_order_status:
+    - text: "Your order {order_number} is currently {status}. Is there anything specific you'd like to know about it?"
+  
+  utter_thank:
+    - text: "You're welcome!"
+    - text: "Happy to help!"
+    - text: "My pleasure!"
+  
+  utter_default:
+    - text: "I'm sorry, I didn't quite understand that. Could you rephrase?"
+    - text: "I'm not sure I follow. Could you explain that differently?"
+  
+  utter_ask_rephrase:
+    - text: "I'm sorry, I didn't catch that. Could you rephrase it?"
+    - text: "I didn't understand. Could you say that again differently?"
+  
+  utter_iamabot:
+    - text: "I am a customer service assistant designed to help with your inquiries."
+  
+  utter_out_of_scope:
+    - text: "I'm sorry, but I'm not able to help with that. I can assist with order status, returns, and general product inquiries."
+  
+  utter_please_wait:
+    - text: "Please wait a moment while I check that for you."
+    - text: "Just a second while I look into that."
+  
+  utter_confirm:
+    - text: "I've confirmed that for you."
+    - text: "That's been verified."
+  
+  utter_ask_continue:
+    - text: "Is there anything else I can help you with?"
+    - text: "Do you need assistance with anything else?"
+  
+  utter_human_handoff:
+    - text: "I'm connecting you with a human agent now. Please hold a moment."
+    - text: "I'll transfer you to one of our customer service representatives right away."
 
+  utter_joke:
+    - text: "Why did the chatbot go to therapy? It had too many identity issues!"
+    - text: "What do you call a bot that sings? Artificial harmonies!"
+    - text: "Why don't chatbots ever get tired? They're always taking micro-naps between responses!"
+  
+  utter_language_changed:
+    - text: "Language has been changed successfully."
+    - text: "I've switched the language as requested."
+    
+  utter_thank_you:
+    - text: "Thank you for your feedback!"
+    - text: "I appreciate your input, thank you!"
+    
+  utter_support_help:
+    - text: "I'm here to help you with your support needs. What seems to be the problem?"
+    - text: "Our support team is ready to assist. Can you describe the issue you're experiencing?"
+    
+  utter_transfer_to_agent:
+    - text: "I'm transferring you to a human agent now. Please hold."
+    - text: "One moment while I connect you with a customer service representative."
+    
+  utter_product_info:
+    - text: "Here's the information about the product you requested."
+    - text: "Let me tell you more about this product."
+    
+  utter_escalate_to_agent:
+    - text: "I'm escalating your request to a customer service agent who can better assist you."
+    - text: "This requires special attention. I'm connecting you with a specialist."
+    
+  utter_apologize_for_issue:
+    - text: "I apologize for the issue you're experiencing. Let's get this resolved for you."
+    - text: "I'm sorry to hear that. I'd like to help you fix this problem."
+    
+  utter_info:
+    - text: "Here's the information you requested."
+    - text: "I have that information for you."
+
+# ===== FORMS =====
 forms:
+  name_form:
+    required_slots:
+      - first_name
+      - last_name
+  
   complaint_form:
     required_slots:
-      - complaint_description
-      - complaint_order_number
+      - complaint_type
+      - complaint_details
+      - customer_email
 
 # ===== ACTIONS =====
 actions:
-  - action_listen
-  - action_restart
-  - action_session_start
-  - action_default_fallback
+  - action_check_order_status
+  - action_process_return
+  - action_provide_tracking_info
+  - action_check_balance
+  - action_create_ticket
+  - action_handle_complaint
+  - action_fetch_order_history
+  - action_update_customer_info
+  # Added missing actions referenced in stories
+  - action_increment_fallback_count
   - action_tell_time
+  - action_tell_joke
+  - action_handoff_to_human
+  - action_set_language
+  - action_ask_order_number
+  - action_escalate_to_human
   - action_tell_date
   - action_tell_datetime
-  - action_tell_joke
-  - action_set_language
-  - action_handoff_to_human
-  - action_increment_fallback_count
-  - action_ask_order_number
-  - name_form
-  - action_escalate_to_human
-  # Registered missing actions for test coverage
-  - action_check_order_status
-  - action_ask_how_can_i_help
-  - action_return_item
-  - action_contact_support
-  - action_provide_return_policy
-  - action_provide_order_status
