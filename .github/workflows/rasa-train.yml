@@ -1,53 +1,92 @@
-name: Train RASA Model
+name: 🚀 Train RASA Model
 
 on:
   push:
     paths:
       - 'rasa/**'
+    branches: [ main, master, develop ]
   workflow_dispatch:
     inputs:
       force_retrain:
         description: 'Force retrain model (even if no changes)'
         required: false
         default: 'false'
+        type: boolean
+
+# Cancel previous runs for the same branch
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   train:
-    name: Train RASA Model
+    name: 🛠️ Train RASA Model
     runs-on: ubuntu-latest
     environment: production
     
     steps:
-    - name: Checkout repository
+    - name: 🔄 Checkout repository
       uses: actions/checkout@v4
 
-    - name: Set up Python
+    - name: 🐍 Set up Python
       uses: actions/setup-python@v4
       with:
         python-version: '3.10'
+        cache: 'pip'
 
-    - name: Install RASA
+    - name: 📦 Cache pip packages
+      uses: actions/cache@v3
+      id: cache
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt', '**/pyproject.toml') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+
+    
+    - name: ⚙️ Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install rasa[full]
+        pip install rasa[full] black isort mypy pylint
 
-    - name: Train RASA model
+    - name: 🔍 Validate RASA data
+      working-directory: rasa
+      run: |
+        rasa data validate --quiet
+        rasa test nlu --nlu data/ --cross-validation --quiet
+
+    - name: 🚀 Train RASA model
       working-directory: rasa
       env:
-        RASA_ENVIRONMENT: ${{ secrets.RASA_ENVIRONMENT }}
+        RASA_ENVIRONMENT: ${{ secrets.RASA_ENVIRONMENT || 'production' }}
         RASA_JWT_SECRET: ${{ secrets.RASA_JWT_SECRET }}
+        RASA_TELEMETRY_ENABLED: 'false'
       run: |
         rasa train --quiet
         
-    - name: Upload model artifact
+    - name: 🧪 Test trained model
+      working-directory: rasa
+      run: |
+        rasa test nlu --nlu data/ --model models/
+        
+    - name: 📦 Upload model artifact
       uses: actions/upload-artifact@v3
       with:
         name: rasa-model
         path: rasa/models/
         retention-days: 5
+        if-no-files-found: error
 
-    # Optional: Push to model registry or deployment step here
-    # - name: Deploy model
+    - name: 📝 Upload test results
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: test-results
+        path: rasa/results/
+        retention-days: 7
+
+    # Add deployment steps here when ready
+    # - name: 🚀 Deploy model
+    #   if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
     #   run: |
-    #     # Your deployment logic here
-    #     echo "Model would be deployed here"
+    #     echo "Deploying model to production..."
