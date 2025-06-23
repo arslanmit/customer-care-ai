@@ -1,0 +1,11 @@
+version: "3.1"
+
+# This is a patch file to fix domain issues
+
+intents:
+  - change_language  # Add missing intent
+  
+responses:
+  utter_language_changed:
+    - text: "Language has been changed successfully."
+    - text: "I've switched the language as requested."

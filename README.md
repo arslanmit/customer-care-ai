@@ -1,16 +1,21 @@
 # Customer Care AI
 
-A lightweight conversational AI chatbot built with Rasa (backend) and React (frontend), designed to handle customer service inquiries with multilingual support. The application is containerized with Docker for easy deployment.
+An enterprise-ready conversational AI chatbot built with Rasa (backend) and React (frontend), designed to handle customer service inquiries with enhanced fallback strategies, advanced analytics, and Context7 integration. The application can be deployed on-premise or in the cloud with Google Cloud integration.
 
 [![Rasa Version](https://img.shields.io/badge/Rasa-3.6%2B-5a17ee.svg)](https://rasa.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Context7 Compatible](https://img.shields.io/badge/Context7-Compatible-blue.svg)](https://context7.ai)
+[![Google Cloud Ready](https://img.shields.io/badge/Google%20Cloud-Ready-4285F4.svg)](https://cloud.google.com/)
 
 ## 🚀 Key Features
 
-- **Multilingual Support**: Native support for multiple languages
-- **Simple Deployment**: Containerized with Docker for easy setup
-- **Stateless Architecture**: No database required
-- **Lightweight**: Minimal resource requirements
+- **Enhanced Fallback Strategies**: Multi-stage fallbacks with configurable confidence thresholds
+- **Multilingual Support**: Native support for multiple languages with automatic detection
+- **Advanced Analytics Dashboard**: Real-time metrics and conversation insights with Context7 integration
+- **RASA Watchdog**: Automatic monitoring and self-healing for high availability
+- **Google Cloud Integration**: Built-in deployment support for Google Cloud Run and Storage
+- **Context7 Framework**: Enhanced data processing and analytics capabilities
+- **High Availability**: Auto-restart capability with configurable retry limits
 
 ## 🚀 Quick Start
 
@@ -18,22 +23,35 @@ A lightweight conversational AI chatbot built with Rasa (backend) and React (fro
 
 - Docker 20.10+
 - Docker Compose 2.0+
+- Python 3.10+ (for local development)
+- Google Cloud SDK (for cloud deployment)
 
 ### Local Development
 
 1. **Clone the repository**
+
    ```bash
    git clone https://github.com/your-username/customer-care-ai.git
    cd customer-care-ai
    ```
 
-2. **Configure environment variables**
+2. **Set up Python environment**
+
+   ```bash
+   python -m venv .venv
+   source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+   pip install -r requirements.txt
+   ```
+
+3. **Configure environment variables**
+
    ```bash
    cp .env.example .env
    # Edit .env with your configuration
    ```
 
-3. **Download and install language models**
+4. **Download and install language models**
+
    ```bash
    # Download the models
    python scripts/download_models.py
@@ -42,22 +60,24 @@ A lightweight conversational AI chatbot built with Rasa (backend) and React (fro
    ./scripts/install_requirements.sh
    ```
 
-4. **Start the application**
+5. **Start the application**
+
    ```bash
    docker-compose up --build -d
    ```
 
-5. **Access the application**
-   - Frontend: http://localhost:8080
-   - API: http://localhost:5005
+6. **Access the application**
+   - Frontend: [http://localhost:8080](http://localhost:8080)
+   - API: [http://localhost:5005](http://localhost:5005)
+   - Analytics Dashboard: [http://localhost:8501](http://localhost:8501)
 
-## 🛠️ Configuration
+## 🔧️ Configuration
 
 ### Environment Variables
 
 Key environment variables:
 
-```
+```env
 # Application
 NODE_ENV=production
 TZ=UTC
@@ -66,7 +86,62 @@ TZ=UTC
 RASA_ENVIRONMENT=production
 RASA_ACTIONS_PORT=5055
 RASA_MODEL=./models
+
+# Analytics Dashboard
+STREAMLIT_SERVER_PORT=8501
+STREAMLIT_SERVER_HEADLESS=true
+CONVERSATION_DATA_PATH=/path/to/data/rasa_conversations.json
+
+# Google Cloud
+GCLOUD_PROJECT=your-project-name
+GCLOUD_BUCKET=your-bucket-name
 ```
+
+## 🔍 Enhanced Components
+
+### Enhanced Fallback Strategies
+
+The enhanced fallback system provides improved handling of low-confidence and ambiguous user intents:
+
+- **Multi-stage fallbacks**: Progressive fallback responses to guide users
+- **Configurable thresholds**: Adjust confidence thresholds for different domains
+- **Intent clarification**: Ask clarifying questions when multiple intents have similar confidence scores
+- **Fallback forms**: Collect additional information during fallback scenarios
+
+Configuration is in `backend/config.yml` under the `policies` section.
+
+### Analytics Dashboard with Context7
+
+The Context7-integrated analytics dashboard provides real-time insights into your chatbot's performance:
+
+- **Real-time metrics**: Track conversation volume, user satisfaction, and intent distribution
+- **Dynamic data loading**: Automatically locates and processes conversation data from multiple sources
+- **Conversation viewer**: Interactive interface to review full conversation history
+- **Data filters**: Filter conversations by date range, intent, or feedback score
+
+Access the dashboard at [http://localhost:8501](http://localhost:8501) when running locally.
+
+### RASA Watchdog
+
+The watchdog script ensures high availability of your chatbot services:
+
+- **Automatic monitoring**: Continuously checks the health of RASA and action servers
+- **Self-healing**: Automatically restarts services that become unresponsive
+- **Configurable retries**: Set retry limits and cooldown periods
+- **Detailed logging**: Colorized logs with timestamps for troubleshooting
+
+The watchdog script is located at `backend/rasa_watchdog.sh`.
+
+### Google Cloud Integration
+
+Built-in support for Google Cloud deployment and storage:
+
+- **Cloud Storage buckets**: Automatic setup with lifecycle policies for logs and models
+- **Cloud Run deployment**: Scripts for deploying to serverless environments
+- **Authentication**: Pre-configured for seamless integration with Google Cloud services
+- **Logging integration**: Structured logging compatible with Cloud Logging
+
+Configuration is in `backend/gcloud_integration.sh`.
 
 ## 📚 Documentation
 
@@ -86,41 +161,50 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ```text
 customer-care-ai/​
-├── .github/                  # GitHub Actions workflows
-├── backend/                  # Rasa backend implementation
-│   ├── actions/              # Custom Rasa actions (incl. ActionAskOrderNumber, ActionTellJoke, etc.)
-│   ├── api/                  # API endpoints (FastAPI)
-│   ├── data/                 # NLU data, stories, rules
-│   ├── models/               # Trained Rasa models
-│   ├── results/              # Test and analytics reports
-│   └── tests/                # Backend tests
-├── frontend/                 # React 18 + Vite app
-│   ├── src/                  # Main source code
-│   │   ├── Analytics.jsx     # Analytics dashboard
-│   │   ├── Feedback.jsx      # Feedback modal
-│   │   ├── Auth.jsx          # Supabase Auth context/hooks
-│   │   ├── Chatbot.jsx       # Main chatbot UI
+├── .github/                    # GitHub Actions workflows
+├── backend/                    # Rasa backend implementation
+│   ├── actions/                # Custom Rasa actions
+│   ├── api/                    # API endpoints (FastAPI)
+│   ├── data/                   # NLU data, stories, rules
+│   │   └── rasa_conversations.json # Conversation logs for analytics
+│   ├── models/                 # Trained Rasa models
+│   ├── results/                # Test and analytics reports
+│   ├── fallback_config/        # Enhanced fallback strategies configuration
+│   │   └── enhanced_fallbacks.yml # Enhanced fallback definitions
+│   ├── analytics_dashboard.py  # Context7-integrated analytics dashboard
+│   ├── rasa_watchdog.sh        # High-availability monitoring script
+│   ├── gcloud_integration.sh   # Google Cloud setup and deployment
+│   ├── start_actions.sh        # Action server starter script
+│   ├── start_rasa_shell.sh     # Rasa server starter script
+│   ├── config.yml              # Main RASA configuration
+│   └── tests/                  # Backend tests
+├── frontend/                   # React 18 + Vite app
+│   ├── src/                    # Main source code
+│   │   ├── Analytics.jsx       # Analytics dashboard frontend
+│   │   ├── Feedback.jsx        # Feedback modal
+│   │   ├── Auth.jsx            # Supabase Auth context/hooks
+│   │   ├── Chatbot.jsx         # Main chatbot UI
 │   │   └── ...
-│   ├── public/               # Static files
-│   ├── Dockerfile*           # Frontend Docker configs
-│   ├── package.json          # Frontend deps/scripts
-│   ├── vite.config.js        # Vite config
+│   ├── public/                 # Static files
+│   ├── Dockerfile*             # Frontend Docker configs
+│   ├── package.json            # Frontend deps/scripts
+│   ├── vite.config.js          # Vite config
 │   └── ...
-├── monitoring/               # Monitoring setup
-│   ├── grafana/              # Grafana dashboards
-│   └── prometheus/           # Prometheus config
-├── scripts/                  # Utility scripts
-│   ├── generate-secrets.sh   # Secure secret generation
-│   └── monitor_logs.sh       # Log monitoring utility
-├── supabase/                 # Supabase migrations & DB setup
-│   └── migrations/           # SQL migrations (event logging, RLS, analytics)
-├── .env.example              # Env var template
-├── docker-compose.yml        # Local dev
-├── docker-compose.prod.yml   # Production
-├── Dockerfile                # Backend Dockerfile
-├── requirements.txt          # Python deps
-├── setup.sh                  # Project setup script
-└── setup_local.sh            # Local dev setup
+├── monitoring/                 # Monitoring setup
+│   ├── grafana/                # Grafana dashboards
+│   └── prometheus/             # Prometheus config
+├── scripts/                    # Utility scripts
+│   ├── generate-secrets.sh     # Secure secret generation
+│   └── monitor_logs.sh         # Log monitoring utility
+├── logs/                       # System and application logs
+│   └── gcloud_setup.log        # Google Cloud setup logs
+├── .env.example                # Env var template
+├── docker-compose.yml          # Local dev
+├── docker-compose.prod.yml     # Production
+├── Dockerfile                  # Backend Dockerfile
+├── requirements.txt            # Python deps
+├── setup.sh                    # Project setup script
+└── setup_local.sh              # Local dev setup
 ```
 
 _Note: See `ARCHITECTURE.md` for a detailed architecture overview._
@@ -168,26 +252,119 @@ npm run format
    docker-compose -f docker-compose.prod.yml up --build -d
    ```
 
-2. Set up monitoring:
+2. Start the RASA Watchdog for high availability:
+
+   ```bash
+   cd backend
+   chmod +x rasa_watchdog.sh
+   ./rasa_watchdog.sh &
+   ```
+
+3. Launch the analytics dashboard:
+
+   ```bash
+   cd backend
+   streamlit run analytics_dashboard.py --server.headless=true --server.port=8501
+   ```
+
+4. Set up monitoring:
 
    - Access Grafana at [http://your-domain:3001](http://your-domain:3001)
    - Default credentials: admin/admin (change immediately after first login)
 
-## 📊 Monitoring
+### Google Cloud Deployment
 
-The application includes built-in monitoring with:
+1. Authenticate with Google Cloud:
 
-- **Prometheus** for metrics collection
-- **Grafana** for visualization
-- **Health check endpoints** at `/health`
+   ```bash
+   gcloud auth login
+   ```
+
+2. Run the Google Cloud integration script:
+
+   ```bash
+   cd backend
+   chmod +x gcloud_integration.sh
+   ./gcloud_integration.sh
+   ```
+
+3. Deploy to Cloud Run:
+
+   ```bash
+   gcloud run deploy customer-care-ai \
+     --source . \
+     --platform managed \
+     --region us-central1 \
+     --allow-unauthenticated
+   ```
+
+## 📊 Monitoring and Analytics
+
+The application includes comprehensive monitoring and analytics:
+
+### Real-time Monitoring
+
+- **RASA Watchdog**: Continuous monitoring of service health
+- **Prometheus**: Metrics collection for system performance
+- **Grafana**: Visualization dashboards for operational metrics
+- **Health check endpoints**: Available at `/health`
+
+### Analytics Dashboard
+
+- **Context7-integrated** analytics for conversation insights
+- **Real-time metrics**: User satisfaction, intent distribution, fallback rates
+- **Conversation viewer**: Detailed conversation history and analysis
+- **Export capabilities**: Download reports in CSV format
+
+### Logging
+
+- **Structured logging**: JSON-formatted logs for easy parsing
+- **Log rotation**: Automatic log management
+- **Google Cloud Logging**: Integration with cloud-based log analysis
+- **Alerting**: Configurable alerts for critical issues
+
+## Context7 Integration
+
+This project integrates with the Context7 framework to provide enhanced conversation analysis and data processing capabilities:
+
+### Key Context7 Features
+
+- **Dynamic Data Loading**: Automatically locate and load conversation data from multiple sources
+- **Format Detection**: Support for multiple conversation data formats
+- **Enhanced Analytics**: Advanced metrics and visualizations
+- **Flexible Path Resolution**: Environment variables and fallback paths for reliable data access
+
+### Using Context7
+
+1. Configure the data path:
+
+   ```bash
+   # In your .env file
+   CONVERSATION_DATA_PATH=/path/to/your/conversation/data.json
+   ```
+
+2. Start the Context7-integrated analytics dashboard:
+
+   ```bash
+   cd backend
+   streamlit run analytics_dashboard.py
+   ```
+
+3. Access the dashboard at [http://localhost:8501](http://localhost:8501)
+
+4. Use the sidebar filters to analyze specific date ranges or conversation patterns
 
 ## Contributing
 
+We welcome contributions! Please follow these steps:
+
 1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines on development workflow and coding standards.
 
 ## License
 
@@ -195,10 +372,13 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Acknowledgments
 
-- [Rasa](https://rasa.com/) for the open-source conversational AI framework
-- [React](https://reactjs.org/) for the frontend library
-- [Supabase](https://supabase.com/) for the open-source Firebase alternative
-- [Docker](https://www.docker.com/) for containerization
+- [RASA](https://rasa.com/) - The open source machine learning framework for automated text and voice-based conversations
+- [Context7](https://context7.ai) - For enhanced conversation analytics capabilities
+- [Streamlit](https://streamlit.io/) - For the analytics dashboard interface
+- [Google Cloud](https://cloud.google.com/) - For cloud deployment and storage solutions
+- [React](https://reactjs.org/) - For the frontend library
+- [Supabase](https://supabase.com/) - For the open-source Firebase alternative
+- [Docker](https://www.docker.com/) - For containerization
 
 ## Support
 

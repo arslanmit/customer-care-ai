@@ -10,25 +10,8 @@ nlu:
       - hello there
       - good morning
       - good evening
-      - hi!
-      - hey!
-      - greetings
-      - how are you today
-      - how's it going
-      - hola
-      - buenos días
-      - buenas tardes
-      - buenas noches
-      - ¿cómo estás?
-      - bonjour
-      - salut
-      - bonsoir
-      - comment ça va
-      - hallo
-      - guten tag
-      - guten morgen
-      - guten abend
-      - wie geht es dir
+      - good afternoon
+      - howdy
 
   - intent: goodbye
     examples: |
@@ -36,307 +19,171 @@ nlu:
       - goodbye
       - see you later
       - talk to you later
-      - see ya
-      - catch you later
       - have a nice day
-      - bye bye
-      - later
-      - adiós
-      - hasta luego
-      - nos vemos
-      - hasta pronto
-      - au revoir
-      - à bientôt
-      - à plus tard
-      - tschüss
-      - auf Wiedersehen
-      - bis später
-      - görüşürüz
-      - hoşça kal
-      - güle güle
+      - take care
+      - catch you later
+      - until next time
 
-  - intent: nlu_fallback
+  - intent: affirm
     examples: |
-      - asdfghjkl
-      - qwertyuiop
-      - zxcvbnm
-      - 1234567890
-      - !@#$%^&*()
-      - lorem ipsum dolor sit amet
-      - the quick brown fox jumps over the lazy dog
-      - abcdefghijklmnopqrstuvwxyz
-      - 123 main street
-      - my hovercraft is full of eels
-      - the mitochondria is the powerhouse of the cell
-      - to be or not to be that is the question
-      - the rain in spain falls mainly on the plain
-      - how much wood would a woodchuck chuck
-      - peter piper picked a peck of pickled peppers
-      - she sells seashells by the seashore
-      - the quick brown fox jumps over the lazy dog
-      - pack my box with five dozen liquor jugs
-      - the five boxing wizards jump quickly
-      - sphinx of black quartz judge my vow
+      - yes
+      - y
+      - indeed
+      - of course
+      - that sounds good
+      - correct
+      - sure
+      - ok
+      - okay
 
-  - intent: ask_time
+  - intent: deny
     examples: |
-      - what time is it
-      - what's the time
-      - tell me the time
-      - could you tell me the time
-      - do you have the time
-      - time please
-      - what is the current time
-      - what time do you have
-      - can you give me the time
-      - what's the current time
-      - could you tell me what time it is
-      - what is the time now
-      - what's the time now
-      - what time is it right now
-      - can you tell me what time it is
-      - do you know what time it is
-      - could you tell me the current time
-      - may I know the time
-      - what time is it over there
-      - what's the time where you are
+      - no
+      - n
+      - never
+      - I don't think so
+      - don't like that
+      - no way
+      - not really
+      - nope
 
-  - intent: ask_date
+  - intent: thank
     examples: |
-      - what's the date today
-      - what is today's date
-      - what's today's date
-      - can you tell me the date
-      - what day is it today
-      - what's the current date
-      - date please
-      - could you tell me today's date
-      - what date is it
-      - what is the date
-      - tell me today's date
-      - what is the date today
-      - what's the date
-      - today's date
-      - current date
-      - what day is today
-      - what is the day today
-      - what day is it
-      - can you tell me what day it is
-      - ¿cuál es la fecha de hoy
-      - ¿qué día es hoy
-      - dime la fecha de hoy
-      - ¿sabes qué día es hoy
-      - ¿podrías decirme la fecha de hoy
-      - quelle est la date d'aujourd'hui
-      - on est le combien aujourd'hui
-      - quelle date sommes-nous
-      - c'est quel jour aujourd'hui
-      - peux-tu me dire la date d'aujourd'hui
-      - welches Datum haben wir heute
-      - der wievielte ist heute
-      - welcher Tag ist heute
-      - wie ist das heutige Datum
-      - kannst du mir das heutige Datum sagen
-      - bugünün tarihi ne
-      - bugün ayın kaçı
-      - bugün günlerden ne
-      - bugünün tarihini söyler misin
-      - bugün hangi gün
-
-  - intent: support_request
-    examples: |
-      - I need help with my order
-      - There's a problem with my account
-      - My product isn't working
-      - I have an issue with my purchase
-      - Something is wrong with my subscription
-      - I need customer support
-      - Help me with my recent order
-      - I need assistance with your service
-      - My product is defective
-      - I want to report a problem
-      - Can you help me fix an issue?
-      - I'm having trouble with my device
-      - Something broke and I need help
-      - Technical support needed
-      - I'm experiencing difficulties
-      - I need to speak with support
-      - This isn't working as expected
-      - I need help troubleshooting
-      - Can you assist me with an issue?
-      - I have a question about my account
-      - I need to report a technical problem
-      - Your product isn't functioning properly
-      - I need customer service
-
-  - intent: product_inquiry
-    examples: |
-      - What products do you offer?
-      - Tell me about your services
-      - What kind of products do you have?
-      - Can you tell me about your product line?
-      - What services are available?
-      - I'd like to know about your products
-      - What do you sell?
-      - Show me your product catalog
-      - What are your main products?
-      - Tell me about your offerings
-      - What kind of services do you provide?
-      - I'm interested in your products
-      - What can I buy from you?
-      - What's in your product range?
-      - Do you have a product list?
-      - What are your top products?
-      - Can you tell me about your services?
-      - What products are available?
-      - I'd like to see your product options
-      - What do you offer?
+      - thanks
+      - thank you
+      - appreciate it
+      - thanks a lot
+      - thank you so much
+      - thanks for your help
+      - that's helpful
 
   - intent: check_order_status
     examples: |
-      - I want to check my order status
-      - Where is my order?
-      - Order status update
-      - Check order status
-      - Track my order
-      - I'd like to know my order status
-      - Can you tell me about my order status?
-      - What's the status of my order?
-      - Has my order shipped yet?
-      - When will my order arrive?
-      - Can you check the status of order #[number]?
-      - I need an update on my order
-      - What's the latest on my order?
-      - Order tracking
-      - Status of order #[number]
-      - Where's my package?
-      - Has my order been processed?
-      - When was my order shipped?
-      - Can you look up my order status?
-      - I want to track my package
+      - where is my order
+      - when will my order arrive
+      - what's the status of my order
+      - can you tell me about my order
+      - is my order on the way
+      - has my order shipped
+      - tracking for my order
+      - order status
 
-  - intent: provide_order_number
+  - intent: check_balance
     examples: |
-      - My order number is [123456]
-      - [123456]
-      - It's [123456]
-      - The order number is [123456]
-      - [123456] is my order number
-      - Order #[123456]
-      - Here's the order number: [123456]
-      - My order ID is [123456]
-      - The number is [123456]
-      - [12345-6789] is the order number
-      - Tracking number [123456]
-      - Order reference [123456]
-      - It's order [123456]
-      - My order is [123456]
-      - [123456] is the number
+      - what's my balance
+      - how much money do I have
+      - show me my balance
+      - check my account balance
+      - current balance
+      - balance inquiry
 
-  - intent: need_help
+  - intent: support_request
     examples: |
       - I need help
-      - Can you help me?
-      - I need assistance
-      - Help me please
+      - can you assist me
+      - support please
+      - customer service
       - I have a problem
-      - I need some help with something
-      - Could you assist me?
-      - I'm having trouble
-      - I need support
-      - Can you help me with something?
-      - I need your help
-      - Assistance needed
-      - I'm stuck
-      - I don't know what to do
-      - Can you guide me?
-
-  - intent: return_item
-    examples: |
-      - I want to return an item
-      - How do I return something?
-      - I need to make a return
-      - Return policy
-      - Can I return this item?
-      - I'd like to send something back
-      - How does the return process work?
-      - I want to send this back
-      - Can I get a refund for this?
-      - How do I start a return?
-      - I'm not satisfied with my purchase
-      - This item needs to be returned
-      - I want to exchange this item
-      - How do I process a return?
-      - I need to return order #[number]
-
-  - intent: contact_support
-    examples: |
-      - I want to talk to a human
-      - Let me speak to an agent
-      - Connect me to support
-      - I need to talk to someone
-      - Can I speak to customer service?
-      - Transfer me to an agent
+      - something isn't working
+      - need assistance
+      - help me please
       - I need to speak with support
-      - Can I talk to a real person?
-      - Human agent please
-      - Connect me to a representative
-      - I need to speak to customer service
-      - Let me talk to support
-      - Transfer me to customer service
-      - I'd like to speak with an agent
-      - Can you connect me to support?
+
+  - intent: complaint
+    examples: |
+      - I want to complain
+      - I'm not happy with the service
+      - this is unacceptable
+      - I'm upset about my recent experience
+      - I want to file a complaint
+      - I have a serious issue
+
+  - intent: change_language
+    examples: |
+      - Change language
+      - Switch to English
+      - I want to speak in Spanish
+      - Can you change the language?
+      - Set language to French
+      - Let's talk in German
+      - Change to Japanese
+
+  - intent: ask_datetime
+    examples: |
+      - What time is my appointment?
+      - When is my delivery scheduled?
+      - What date will my order arrive?
+      - What are your business hours?
+      - When will my package arrive?
+
+  - intent: ask_info
+    examples: |
+      - I need some information
+      - Tell me about your return policy
+      - Can you explain how this works?
+      - I have a question about your products
+      - What can you tell me about this service?
+
+  - intent: provide_info
+    examples: |
+      - My email is example@email.com
+      - My phone number is 555-123-4567
+      - My address is 123 Main Street
+      - My account number is ABC12345
+      - My order number is 987654
+
+  - intent: request_human_agent
+    examples: |
+      - I want to speak to a person
+      - Connect me with a human
+      - Can I talk to an agent?
+      - I need to speak with someone real
+      - No bots, give me a human
+
+  - intent: tell_joke
+    examples: |
+      - Tell me a joke
+      - Say something funny
+      - I need a laugh
+      - Do you know any jokes?
+      - Make me smile
 
   - intent: ask_return_policy
     examples: |
       - What's your return policy?
-      - How long do I have to return items?
-      - Can I get a refund?
-      - What items can be returned?
-      - Return window
-      - What's the return period?
-      - How does returns work?
-      - Can I return opened items?
-      - What's your refund policy?
-      - How do I get my money back?
-      - What's the process for returns?
-      - Can I return after 30 days?
-      - What's your exchange policy?
-      - How do I return an online order?
-      - What are the return conditions?
+      - How do returns work?
+      - Can I return something I bought?
+      - What's the policy for exchanges?
+      - How many days do I have to return?
 
-  - intent: change_language
+  - intent: contact_support
     examples: |
-      - I want to speak in Spanish
-      - Can we talk in French?
-      - Switch to German
-      - Change language to Turkish
-      - I'd like to change the language to English
-      - Can you speak in Spanish?
-      - Let's switch to French
-      - I prefer German
-      - Change to Turkish please
-      - Can we continue in English?
-      - I want to change the language
-      - Change interface language to Spanish
-      - Switch my language to French
-      - Can you speak to me in German?
-      - Change to Spanish interface
-      - I'd like to use Turkish
-      - Change language setting to English
-      - Can we switch to Spanish?
-      - I want to use French
-      - Change to German please
+      - How do I contact support?
+      - What's your support email?
+      - Give me your contact information
+      - What's the support phone number?
+      - How can I reach customer service?
 
-  - intent: complain
+  - intent: need_help
     examples: |
-      - I want to make a complaint
-      - I have a complaint
-      - I want to report an issue
-      - I’m not happy with my order
-      - I’m dissatisfied with your service
-      - I want to escalate my issue
-      - I need to speak to a manager
-      - I’m upset about my recent experience
-      - I want to file a complaint
-      - I have a serious issue
+      - I need help with my account
+      - Help me use this feature
+      - I'm stuck and need assistance
+      - Can you help me navigate?
+      - I'm having trouble with this
+
+  - intent: provide_order_number
+    examples: |
+      - My order number is 12345
+      - Order #67890
+      - Here's my order ID: ABC123
+      - The order reference is XYZ-789
+      - My purchase number is 987-654-321
+
+  - intent: return_item
+    examples: |
+      - I want to return something I bought
+      - How do I return an item?
+      - I need to send back a product
+      - Process a return for me
+      - I'm not satisfied with my purchase and want to return it

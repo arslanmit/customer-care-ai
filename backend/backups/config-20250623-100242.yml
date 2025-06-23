@@ -89,25 +89,17 @@ policies:
     enable_fallback_prediction: true
     restrict_rules: true
     check_for_contradictions: true
-  
-  # Enhanced fallback with Memoization Policy (from enhanced_fallbacks.yml)
-  - name: MemoizationPolicy
-    max_history: 5
-    epochs: 100
-  
-  # Enhanced fallback with TED Policy (from enhanced_fallbacks.yml)
-  - name: TEDPolicy
-    max_history: 5
-    epochs: 100
-    constrain_similarities: true
     
-  # Enhanced fallback with Fallback Classifier (from enhanced_fallbacks.yml)
-  - name: FallbackClassifier
-    threshold: 0.7
-    ambiguity_threshold: 0.2
-    
-  # Additional policies for better dialogue management
-  # Transformer-based dialogue policy (existing)
+    # Rule configuration
+    rules:
+      - rule: Only say `hello` if the user provided a name
+        condition:
+          - active_loop: null
+        steps:
+          - intent: greet
+          - action: utter_greet
+  
+  # Transformer-based dialogue policy
   - name: TEDPolicy
     max_history: 8
     epochs: 100
@@ -131,6 +123,15 @@ policies:
         max_history: 8
         state_featurizer:
           - name: SingleStateFeaturizer
+  
+  # Memorization policy for simple patterns
+  - name: MemoizationPolicy
+    max_history: 5
+    lookup:
+      - text
+      - intent
+      - entities
+    use_nlu_confidence: true
 
 # Session configuration
 session_config:
