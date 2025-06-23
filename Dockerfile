@@ -83,6 +83,8 @@ COPY --from=builder /app/requirements-clean.txt /app/requirements.txt
 # Install Python dependencies
 RUN set -ex \
     && pip install --no-cache-dir -r /app/requirements.txt \
+    # Install Rasa and its dependencies
+    && pip install --no-cache-dir rasa==3.5.0 rasa-sdk==3.5.0 \
     # Install spaCy models
     && python -m spacy download en_core_web_md \
     && python -m spacy download es_core_news_md \
@@ -92,6 +94,9 @@ RUN set -ex \
     && find /usr/local -type d -name 'test*' -o -name 'tests' -o -name 'idle_test' | xargs rm -rf 2>/dev/null || true \
     && find /usr/local -type f -name '*.pyc' -o -name '*.pyo' | xargs rm -f 2>/dev/null || true \
     && rm -f /app/requirements-clean.txt
+
+# Set PYTHONPATH to include the app directory
+ENV PYTHONPATH=/app
 
 # Copy application code
 COPY --chown=$APP_USER:$APP_USER backend/ ./backend/
