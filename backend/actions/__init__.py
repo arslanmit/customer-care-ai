@@ -1,2 +1,11 @@
-# This file is intentionally left empty as per Rasa's requirements.
-# The favicon handler is registered through the Sanic app's signal system.
+"""
+This is the actions package for Rasa custom actions.
+"""
+
+# This file makes the 'actions' directory a Python package
+# It can be empty or contain package-level variables and imports
+
+# Import action classes to make them available when importing from actions package
+from actions.actions import ActionTellTime  # noqa: F401
+
+__all__ = ["ActionTellTime"]

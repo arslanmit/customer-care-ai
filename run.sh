@@ -83,8 +83,10 @@ if [ -f docker-compose.yml ]; then
     echo -e "${RED}Docker is not running! Please start Docker Desktop and try again.${NC}"
     echo -e "${YELLOW}Falling back to local Rasa run...${NC}"
     if command -v rasa &> /dev/null; then
+      cd backend
       rasa run --enable-api --cors "*" &
       rasa run actions &
+      cd ..
     else
       echo -e "${RED}Rasa not installed. Please install or use Docker.${NC}"
       exit 1
@@ -96,8 +98,10 @@ if [ -f docker-compose.yml ]; then
 else
   echo -e "${YELLOW}docker-compose.yml not found. Attempting local Rasa run...${NC}"
   if command -v rasa &> /dev/null; then
+    cd backend
     rasa run --enable-api --cors "*" &
     rasa run actions &
+    cd ..
   else
     echo -e "${RED}Rasa not installed. Please install or use Docker.${NC}"
     exit 1

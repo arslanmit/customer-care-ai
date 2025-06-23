@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Navigate to the project root
+# Navigate to the backend directory
 cd "$(dirname "$0")"
 
 # Stop any running Rasa shell processes (but not action server)
