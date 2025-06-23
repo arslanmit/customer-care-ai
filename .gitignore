@@ -72,6 +72,16 @@ migration.env
 # Rasa caches and models
 .rasa/
 
+# Ignore all model files by default
+models/**
+
+# Explicitly track the spaCy wheel file
+!models/spacy/
+!models/spacy/en_core_web_sm-3.7.1-py3-none-any.whl
+
+# Ignore Rasa model archives
+**/*.tar.gz
+.python-version
 # Misc
 *.swp
 *~
