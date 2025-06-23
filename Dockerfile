@@ -57,18 +57,19 @@ COPY requirements.txt ./
 # Install additional Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy Rasa project files
-COPY . .
+# Copy backend files
+COPY backend/ ./backend/
+COPY run.py .
 
 # Switch to a non-root user
 USER 1001
 
 # Set environment variables
-ENV PYTHONPATH=/app
+ENV PYTHONPATH=/app/backend
 ENV PORT=5005
 
 # Expose the port the app runs on
 EXPOSE $PORT
 
 # Command to run the Rasa server
-CMD ["python", "run.py", "--enable-api", "--cors", "*", "--debug", "--port", "$PORT"]
+CMD ["python", "-m", "rasa", "run", "--enable-api", "--cors", "*", "--debug", "--port", "$PORT"]

@@ -21,7 +21,7 @@
 ## 📈 Visualizations
 
 ### Intent Distribution
-![intent_distribution.png](analysis_plots/intent_distribution.png)
+![intent_distribution.png](dashboard/intent_distribution.png)
 
 ### Conversation Lengths
-![conversation_lengths.png](analysis_plots/conversation_lengths.png)
+![conversation_lengths.png](dashboard/conversation_lengths.png)

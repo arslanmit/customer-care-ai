@@ -59,11 +59,11 @@ services:
     environment:
       - TZ=${TZ:-UTC}
       - PYTHONUNBUFFERED=1
-      - PYTHONPATH=/app
+      - PYTHONPATH=/app/backend
       - RASA_ENVIRONMENT=${RASA_ENVIRONMENT:-production}
-      - RASA_MODEL=${RASA_MODEL:-/app/models}
+      - RASA_MODEL=${RASA_MODEL:-/app/backend/models}
       - RASA_LOG_LEVEL=${RASA_LOG_LEVEL:-INFO}
-      - RASA_REMOTE_STORAGE=/app/data
+      - RASA_REMOTE_STORAGE=/app/backend/data
       - USER_NAME=${RASA_USER:-admin}
       - PASSWORD=${RASA_PASSWORD:-change-me}
       - JWT_SECRET=${JWT_SECRET}
@@ -88,13 +88,14 @@ services:
     ports:
       - "5005:5005"
     volumes:
-      - rasa_data:/app/data
-      - ./models:/app/models:ro
-      - ./config:/app/config:ro
-      - ./domain.yml:/app/domain.yml:ro
-      - ./config/credentials.yml:/app/credentials.yml:ro
-      - ./config/endpoints.yml:/app/endpoints.yml:ro
-      - ./config/config.yml:/app/config.yml:ro
+      - rasa_data:/app/backend/data
+      - ./backend/models:/app/backend/models:ro
+      - ./backend/config:/app/backend/config:ro
+      - ./backend/domain.yml:/app/backend/domain.yml:ro
+      - ./backend/config/credentials.yml:/app/backend/credentials.yml:ro
+      - ./backend/endpoints.yml:/app/backend/endpoints.yml:ro
+      - ./backend/config.yml:/app/backend/config.yml:ro
+      - ./run.py:/app/run.py:ro
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:5005"]
       interval: 30s

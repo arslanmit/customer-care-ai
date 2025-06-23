@@ -72,8 +72,8 @@ def compute_response_times(convs):
 def make_dashboard(conversations, df_summary, df_intents, df_rt, all_rts):
     import os
     
-    # Create analysis_plots directory if it doesn't exist
-    output_dir = 'analysis_plots'
+    # Create dashboard directory if it doesn't exist
+    output_dir = '../dashboard'
     os.makedirs(output_dir, exist_ok=True)
     
     now = datetime.now(ZoneInfo('Europe/Berlin')).strftime('%Y-%m-%d_%H-%M-%S')

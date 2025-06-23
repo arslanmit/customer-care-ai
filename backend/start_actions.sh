@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Navigate to the backend directory
-cd "$(dirname "$0")/backend"
+# Navigate to the script's directory
+cd "$(dirname "$0")"
 
 # Stop any running action servers
 echo "🛑 Stopping any running Rasa action servers..."

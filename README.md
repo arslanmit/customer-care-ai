@@ -1,33 +1,106 @@
-# Customer Care AI Chatbot
+# Customer Care AI
 
-A full-stack conversational AI chatbot built with Rasa (backend) and React (frontend), designed to handle customer service inquiries with multilingual support and advanced conversation management. The application is containerized with Docker and follows microservices architecture principles for scalability and maintainability.
+A production-ready conversational AI chatbot built with Rasa (backend) and React (frontend), designed to handle customer service inquiries with multilingual support and advanced conversation management. The application is containerized with Docker for easy deployment and scaling.
+
+[![Rasa Version](https://img.shields.io/badge/Rasa-3.6%2B-5a17ee.svg)](https://rasa.com/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## 🚀 Key Features
 
-- **Multilingual Support**: Native support for English, Spanish, French, German, and Turkish (spaCy language models)
-- **Advanced Conversation Flow**: Stateful conversations with Rasa dialogue management
-- **Custom Actions**: Includes `ActionAskOrderNumber`, `ActionTellJoke`, `ActionAskHowCanIHelp`, and more for rich, extensible logic
-- **Feedback & Analytics**: Real-time analytics dashboard (frontend) and user feedback modal; feedback and event data logged to Supabase
-- **Supabase Integration**: Conversation events, user feedback, and analytics stored securely with RLS (Row Level Security) and policies
-- **Production-Ready**: Docker Compose for local/prod, GKE/Cloud Run for cloud deployment
-- **Enterprise Security**: JWT authentication, secure secrets, HTTPS, and database-level RLS
-- **Comprehensive Monitoring**: Prometheus, Grafana dashboards, log monitoring scripts
-- **CI/CD Pipeline**: Automated with GitHub Actions
-- **Multi-channel Support**: Web UI, extensible to Slack, MS Teams, etc.
-- **Modern Frontend**: React 18, Vite, Chart.js, Supabase Auth, ESLint, Prettier, Vitest
-- **Testing & Code Quality**: Backend (pytest), Frontend (Vitest, ESLint, Prettier)
-- **Scripts & Utilities**: Secret generation, log monitoring, DB migrations
+- **Multilingual Support**: Native support for multiple languages
+- **Advanced Conversation Flow**: Stateful conversations with Rasa
+- **Production-Ready**: Containerized with Docker for easy deployment
+- **Monitoring**: Built-in support for Prometheus and Grafana
+- **Scalable**: Designed for horizontal scaling
 
----
+## 🚀 Quick Start
 
-**New since last update:**
+### Prerequisites
 
-- Analytics dashboard and feedback modal (frontend)
-- Supabase event logging, RLS, and analytics
-- New custom actions in backend
-- Enhanced security and monitoring
-- Modernized frontend stack (React 18, Vite, Chart.js)
-- Improved code quality tooling (Vitest, ESLint, Prettier)
+- Docker 20.10+
+- Docker Compose 2.0+
+
+### Deployment
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/your-username/customer-care-ai.git
+   cd customer-care-ai
+   ```
+
+2. **Configure environment variables**
+   ```bash
+   cp .env.example .env
+   # Edit .env with your configuration
+   ```
+
+3. **Start the application**
+   ```bash
+   docker-compose -f docker-compose.prod.yml up --build -d
+   ```
+
+4. **Access the application**
+   - Frontend: http://your-domain.com
+   - Admin Dashboard: http://your-domain.com/admin
+   - Grafana: http://your-domain.com/grafana
+   - Prometheus: http://your-domain.com/prometheus
+
+## 📦 Production Deployment
+
+### Kubernetes (Recommended for Production)
+
+1. **Set up a Kubernetes cluster**
+   ```bash
+   gcloud container clusters create customer-care-ai \
+     --num-nodes=3 \
+     --machine-type=e2-medium \
+     --zone=us-central1-a
+   ```
+
+2. **Deploy the application**
+   ```bash
+   kubectl apply -f k8s/
+   ```
+
+### Environment Variables
+
+Required environment variables:
+
+```
+# Application
+NODE_ENV=production
+TZ=UTC
+
+# Rasa
+RASA_ENVIRONMENT=production
+RASA_ACTIONS_PORT=5055
+RASA_MODEL=./models
+
+# Database
+POSTGRES_USER=rasa
+POSTGRES_PASSWORD=your-secure-password
+POSTGRES_DB=rasa
+
+# Monitoring
+PROMETHEUS_METRICS_PORT=9090
+GRAFANA_PORT=3001
+```
+
+## 📚 Documentation
+
+- [Architecture](docs/ARCHITECTURE.md)
+- [API Reference](docs/API.md)
+
+## 🔒 Security
+
+- All traffic is encrypted with TLS
+- JWT authentication for API access
+- Regular security updates
+- Rate limiting enabled
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## 🏗️ Project Structure
 
