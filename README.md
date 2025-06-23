@@ -191,7 +191,7 @@ customer-care-ai/​
 │   ├── src/                    # Main source code
 │   │   ├── Analytics.jsx       # Analytics dashboard frontend
 │   │   ├── Feedback.jsx        # Feedback modal
-│   │   ├── Auth.jsx            # Supabase Auth context/hooks
+│   │   ├── Auth.jsx            #  Auth context/hooks
 │   │   ├── Chatbot.jsx         # Main chatbot UI
 │   │   └── ...
 │   ├── public/                 # Static files
@@ -226,7 +226,7 @@ _Note: See `ARCHITECTURE.md` for a detailed architecture overview._
 - React 18+
 - Vite (bundler, included in frontend)
 - Chart.js (frontend analytics)
-- Supabase account (for DB/auth)
+-  account (for DB/auth)
 - Git
 - (Optional) Google Cloud CLI for GKE/Cloud Run deployment
 
@@ -386,7 +386,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - [Streamlit](https://streamlit.io/) - For the analytics dashboard interface
 - [Google Cloud](https://cloud.google.com/) - For cloud deployment and storage solutions
 - [React](https://reactjs.org/) - For the frontend library
-- [Supabase](https://supabase.com/) - For the open-source Firebase alternative
+- [](https://.com/) - For the open-source Firebase alternative
 - [Docker](https://www.docker.com/) - For containerization
 
 ## Support
@@ -573,7 +573,7 @@ npm test
 
 - Rasa actions: Add new actions in `backend/actions/`
 - Intent analytics: Results in `backend/results/`
-- Supabase event logging: All conversation events and feedback are logged (see `supabase/migrations/`)
+-  event logging: All conversation events and feedback are logged (see `/migrations/`)
 - Security: RLS enabled on event tables, policies for read/insert
 
 ### Frontend
@@ -581,19 +581,19 @@ npm test
 - React 18 + Vite
 - Analytics dashboard: `src/Analytics.jsx`
 - Feedback modal: `src/Feedback.jsx`
-- Supabase Auth: `src/Auth.jsx`
+-  Auth: `src/Auth.jsx`
 - Code quality: ESLint, Prettier, Vitest
 
 ### Scripts & Utilities
 
 - `scripts/generate-secrets.sh`: Generate strong secrets for env
 - `scripts/monitor_logs.sh`: Real-time log monitoring
-- DB migrations: `supabase/migrations/`
+- DB migrations: `/migrations/`
 
 ### Configuration
 
 - Environment variables: `.env` (see `.env.example`)
-- Supabase: Set up project, apply migrations, configure RLS
+- : Set up project, apply migrations, configure RLS
 
 _Note: See `ARCHITECTURE.md` for more details on the system design._
 
@@ -695,4 +695,4 @@ gcloud run deploy customer-care-ai \
 - **Grafana**: [http://localhost:3001](http://localhost:3001) (admin/admin)
 - **Analytics Dashboard**: In-app (frontend) for intent distribution, response times, etc.
 - **Log Monitoring**: `scripts/monitor_logs.sh` (real-time error/warning tailing)
-- **Event Logging**: Conversation and feedback events are stored in Supabase (see `supabase/migrations/` for schema and RLS policies)
+- **Event Logging**: Conversation and feedback events are stored in  (see `/migrations/` for schema and RLS policies)
