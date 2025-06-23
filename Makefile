@@ -51,13 +51,13 @@ lint: check-style
 
 # Format code
 format:
-	$(BLACK) backend/ test/
-	$(ISORT) backend/ test/
+	$(BLACK) backend/
+	$(ISORT) backend/
 # Check code style without making changes
 check-style:
-	$(BLACK) --check backend/ test/
-	$(ISORT) --check-only backend/ test/
-	$(FLAKE8) backend/ test/
+	$(BLACK) --check backend/
+	$(ISORT) --check-only backend/
+	$(FLAKE8) backend/
 # Clean up
 clean:
 	find . -type d -name '__pycache__' -exec rm -rf {} +

@@ -3,7 +3,7 @@ from __future__ import annotations
 import os
 from typing import Optional
 
-from fastapi import FastAPI, Depends, HTTPException, status, Header
+from fastapi import Depends, FastAPI, Header, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
 from jose import JWTError, jwt
 from pydantic import BaseModel, EmailStr
@@ -63,6 +63,7 @@ class UserOut(BaseModel):
 # Helpers
 # ---------------------------------------------------------------------------
 
+
 def _create_jwt(user: dict) -> str:
     """Create a JWT with user claims (including role)."""
     from datetime import datetime, timedelta
@@ -79,12 +80,16 @@ def _create_jwt(user: dict) -> str:
 async def get_current_user(authorization: str = Header(None)) -> dict:
     """Dependency that validates JWT in Authorization header (Bearer token)."""
     if not authorization or not authorization.startswith("Bearer "):
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Not authenticated")
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Not authenticated"
+        )
     token = authorization.split(" ", 1)[1]
     try:
         payload = jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
     except JWTError as exc:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token") from exc
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token"
+        ) from exc
     return payload  # Return claims
 
 
@@ -96,12 +101,20 @@ async def register(data: RegisterIn):
     supa = get_supabase_client()
 
     # Create Supabase user
-    resp = supa.auth.sign_up({"email": data.email, "password": data.password, "options": {"data": {"name": data.name}}})
+    resp = supa.auth.sign_up(
+        {
+            "email": data.email,
+            "password": data.password,
+            "options": {"data": {"name": data.name}},
+        }
+    )
     if resp["error"]:
         raise HTTPException(status_code=400, detail=resp["error"]["message"])
     user = resp["user"]
     # Ensure a profile row with default role
-    supa.table("profiles").upsert({"id": user["id"], "name": data.name, "role": "user"}).execute()
+    supa.table("profiles").upsert(
+        {"id": user["id"], "name": data.name, "role": "user"}
+    ).execute()
 
     # Issue custom JWT embedding role claim
     token = _create_jwt({"id": user["id"], "email": data.email, "role": "user"})
@@ -111,12 +124,20 @@ async def register(data: RegisterIn):
 @app.post("/login", response_model=TokenOut)
 async def login(data: LoginIn):
     supa = get_supabase_client()
-    resp = supa.auth.sign_in_with_password({"email": data.email, "password": data.password})
+    resp = supa.auth.sign_in_with_password(
+        {"email": data.email, "password": data.password}
+    )
     if resp["error"]:
         raise HTTPException(status_code=400, detail="Invalid credentials")
     user = resp["user"]
     # Fetch user role from profile table
-    profile_query = supa.table("profiles").select("role, name").eq("id", user["id"]).single().execute()
+    profile_query = (
+        supa.table("profiles")
+        .select("role, name")
+        .eq("id", user["id"])
+        .single()
+        .execute()
+    )
     role = profile_query.data.get("role", "user") if profile_query.data else "user"
     token = _create_jwt({"id": user["id"], "email": data.email, "role": role})
     return TokenOut(access_token=token)
