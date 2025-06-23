@@ -10,13 +10,7 @@ ENV \
     # Pip
     PIP_NO_CACHE_DIR=off \
     PIP_DISABLE_PIP_VERSION_CHECK=on \
-    PIP_DEFAULT_TIMEOUT=100 \
-    # Poetry
-    POETRY_VERSION=1.5.1 \
-    POETRY_HOME="/opt/poetry" \
-    POETRY_VIRTUALENVS_CREATE=false \
-    POETRY_NO_INTERACTION=1 \
-    PATH="$POETRY_HOME/bin:$PATH"
+    PIP_DEFAULT_TIMEOUT=100
 
 # Install system dependencies
 RUN set -ex \
@@ -28,22 +22,29 @@ RUN set -ex \
         libpq-dev \
     && rm -rf /var/lib/apt/lists/*
 
-# Install Poetry
-RUN curl -sSL https://install.python-poetry.org | python3 - --version $POETRY_VERSION
-
 # Set working directory
 WORKDIR /app
 
-# Copy only requirements first to leverage Docker cache
-COPY pyproject.toml poetry.lock* ./
+# Copy requirements file first to leverage Docker cache
+COPY requirements.txt .
 
-# Install dependencies
-RUN poetry install --no-dev --no-root --no-ansi \
-    && poetry export --without-hashes --format=requirements.txt > requirements.txt \
+# Create a temporary requirements file without the model files
+RUN set -ex \
+    && grep -v '^models/' requirements.txt > /tmp/requirements.txt \
+    && echo "spacy>=3.7.0,<4.0.0" >> /tmp/requirements.txt
+
+# Install Python dependencies
+RUN set -ex \
+    && pip install --user -r /tmp/requirements.txt \
+    # Install spaCy models
+    && python -m spacy download en_core_web_md \
+    && python -m spacy download es_core_news_md \
+    && python -m spacy download fr_core_news_md \
+    && python -m spacy download de_core_news_md \
     # Clean up build dependencies
     && apt-get remove -y --auto-remove build-essential curl git \
     && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Runtime stage
 FROM python:3.10-slim
