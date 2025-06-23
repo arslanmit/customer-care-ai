@@ -1,6 +1,6 @@
 # Customer Care AI
 
-A production-ready conversational AI chatbot built with Rasa (backend) and React (frontend), designed to handle customer service inquiries with multilingual support and advanced conversation management. The application is containerized with Docker for easy deployment and scaling.
+A lightweight conversational AI chatbot built with Rasa (backend) and React (frontend), designed to handle customer service inquiries with multilingual support. The application is containerized with Docker for easy deployment.
 
 [![Rasa Version](https://img.shields.io/badge/Rasa-3.6%2B-5a17ee.svg)](https://rasa.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -8,10 +8,9 @@ A production-ready conversational AI chatbot built with Rasa (backend) and React
 ## 🚀 Key Features
 
 - **Multilingual Support**: Native support for multiple languages
-- **Advanced Conversation Flow**: Stateful conversations with Rasa
-- **Production-Ready**: Containerized with Docker for easy deployment
-- **Monitoring**: Built-in support for Prometheus and Grafana
-- **Scalable**: Designed for horizontal scaling
+- **Simple Deployment**: Containerized with Docker for easy setup
+- **Stateless Architecture**: No database required
+- **Lightweight**: Minimal resource requirements
 
 ## 🚀 Quick Start
 
@@ -20,7 +19,7 @@ A production-ready conversational AI chatbot built with Rasa (backend) and React
 - Docker 20.10+
 - Docker Compose 2.0+
 
-### Deployment
+### Local Development
 
 1. **Clone the repository**
    ```bash
@@ -34,37 +33,29 @@ A production-ready conversational AI chatbot built with Rasa (backend) and React
    # Edit .env with your configuration
    ```
 
-3. **Start the application**
+3. **Download and install language models**
    ```bash
-   docker-compose -f docker-compose.prod.yml up --build -d
+   # Download the models
+   python scripts/download_models.py
+   
+   # Install requirements including the downloaded models
+   ./scripts/install_requirements.sh
    ```
 
-4. **Access the application**
-   - Frontend: http://your-domain.com
-   - Admin Dashboard: http://your-domain.com/admin
-   - Grafana: http://your-domain.com/grafana
-   - Prometheus: http://your-domain.com/prometheus
-
-## 📦 Production Deployment
-
-### Kubernetes (Recommended for Production)
-
-1. **Set up a Kubernetes cluster**
+4. **Start the application**
    ```bash
-   gcloud container clusters create customer-care-ai \
-     --num-nodes=3 \
-     --machine-type=e2-medium \
-     --zone=us-central1-a
+   docker-compose up --build -d
    ```
 
-2. **Deploy the application**
-   ```bash
-   kubectl apply -f k8s/
-   ```
+5. **Access the application**
+   - Frontend: http://localhost:8080
+   - API: http://localhost:5005
+
+## 🛠️ Configuration
 
 ### Environment Variables
 
-Required environment variables:
+Key environment variables:
 
 ```
 # Application
@@ -75,28 +66,17 @@ TZ=UTC
 RASA_ENVIRONMENT=production
 RASA_ACTIONS_PORT=5055
 RASA_MODEL=./models
-
-# Database
-POSTGRES_USER=rasa
-POSTGRES_PASSWORD=your-secure-password
-POSTGRES_DB=rasa
-
-# Monitoring
-PROMETHEUS_METRICS_PORT=9090
-GRAFANA_PORT=3001
 ```
 
 ## 📚 Documentation
 
-- [Architecture](docs/ARCHITECTURE.md)
 - [API Reference](docs/API.md)
 
 ## 🔒 Security
 
-- All traffic is encrypted with TLS
 - JWT authentication for API access
-- Regular security updates
 - Rate limiting enabled
+- Secure headers and CORS policies
 
 ## 📄 License
 
