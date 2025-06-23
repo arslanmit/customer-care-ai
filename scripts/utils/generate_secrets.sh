@@ -1,4 +1,21 @@
+
+show_help() {
+    echo "Usage: ./generate_secrets.sh [options]"
+    echo "  -h, --help   Show this help message and exit"
+}
+
+for arg in "$@"; do
+    case $arg in
+        -h|--help)
+            show_help
+            exit 0
+            ;;
+    esac
+done
+
 #!/bin/bash
+# Usage: ./scripts/utils/generate_secrets.sh [options]
+# Run with -h or --help for usage information
 
 # Generate secure random secrets
 generate_secret() {

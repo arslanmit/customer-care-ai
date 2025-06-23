@@ -151,11 +151,25 @@ Configuration is in `backend/gcloud_integration.sh`.
 
 - JWT authentication for API access
 - Rate limiting enabled
-- Secure headers and CORS policies
-
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🛠️ Scripts & Utilities
+
+All scripts for development, deployment, and maintenance are organized under the `scripts/` directory:
+
+- `scripts/dev/` — Development utilities (start, stop, monitor services, etc.)
+- `scripts/deployment/` — Deployment scripts (GCP, Cloud Run, secrets, etc.)
+- `scripts/utils/` — Utility and fix scripts (dependency fixes, test helpers, etc.)
+
+To see all available scripts and their descriptions, run:
+
+```bash
+./scripts/help.sh
+```
+
+Each script supports `-h` or `--help` for usage information and options.
 
 ## 🏗️ Project Structure
 
@@ -172,11 +186,6 @@ customer-care-ai/​
 │   ├── fallback_config/        # Enhanced fallback strategies configuration
 │   │   └── enhanced_fallbacks.yml # Enhanced fallback definitions
 │   ├── analytics_dashboard.py  # Context7-integrated analytics dashboard
-│   ├── rasa_watchdog.sh        # High-availability monitoring script
-│   ├── gcloud_integration.sh   # Google Cloud setup and deployment
-│   ├── start_actions.sh        # Action server starter script
-│   ├── start_rasa_shell.sh     # Rasa server starter script
-│   ├── config.yml              # Main RASA configuration
 │   └── tests/                  # Backend tests
 ├── frontend/                   # React 18 + Vite app
 │   ├── src/                    # Main source code

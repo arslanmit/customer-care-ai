@@ -1,8 +1,33 @@
 #!/bin/bash
 
 # =========================================================
-# Enhanced RASA Shell Script
+# Customer Care AI - Start Rasa Shell
+# Usage: ./start_rasa_shell.sh [options]
+# Run with -h or --help for usage information
 # =========================================================
+
+show_help() {
+    echo "\nUsage: $0 [options]"
+    echo "Options:"
+    echo "  -m, --model MODEL             Specific model file to use (defaults to latest)"
+    echo "  -p, --port PORT               Custom server port (default: 5005)"
+    echo "  -a, --action-port PORT        Custom action server port (default: 5055)"
+    echo "  -e, --endpoints FILE          Custom endpoints file (default: endpoints.yml)"
+    echo "  -c, --credentials FILE        Custom credentials file (default: credentials.yml)"
+    echo "  -x, --no-action               Skip action server startup checks"
+    echo "  -d, --debug                   Enable debug mode"
+    echo "  -h, --help                    Show this help message and exit"
+}
+
+for arg in "$@"; do
+    case $arg in
+        -h|--help)
+            show_help
+            exit 0
+            ;;
+    esac
+done
+
 # Features:
 # - Command line arguments for custom configuration
 # - Colorized output for better readability

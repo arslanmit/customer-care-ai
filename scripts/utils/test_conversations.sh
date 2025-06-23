@@ -1,3 +1,18 @@
+
+show_help() {
+    echo "Usage: ./test_conversations.sh [options]"
+    echo "  -h, --help   Show this help message and exit"
+}
+
+for arg in "$@"; do
+    case $arg in
+        -h|--help)
+            show_help
+            exit 0
+            ;;
+    esac
+done
+
 #!/bin/bash
 
 # =========================================================

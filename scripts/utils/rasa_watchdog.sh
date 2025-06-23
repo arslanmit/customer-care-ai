@@ -1,4 +1,21 @@
+
+show_help() {
+    echo "Usage: ./rasa_watchdog.sh [options]"
+    echo "  -h, --help   Show this help message and exit"
+}
+
+for arg in "$@"; do
+    case $arg in
+        -h|--help)
+            show_help
+            exit 0
+            ;;
+    esac
+done
+
 #!/bin/bash
+# Usage: ./scripts/utils/rasa_watchdog.sh [options]
+# Run with -h or --help for usage information
 
 # =========================================================
 # RASA Watchdog Script

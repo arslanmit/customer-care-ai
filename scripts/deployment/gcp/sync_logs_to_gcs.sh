@@ -1,3 +1,18 @@
+
+show_help() {
+    echo "Usage: ./sync_logs_to_gcs.sh [options]"
+    echo "  -h, --help   Show this help message and exit"
+}
+
+for arg in "$@"; do
+    case $arg in
+        -h|--help)
+            show_help
+            exit 0
+            ;;
+    esac
+done
+
 #!/bin/bash
 cd "$(dirname "$0")"
 BUCKET_NAME="$1"
