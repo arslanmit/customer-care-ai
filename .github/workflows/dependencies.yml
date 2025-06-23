@@ -185,8 +185,8 @@ jobs:
           echo "Last run: $(date -u +'%Y-%m-%d %H:%M:%S UTC')" >> .github/dependencies-status.md
           echo "" >> .github/dependencies-status.md
           echo "## Update Status" >> .github/dependencies-status.md
-          echo "- Python: ${{ env.PYTHON_UPDATES == 'true' && '✅ Updated' : '✅ Up to date' }}" >> .github/dependencies-status.md
-          echo "- Node.js: ${{ env.NODE_UPDATES == 'true' && '✅ Updated' : env.NODE_UPDATES == 'false' && '✅ Up to date' : '⏭️  Skipped (no frontend)' }}" >> .github/dependencies-status.md
+          echo "- Python: ${{ env.PYTHON_UPDATES == 'true' ? '✅ Updated' : '✅ Up to date' }}" >> .github/dependencies-status.md
+          echo "- Node.js: ${{ env.NODE_UPDATES == 'true' ? '✅ Updated' : env.NODE_UPDATES == 'false' ? '✅ Up to date' : '⏭️  Skipped (no frontend)' }}" >> .github/dependencies-status.md
           
           if [[ -f "update-summary.md" ]]; then
             echo "" >> .github/dependencies-status.md

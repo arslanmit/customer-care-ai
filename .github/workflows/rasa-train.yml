@@ -70,7 +70,7 @@ jobs:
         rasa test nlu --nlu data/ --model models/
         
     - name: 📦 Upload model artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: rasa-model
         path: rasa/models/
@@ -79,7 +79,7 @@ jobs:
 
     - name: 📝 Upload test results
       if: always()
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: test-results
         path: rasa/results/
