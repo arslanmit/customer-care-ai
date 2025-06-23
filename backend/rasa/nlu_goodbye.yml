@@ -1,0 +1,14 @@
+version: "3.1"
+
+# NLU examples for the 'goodbye' intent
+nlu:
+  - intent: goodbye
+    examples: |
+      - bye
+      - goodbye
+      - see you later
+      - talk to you later
+      - have a nice day
+      - take care
+      - catch you later
+      - until next time

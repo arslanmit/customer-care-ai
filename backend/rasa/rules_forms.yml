@@ -1,0 +1,13 @@
+version: "3.1"
+
+# ===== FORM HANDLING =====
+# Rules for activating and handling forms
+
+rules:
+  - rule: Activate name form
+    # Triggers the name collection form when user provides info
+    condition:
+      - active_loop: null  # Don't start if another form is active
+    steps:
+      - intent: provide_info
+      - action: name_form

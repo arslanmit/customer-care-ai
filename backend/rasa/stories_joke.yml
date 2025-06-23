@@ -1,0 +1,12 @@
+version: "3.1"
+
+# Stories for joke interaction flows
+stories:
+  - story: joke interaction
+    steps:
+      - intent: greet
+      - action: utter_greet
+      - intent: tell_joke
+      - action: action_tell_joke
+      - intent: goodbye
+      - action: utter_goodbye

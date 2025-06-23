@@ -1,7 +1,7 @@
 import streamlit as st
 from datetime import datetime, timedelta
-from data_loader import load_conversation_data
-from visualization import show_conversation_table, show_conversation_viewer
+from . import data_loader
+from . import visualization
 
 st.set_page_config(
     page_title="Customer Care AI Analytics",

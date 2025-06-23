@@ -1,0 +1,15 @@
+version: "3.1"
+
+# NLU examples for the 'greet' intent
+nlu:
+  - intent: greet
+    examples: |
+      - hello
+      - hi
+      - hey
+      - hi there
+      - hello there
+      - good morning
+      - good evening
+      - good afternoon
+      - howdy

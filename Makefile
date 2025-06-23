@@ -27,6 +27,8 @@ help:
 	@echo "  docker-logs    View logs from Docker Compose services"
 	@echo "  pre-commit-all Run pre-commit on all files"
 	@echo "\nFor script utilities, see: scripts/help.sh\n"
+	@echo "  rasa-validate Validate all Rasa data using modular YAMLs"
+	@echo "  rasa-train    Train Rasa model using modular YAMLs"
 	@echo "  clean       Remove build artifacts and caches"
 	@echo "  help        Show this help message"
 
