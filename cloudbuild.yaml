@@ -1,28 +1,10 @@
-# Configure build options
-options:
-  # Use Cloud Logging only for build logs
-  logging: CLOUD_LOGGING_ONLY
-
+# Minimal cloudbuild.yaml without options section
 steps:
   # Build the container image
   - name: 'gcr.io/cloud-builders/docker'
-    id: build
-    args: 
-      - 'build'
-      - '--network=cloudbuild'
-      - '--tag'
-      - 'gcr.io/$PROJECT_ID/customer-care-ai:$COMMIT_SHA'
-      - '--tag'
-      - 'gcr.io/$PROJECT_ID/customer-care-ai:latest'
-      - '.'
-    # Cache Docker layers
-    volumes:
-      - name: 'docker'
-        path: '/var/run/docker.sock'
+    args: ['build', '-t', 'gcr.io/$PROJECT_ID/customer-care-ai:latest', '.']
 
   # Push the container image to Container Registry
-  - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'gcr.io/$PROJECT_ID/customer-care-ai:$COMMIT_SHA']
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'gcr.io/$PROJECT_ID/customer-care-ai:latest']
 
@@ -34,7 +16,7 @@ steps:
       - 'deploy'
       - 'customer-care-ai'
       - '--image'
-      - 'gcr.io/$PROJECT_ID/customer-care-ai:$COMMIT_SHA'
+      - 'gcr.io/$PROJECT_ID/customer-care-ai:latest'
       - '--region'
       - 'europe-west1'
       - '--platform'
@@ -44,13 +26,9 @@ steps:
       - '5005'
       - '--set-env-vars'
       - 'PORT=5005'
-      - '--revision-suffix'
-      - '$SHORT_SHA'
-      - '--quiet'
 
 # Store images in Container Registry
 images:
-  - 'gcr.io/$PROJECT_ID/customer-care-ai:$COMMIT_SHA'
   - 'gcr.io/$PROJECT_ID/customer-care-ai:latest'
 
 # Timeout after 20 minutes
@@ -60,8 +38,3 @@ timeout: 1200s
 tags:
   - 'customer-care-ai'
   - 'cloud-run'
-
-# Available substitutions:
-# - $PROJECT_ID: The Google Cloud project ID
-# - $COMMIT_SHA: The commit SHA that triggered the build
-# - $SHORT_SHA: First 7 characters of the commit SHA
