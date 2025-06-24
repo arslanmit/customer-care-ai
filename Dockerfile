@@ -20,7 +20,6 @@ WORKDIR /app
 COPY requirements.txt .
 
 RUN grep -v '^models/' requirements.txt > /app/requirements-clean.txt && \
-    echo "spacy>=3.7.0,<4.0.0" >> /app/requirements-clean.txt && \
     pip install --user -r /app/requirements-clean.txt && \
     apt-get remove -y --auto-remove build-essential curl git && \
     apt-get clean && \
@@ -53,10 +52,6 @@ COPY --from=builder /app/requirements-clean.txt /app/requirements.txt
 
 RUN pip install --no-cache-dir -r /app/requirements.txt && \
     pip install --no-cache-dir rasa==3.6.21 rasa-sdk==3.6.21 && \
-    python -m spacy download en_core_web_md && \
-    python -m spacy download es_core_news_md && \
-    python -m spacy download fr_core_news_md && \
-    python -m spacy download de_core_news_md && \
     find /usr/local -type d -name 'test*' -o -name 'tests' -o -name 'idle_test' | xargs rm -rf 2>/dev/null || true && \
     find /usr/local -type f -name '*.pyc' -o -name '*.pyo' | xargs rm -f 2>/dev/null || true && \
     rm -f /app/requirements-clean.txt

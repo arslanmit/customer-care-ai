@@ -59,12 +59,6 @@ for port in 5005 5055; do
   fi
 done
 
-# Ensure spaCy en_core_web_sm model is installed for Rasa
-if ! python -m spacy validate | grep -q 'en_core_web_sm.*OK'; then
-  echo -e "${YELLOW}spaCy model 'en_core_web_sm' not found. Installing...${NC}"
-  python -m spacy download en_core_web_sm
-fi
-
 # Start Redis if not running
 if ! pgrep -f redis-server > /dev/null; then
   echo -e "${YELLOW}Starting Redis server...${NC}"

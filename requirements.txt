@@ -4,8 +4,6 @@
 # rasa-sdk==3.6.21
 
 # Natural Language Processing
-spacy==3.7.4  # compatible with models 3.7.x
-# Language models will be installed via post-install script
 
 # Machine Learning & NLP
 numpy>=1.23.5,<2.0.0
@@ -15,16 +13,6 @@ scipy>=1.10.1,<2.0.0
 tensorflow-cpu>=2.12.0,<3.0.0; platform_machine != 'arm64' and platform_machine != 'aarch64'
 tensorflow-macos>=2.12.0,<3.0.0; sys_platform == 'darwin' and platform_machine == 'arm64'
 tensorflow>=2.12.0,<3.0.0; platform_machine == 'x86_64' and sys_platform != 'darwin'
-
-# spaCy Language Models
-# spaCy Language Models (installed from local files)
-# Run scripts/download_models.py to download the models
-# Then install them with: pip install -r requirements.txt
-# Or install individually: pip install models/<model-file>.tar.gz
-models/en_core_web_md-3.7.1.tar.gz
-models/es_core_news_md-3.7.0.tar.gz
-models/fr_core_news_md-3.7.0.tar.gz
-models/de_core_news_md-3.7.0.tar.gz
 
 # Database & Storage
 redis>=4.6.0,<5.0.0

@@ -18,11 +18,7 @@
    pip install -r requirements.txt
   pip install rasa==3.6.21 rasa-sdk==3.6.21
   ```
-  Optionally download spaCy models:
-  ```bash
-  python scripts/download_models.py
-  ./scripts/utils/install_requirements.sh
-  ```
+
    Train an initial model:
    ```bash
    cd backend
