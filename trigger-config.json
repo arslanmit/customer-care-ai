@@ -1,0 +1,12 @@
+{
+  "name": "customer-care-ai-trigger",
+  "github": {
+    "owner": "arslanmit",
+    "name": "customer-care-ai",
+    "push": {
+      "branch": "^main$"
+    }
+  },
+  "filename": "cloudbuild.yaml",
+  "serviceAccount": "projects/customer-care-ai-463420/serviceAccounts/customer-care-ai-463420@appspot.gserviceaccount.com"
+}
