@@ -31,25 +31,4 @@ pip install -r requirements.txt
 echo "Installing Rasa..."
 pip install rasa==3.6.21 rasa-sdk==3.6.21
 
-echo "Checking for spaCy models..."
-MODEL_FILES=(
-    "en_core_web_md-3.7.1.tar.gz"
-    "es_core_news_md-3.7.0.tar.gz"
-    "fr_core_news_md-3.7.0.tar.gz"
-    "de_core_news_md-3.7.0.tar.gz"
-)
-
-cd "$PROJECT_ROOT/models"
-
-for model_file in "${MODEL_FILES[@]}"; do
-    if [ -f "$model_file" ]; then
-        echo "Installing $model_file..."
-        pip install "$model_file"
-    else
-        echo "Error: $model_file not found in models/ directory."
-        echo "Please run: python scripts/download_models.py"
-        exit 1
-    fi
-done
-
 echo "Installation complete!"
