@@ -1,0 +1,14 @@
+{
+  "name": "customer-care-ai-trigger",
+  "description": "Build and deploy to Cloud Run on push to main branch",
+  "github": {
+    "owner": "arslanmit",
+    "name": "customer-care-ai",
+    "push": {
+      "branch": "^main$"
+    }
+  },
+  "filename": "cloudbuild.yaml",
+  "serviceAccount": "projects/customer-care-ai-463420/serviceAccounts/customer-care-ai-463420@appspot.gserviceaccount.com",
+  "includeBuildLogs": "INCLUDE_BUILD_LOGS_WITH_STATUS"
+}
