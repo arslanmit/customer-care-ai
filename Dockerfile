@@ -59,7 +59,7 @@ RUN pip install --no-cache-dir -r /app/requirements.txt && \
 ENV PYTHONPATH=/app
 
 COPY --chown=$APP_USER:$APP_USER backend/ ./backend/
-COPY --chown=$APP_USER:$APP_USER run.py .
+COPY --chown=$APP_USER:$APP_USER scripts/run/run.py .
 
 RUN chown -R $APP_USER:$APP_USER /app
 
