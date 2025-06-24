@@ -7,14 +7,26 @@
 set -euo pipefail
 
 # Colors for output
+RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
-# Get script directory
+# Exit immediately if a command fails
+trap 'echo -e "\n${RED}Error: Script failed at line $LINENO${NC}" >&2; exit 1' ERR
+
+# Get script directory and project root
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-BIN_DIR="${SCRIPT_DIR}/bin"
+PROJECT_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
+BIN_DIR="${PROJECT_ROOT}/bin"
+
+# Check if bin directory exists
+if [ ! -d "$BIN_DIR" ]; then
+    echo -e "${RED}Error: bin directory not found at $BIN_DIR${NC}" >&2
+    echo -e "Please ensure the bin directory exists and contains the script symlinks." >&2
+    exit 1
+fi
 
 # Print header
 print_header() {
@@ -63,7 +75,7 @@ categorize_scripts() {
         local script_name=$(basename "$script")
         
         # Get the full path to the actual script
-        local full_script_path="${BIN_DIR%/*}/$target_path"
+        local full_script_path="${PROJECT_ROOT}/$target_path"
         local description=$(get_script_description "$full_script_path")
         
         # Categorize based on the target path
@@ -126,6 +138,7 @@ main() {
     
     echo -e "\n${BLUE}Usage:${NC} Run any script with --help for more information"
     echo -e "${BLUE}Documentation:${NC} See scripts/README.md for more details"
+    echo -e "${BLUE}Total scripts found:${NC} $(find "$BIN_DIR" -type l 2>/dev/null | wc -l)"
 }
 
 # Run the main function
