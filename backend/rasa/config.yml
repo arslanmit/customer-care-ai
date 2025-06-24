@@ -95,12 +95,6 @@ policies:
     max_history: 5
     epochs: 100
   
-  # Enhanced fallback with TED Policy (from enhanced_fallbacks.yml)
-  - name: TEDPolicy
-    max_history: 5
-    epochs: 100
-    constrain_similarities: true
-    
   # Enhanced fallback with other policies (removed FallbackClassifier as it's already in pipeline)
     
   # Additional policies for better dialogue management
