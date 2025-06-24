@@ -2,7 +2,7 @@ services:
   # Rasa Core Service
   rasa:
     image: rasa/rasa:3.6.21-full
-    command: run --enable-api --model /app/models --endpoints /app/endpoints.yml --credentials /app/credentials.yml
+    command: bash -c 'if [ -z "$$RASA_MODEL_PATH" ]; then echo "Error: RASA_MODEL_PATH environment variable is required" && exit 1; else rasa run --enable-api --model $$RASA_MODEL_PATH --endpoints /app/endpoints.yml --credentials /app/credentials.yml; fi'
     ports:
       - "5005:5005"
     volumes:
@@ -16,6 +16,7 @@ services:
       - RASA_ENVIRONMENT=production
       - RASA_TELEMETRY_ENABLED=false
       - RASA_ACTIONS_URL=http://actions:5055/webhook
+      # RASA_MODEL_PATH must be provided when starting the container
     restart: unless-stopped
     networks:
       - rasa-network

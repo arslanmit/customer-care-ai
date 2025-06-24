@@ -48,8 +48,25 @@ port_in_use() {
 
 # Function to start Rasa server
 start_rasa() {
-    echo -e "${BLUE}🚀 Starting Rasa server on port ${RASA_SERVER_PORT}...${NC}
+    # Check if RASA_MODEL_PATH is set
+    if [ -z "$RASA_MODEL_PATH" ]; then
+        echo -e "${RED}❌ Error: RASA_MODEL_PATH environment variable is required${NC}"
+        echo -e "Please set RASA_MODEL_PATH to the path of your Rasa model"
+        echo -e "Example: export RASA_MODEL_PATH=/path/to/your/model.tar.gz"
+        exit 1
+    fi
+
+    # Check if model file exists
+    if [ ! -f "$RASA_MODEL_PATH" ]; then
+        echo -e "${RED}❌ Error: Model file not found at $RASA_MODEL_PATH${NC}"
+        exit 1
+    fi
+
+    echo -e "${BLUE}🚀 Starting Rasa server on port ${RASA_SERVER_PORT}...${NC}"
+    echo -e "${BLUE}📦 Using model: $RASA_MODEL_PATH${NC}"
+    
     rasa run --enable-api --cors "*" --port $RASA_SERVER_PORT --debug \
+        --model "$RASA_MODEL_PATH" \
         --endpoints endpoints.yml --credentials credentials.yml &
     RASA_PID=$!
     echo $RASA_PID > /tmp/rasa_server.pid
