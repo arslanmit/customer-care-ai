@@ -8,9 +8,7 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     PIP_DISABLE_PIP_VERSION_CHECK=on \
     PIP_DEFAULT_TIMEOUT=100
 
-RUN --mount=type=cache,target=/var/cache/apt \
-    --mount=type=cache,target=/var/lib/apt \
-    apt-get update && apt-get install -y --no-install-recommends \
+RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     curl \
     git \
@@ -21,8 +19,7 @@ WORKDIR /app
 
 COPY requirements.txt .
 
-RUN --mount=type=cache,target=/root/.cache/pip \
-    grep -v '^models/' requirements.txt > /app/requirements-clean.txt && \
+RUN grep -v '^models/' requirements.txt > /app/requirements-clean.txt && \
     echo "spacy>=3.7.0,<4.0.0" >> /app/requirements-clean.txt && \
     pip install --user -r /app/requirements-clean.txt && \
     apt-get remove -y --auto-remove build-essential curl git && \
@@ -42,9 +39,7 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     APP_USER=appuser \
     APP_HOME=/home/appuser
 
-RUN --mount=type=cache,target=/var/cache/apt \
-    --mount=type=cache,target=/var/lib/apt \
-    apt-get update && apt-get install -y --no-install-recommends libpq5 && \
+RUN apt-get update && apt-get install -y --no-install-recommends libpq5 && \
     rm -rf /var/lib/apt/lists/*
 
 RUN groupadd -r $APP_USER && \
@@ -56,8 +51,7 @@ WORKDIR /app
 
 COPY --from=builder /app/requirements-clean.txt /app/requirements.txt
 
-RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install --no-cache-dir -r /app/requirements.txt && \
+RUN pip install --no-cache-dir -r /app/requirements.txt && \
     pip install --no-cache-dir rasa==3.6.21 rasa-sdk==3.6.21 && \
     python -m spacy download en_core_web_md && \
     python -m spacy download es_core_news_md && \
