@@ -6,6 +6,8 @@ action_endpoint:
   # url: http://localhost:5055/webhook
 
 model:
+  # RASA_MODEL_PATH must be set as an environment variable
+  # Example: RASA_MODEL_PATH=/path/to/your/model.tar.gz
   url: ${RASA_MODEL_PATH}
   wait_time_between_pulls: 10  # seconds
 

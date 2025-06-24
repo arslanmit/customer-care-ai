@@ -25,10 +25,13 @@ stories:
       - action: utter_greet
       - intent: ask_time
       - action: action_get_time
+      - action: utter_time_response
       - intent: ask_date
       - action: action_get_date
+      - action: utter_date_response
       - intent: ask_datetime
       - action: action_tell_datetime
+      - action: utter_datetime_response
       - intent: goodbye
       - action: utter_goodbye
 
@@ -38,6 +41,7 @@ stories:
       - action: utter_support_help
       - intent: ask_time
       - action: action_get_time
+      - action: utter_time_response
       - intent: goodbye
       - action: utter_goodbye
   - story: simple greeting and goodbye

@@ -20,6 +20,18 @@ NC='\033[0m' # No Color
 # Navigate to the script's directory
 cd "$(dirname "$0")"
 
+# Check if RASA_MODEL_PATH is set
+if [ -z "$RASA_MODEL_PATH" ]; then
+    echo -e "${RED}❌ Error: RASA_MODEL_PATH environment variable is not set${NC}"
+    echo "Please set RASA_MODEL_PATH to the desired path for saving the trained model"
+    echo "Example: export RASA_MODEL_PATH=/path/to/save/model.tar.gz"
+    exit 1
+fi
+
+# Create directory for the model if it doesn't exist
+MODEL_DIR=$(dirname "$RASA_MODEL_PATH")
+mkdir -p "$MODEL_DIR"
+
 # Initialize log file
 LOG_DIR="logs"
 mkdir -p $LOG_DIR
@@ -48,25 +60,29 @@ echo "🚂 Training new model..." >> $LOG_FILE
 
 TRAINING_START=$(date +%s)
 
-# Train with timestamp and fixed name for easier reference
-if rasa train --fixed-model-name "model-$TIMESTAMP" >> $LOG_FILE 2>&1; then
+# Train the model and save to the specified location
+MODEL_NAME=$(basename "$RASA_MODEL_PATH" .tar.gz)
+if rasa train --fixed-model-name "$MODEL_NAME" --out "$MODEL_DIR" >> $LOG_FILE 2>&1; then
     TRAINING_END=$(date +%s)
     TRAINING_DURATION=$((TRAINING_END - TRAINING_START))
     
     echo -e "${GREEN}✅ Model training successful in $TRAINING_DURATION seconds${NC}"
     echo "✅ Model training successful in $TRAINING_DURATION seconds" >> $LOG_FILE
     
-    # Find the newly created model
-    NEW_MODEL=$(find models -name "model-$TIMESTAMP.tar.gz")
-    
-    if [ -n "$NEW_MODEL" ]; then
-        # Create symlink to latest model
-        ln -sf "$NEW_MODEL" models/latest_model.tar.gz
-        echo -e "${GREEN}✅ Created symlink to latest model: $NEW_MODEL${NC}"
-        echo "✅ Created symlink to latest model: $NEW_MODEL" >> $LOG_FILE
+    # Verify the model was created
+    if [ -f "$RASA_MODEL_PATH" ]; then
+        echo -e "${GREEN}✅ Model saved to: $RASA_MODEL_PATH${NC}"
+        echo "✅ Model saved to: $RASA_MODEL_PATH" >> $LOG_FILE
+        
+        # Create a symlink to the latest model in the models directory for backward compatibility
+        mkdir -p models
+        ln -sf "$RASA_MODEL_PATH" "models/$(basename "$RASA_MODEL_PATH")"
+        ln -sf "$RASA_MODEL_PATH" "models/latest_model.tar.gz"
+        echo -e "${GREEN}✅ Created symlinks in models/ directory${NC}"
+        echo "✅ Created symlinks in models/ directory" >> $LOG_FILE
     else
-        echo -e "${YELLOW}⚠️ Model was trained but couldn't find the output file${NC}"
-        echo "⚠️ Model was trained but couldn't find the output file" >> $LOG_FILE
+        echo -e "${YELLOW}⚠️ Training completed but couldn't find the output file at $RASA_MODEL_PATH${NC}"
+        echo "⚠️ Training completed but couldn't find the output file at $RASA_MODEL_PATH" >> $LOG_FILE
     fi
 else
     echo -e "${RED}❌ Model training failed. Check $LOG_FILE for details${NC}"
