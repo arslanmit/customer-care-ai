@@ -163,11 +163,14 @@ ln -sf "$MODEL_PATH" "$LATEST_MODEL"
 ln -sf "$MODEL_PATH" "$(pwd)/latest_model.tar.gz"
 
 # Export the full path to the model for Rasa to use
-export RASA_MODEL_PATH="$LATEST_MODEL"
+export RASA_MODEL_PATH="$(pwd)/$MODEL_PATH"
 
 echo "✅ Using model: $MODEL_PATH"
 echo "✅ Created symlink: $LATEST_MODEL -> $MODEL_PATH"
 echo "✅ RASA_MODEL_PATH set to: $RASA_MODEL_PATH"
+echo "
+To start the Rasa shell, run:"
+echo "  cd $(pwd) && rasa shell --model $RASA_MODEL_PATH --endpoints endpoints.yml --credentials credentials.yml"
 echo
 
 # Clean up any existing PID files
