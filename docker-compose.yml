@@ -2,14 +2,16 @@ services:
   # Rasa Core Service
   rasa:
     image: rasa/rasa:3.6.21-full
+    command: run --enable-api --model /app/models --endpoints /app/endpoints.yml --credentials /app/credentials.yml
     ports:
       - "5005:5005"
     volumes:
       - ./models:/app/models
-      - ./config:/app/config
-      - ./domain.yml:/app/domain.yml
-      - ./credentials.yml:/app/credentials.yml
-      - ./endpoints.yml:/app/endpoints.yml
+      - ./backend/rasa/config.yml:/app/config.yml
+      - ./backend/rasa/domain.yml:/app/domain.yml
+      - ./backend/rasa/endpoints.yml:/app/endpoints.yml
+      - ./backend/rasa/credentials.yml:/app/credentials.yml
+      - ./backend/rasa:/app/data
     environment:
       - RASA_ENVIRONMENT=production
       - RASA_TELEMETRY_ENABLED=false
@@ -20,7 +22,7 @@ services:
 
   # Rasa Actions Server
   actions:
-    image: rasa/rasa-sdk:3.6.21
+    image: rasa/rasa-sdk:3.13.0rc1-latest
     volumes:
       - ./actions:/app/actions
     environment:

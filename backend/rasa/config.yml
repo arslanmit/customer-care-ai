@@ -101,10 +101,7 @@ policies:
     epochs: 100
     constrain_similarities: true
     
-  # Enhanced fallback with Fallback Classifier (from enhanced_fallbacks.yml)
-  - name: FallbackClassifier
-    threshold: 0.7
-    ambiguity_threshold: 0.2
+  # Enhanced fallback with other policies (removed FallbackClassifier as it's already in pipeline)
     
   # Additional policies for better dialogue management
   # Transformer-based dialogue policy (existing)
