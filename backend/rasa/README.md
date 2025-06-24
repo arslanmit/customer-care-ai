@@ -1,19 +1,33 @@
-# Rasa Training Data
+# Backend
 
-This directory stores all YAML files used to train the assistant.
+This directory holds the Rasa server, custom actions and the optional FastAPI authentication API.
 
-- `data.yml` – main file that imports the individual data files
-- `nlu*.yml` – example utterances and entities
-- `rules_*.yml`, `stories_*.yml` – conversation flows
-- `domain.yml` – intents, entities and responses
+## Contents
 
-When adding new files reference them inside `data.yml` so Rasa picks them up.
+- `actions/` – modular Rasa action classes
+- `api/` – small FastAPI app for JWT auth
+- `data/` – training examples and conversation logs
+- `rasa/` – Rasa config and training data
+- `tinydb_tracker_store.py` – local tracker store implementation
+- `dashboard_app.py` – Streamlit analytics entry point
 
-To validate the dataset run:
+## Usage
+
+Start the backend with Docker:
 ```bash
-rasa data validate --data backend/rasa/data.yml
+docker-compose up --build
 ```
-Train a model with:
+
+For local development:
 ```bash
-rasa train --data backend/rasa/data.yml
+rasa run --enable-api &
+rasa run actions &
 ```
+
+The dashboard can be started with:
+```bash
+streamlit run dashboard_app.py
+```
+Conversation logs are read from `data/rasa_conversations.json` or the path specified by `CONVERSATION_DATA_PATH`.
+
+Additional documentation can be found in the [project docs](../docs/).

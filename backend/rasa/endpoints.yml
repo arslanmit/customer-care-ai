@@ -1,7 +1,13 @@
 # Endpoint configuration for Rasa
 
 action_endpoint:
-  url: "http://localhost:5055/webhook"
+  url: ${RASA_ACTIONS_URL}
+  # Uncomment the following if you want to run a separate actions server
+  # url: http://localhost:5055/webhook
+
+model:
+  url: ${RASA_MODEL_PATH}
+  wait_time_between_pulls: 10  # seconds
 
 tracker_store:
   type: tinydb_tracker_store.TinyDBTrackerStore
@@ -10,3 +16,11 @@ tracker_store:
 event_broker:
   type: FileEventBroker
   path: data/events.json
+
+# Uncomment to run a separate actions server
+# action_server:
+#   endpoint:
+#     - http://localhost:5055/webhook
+#   # You can also specify additional parameters like:
+#   # wait_time_seconds: 10
+#   # restart_on_crash: true

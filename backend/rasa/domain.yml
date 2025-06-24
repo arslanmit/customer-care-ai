@@ -10,29 +10,27 @@ session_config:
 intents:
   - greet
   - goodbye
-  - ask_info
-  - provide_info
+  - affirm
+  - deny
+  - thank
+  - check_order_status
+  - check_balance
+  - support_request
+  - complaint
+  - change_language
   - ask_time
   - ask_date
   - ask_datetime
-  - tell_joke
-  - support_request
+  - ask_info
+  - provide_info
   - request_human_agent
-  - product_inquiry
-  - complain
-  # Added missing intents from NLU data
-  - check_balance
-  - affirm
-  - complaint
-  - thank
-  - deny
-  - change_language
+  - tell_joke
   - ask_return_policy
   - contact_support
   - need_help
   - provide_order_number
   - return_item
-  - check_order_status
+  - product_inquiry
 
 # ===== ENTITIES =====
 entities:
@@ -139,6 +137,21 @@ slots:
     mappings:
     - type: custom
 
+  time:
+    type: text
+    influence_conversation: false
+    mappings: []
+
+  date:
+    type: text
+    influence_conversation: false
+    mappings: []
+
+  datetime:
+    type: text
+    influence_conversation: false
+    mappings: []
+
 # ===== RESPONSES =====
 responses:
   utter_greet:
@@ -185,14 +198,39 @@ responses:
     - text: "I've confirmed that for you."
     - text: "That's been verified."
   
-  utter_ask_continue:
+  utter_ask_anything_else:
     - text: "Is there anything else I can help you with?"
+    - text: "Can I help you with anything else?"
+    - text: "Would you like to know anything else?"
+    - text: "Is there something more you'd like to ask?"
+    - text: "Do you have any other questions?"
+  
+  utter_time_response:
+    - text: "The current time is {time} UTC."
+    - text: "It's {time} UTC right now."
+    - text: "My clock shows {time} UTC."
+    - text: "The time is currently {time} UTC."
+    - text: "It's {time} UTC at the moment."
+  
+  utter_date_response:
+    - text: "Today's date is {date}."
+    - text: "It's {date} today."
+    - text: "The current date is {date}."
+    - text: "Today is {date}."
+    - text: "According to my calendar, it's {date}."
+  
+  utter_datetime_response:
+    - text: "The current date and time is {datetime}."
+    - text: "Right now it's {datetime}."
+    - text: "The time is {datetime}."
+    - text: "It's {datetime} at the moment."
+    - text: "According to my system, it's {datetime}."
     - text: "Do you need assistance with anything else?"
   
   utter_human_handoff:
     - text: "I'm connecting you with a human agent now. Please hold a moment."
     - text: "I'll transfer you to one of our customer service representatives right away."
-
+  
   utter_joke:
     - text: "Why did the chatbot go to therapy? It had too many identity issues!"
     - text: "What do you call a bot that sings? Artificial harmonies!"
@@ -253,13 +291,12 @@ actions:
   - action_handle_complaint
   - action_fetch_order_history
   - action_update_customer_info
-  # Added missing actions referenced in stories
   - action_increment_fallback_count
-  - action_tell_time
   - action_tell_joke
   - action_handoff_to_human
+  - action_get_time
+  - action_get_date
+  - action_tell_datetime
   - action_set_language
   - action_ask_order_number
   - action_escalate_to_human
-  - action_tell_date
-  - action_tell_datetime
