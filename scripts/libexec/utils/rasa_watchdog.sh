@@ -60,7 +60,7 @@ restart_rasa() {
     sleep 2
     
     # Start RASA in API mode
-    ./start_rasa_shell.sh --run-mode api >> "$LOG_DIR/rasa_restart.log" 2>&1 &
+    ../../dev/start_rasa_shell.sh --run-mode api >> "$LOG_DIR/rasa_restart.log" 2>&1 &
     
     # Wait for startup
     sleep 10

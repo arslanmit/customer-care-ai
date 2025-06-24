@@ -343,7 +343,7 @@ restart_components() {
     echo -e "${GREEN}✅ Started watchdog with PID $WATCHDOG_PID${NC}"
     
     echo -e "${YELLOW}Starting RASA shell${NC}"
-    ./start_rasa_shell.sh --debug > logs/rasa_shell_debug.log 2>&1 &
+    ../../dev/start_rasa_shell.sh --debug > logs/rasa_shell_debug.log 2>&1 &
     SHELL_PID=$!
     echo -e "${GREEN}✅ Started RASA shell with PID $SHELL_PID${NC}"
     
