@@ -1,0 +1,2466 @@
+{
+  "conversations": [
+    {
+      "conversation_id": "c123456789",
+      "timestamp": 1750671000.1234,
+      "user_id": "user_001",
+      "duration": 180,
+      "num_turns": 5,
+      "messages": [
+        {
+          "type": "user",
+          "text": "Hello",
+          "timestamp": 1750671000.1234,
+          "intent": "greet",
+          "confidence": 0.97
+        },
+        {
+          "type": "bot",
+          "text": "Hello! How can I help you today?",
+          "timestamp": 1750671005.2345,
+          "action": "utter_greet"
+        },
+        {
+          "type": "user",
+          "text": "I have an issue with my recent order",
+          "timestamp": 1750671020.3456,
+          "intent": "support_request",
+          "confidence": 0.89
+        },
+        {
+          "type": "bot",
+          "text": "I'm sorry to hear that. Could you please provide your order number?",
+          "timestamp": 1750671025.4567,
+          "action": "utter_ask_order_number"
+        },
+        {
+          "type": "user",
+          "text": "ORD-12345-ABC",
+          "timestamp": 1750671045.5678,
+          "intent": "provide_order_number",
+          "confidence": 0.95
+        },
+        {
+          "type": "bot",
+          "text": "Thank you. I've found your order. It appears there was a delay in shipping. Your package will be delivered by tomorrow. Is there anything else I can help you with?",
+          "timestamp": 1750671050.6789,
+          "action": "action_check_order_status"
+        },
+        {
+          "type": "user",
+          "text": "No, that's all. Thank you!",
+          "timestamp": 1750671075.789,
+          "intent": "goodbye",
+          "confidence": 0.98
+        },
+        {
+          "type": "bot",
+          "text": "You're welcome! Have a great day!",
+          "timestamp": 1750671080.8901,
+          "action": "utter_goodbye"
+        }
+      ],
+      "feedback": {
+        "rating": 5,
+        "resolved": true
+      },
+      "metadata": {
+        "channel": "web",
+        "browser": "Chrome",
+        "location": "New York",
+        "language": "en"
+      }
+    },
+    {
+      "conversation_id": "c987654321",
+      "timestamp": 1750671200.1234,
+      "user_id": "user_002",
+      "duration": 240,
+      "num_turns": 8,
+      "messages": [
+        {
+          "type": "user",
+          "text": "Hi there",
+          "timestamp": 1750671200.1234,
+          "intent": "greet",
+          "confidence": 0.95
+        },
+        {
+          "type": "bot",
+          "text": "Hello! How can I help you today?",
+          "timestamp": 1750671205.2345,
+          "action": "utter_greet"
+        },
+        {
+          "type": "user",
+          "text": "Do you have any discounts on electronics?",
+          "timestamp": 1750671215.3456,
+          "intent": "product_inquiry",
+          "confidence": 0.87
+        },
+        {
+          "type": "bot",
+          "text": "Yes, we currently have a summer sale with 20% off on all electronics until the end of the month. Would you like me to show you some featured products?",
+          "timestamp": 1750671220.4567,
+          "action": "utter_product_inquiry_response"
+        },
+        {
+          "type": "user",
+          "text": "Do you have the new Galaxy phone?",
+          "timestamp": 1750671240.5678,
+          "intent": "product_inquiry",
+          "confidence": 0.91
+        },
+        {
+          "type": "bot",
+          "text": "Yes, we have the latest Galaxy phones in stock. They're part of our summer sale as well. Would you like me to send you a link to the product page?",
+          "timestamp": 1750671245.6789,
+          "action": "utter_product_availability"
+        },
+        {
+          "type": "user",
+          "text": "Yes please",
+          "timestamp": 1750671255.789,
+          "intent": "affirm",
+          "confidence": 0.99
+        },
+        {
+          "type": "bot",
+          "text": "Here you go: [Product Link: www.example.com/products/galaxy-phone]",
+          "timestamp": 1750671260.8901,
+          "action": "action_send_product_link"
+        },
+        {
+          "type": "user",
+          "text": "What's your return policy?",
+          "timestamp": 1750671280.9012,
+          "intent": "ask_return_policy",
+          "confidence": 0.93
+        },
+        {
+          "type": "bot",
+          "text": "Our return policy allows returns within 30 days of purchase for a full refund. For electronics, the product must be in its original packaging and undamaged.",
+          "timestamp": 1750671285.0123,
+          "action": "utter_return_policy"
+        },
+        {
+          "type": "user",
+          "text": "Thanks for your help",
+          "timestamp": 1750671300.1234,
+          "intent": "thank",
+          "confidence": 0.96
+        },
+        {
+          "type": "bot",
+          "text": "You're welcome! Is there anything else I can assist you with today?",
+          "timestamp": 1750671305.2345,
+          "action": "utter_anything_else"
+        },
+        {
+          "type": "user",
+          "text": "No that's all",
+          "timestamp": 1750671320.3456,
+          "intent": "goodbye",
+          "confidence": 0.97
+        },
+        {
+          "type": "bot",
+          "text": "Thank you for chatting with us. Have a great day!",
+          "timestamp": 1750671325.4567,
+          "action": "utter_goodbye"
+        }
+      ],
+      "feedback": {
+        "rating": 4,
+        "resolved": true
+      },
+      "metadata": {
+        "channel": "mobile_app",
+        "device": "iOS",
+        "location": "Los Angeles",
+        "language": "en"
+      }
+    },
+    {
+      "conversation_id": "c567891234",
+      "timestamp": 1750671400.1234,
+      "user_id": "user_003",
+      "duration": 150,
+      "num_turns": 6,
+      "messages": [
+        {
+          "type": "user",
+          "text": "I want to return a product",
+          "timestamp": 1750671400.1234,
+          "intent": "return_item",
+          "confidence": 0.92
+        },
+        {
+          "type": "bot",
+          "text": "I can help you with that. Please provide your order number so I can locate your purchase.",
+          "timestamp": 1750671405.2345,
+          "action": "utter_ask_order_number"
+        },
+        {
+          "type": "user",
+          "text": "ORD-54321-XYZ",
+          "timestamp": 1750671420.3456,
+          "intent": "provide_order_number",
+          "confidence": 0.94
+        },
+        {
+          "type": "bot",
+          "text": "Thank you. I've found your order. What item would you like to return?",
+          "timestamp": 1750671425.4567,
+          "action": "utter_ask_return_item"
+        },
+        {
+          "type": "user",
+          "text": "The blue shirt doesn't fit me",
+          "timestamp": 1750671440.5678,
+          "intent": "provide_return_reason",
+          "confidence": 0.88
+        },
+        {
+          "type": "bot",
+          "text": "I understand. Since your purchase was within the last 30 days, you're eligible for a full refund or exchange. Would you like a refund or would you prefer to exchange for a different size?",
+          "timestamp": 1750671445.6789,
+          "action": "utter_return_options"
+        },
+        {
+          "type": "user",
+          "text": "I'd like a refund please",
+          "timestamp": 1750671460.789,
+          "intent": "request_refund",
+          "confidence": 0.95
+        },
+        {
+          "type": "bot",
+          "text": "I've processed your refund request. You'll receive an email with a return label. Once we receive the item, your refund will be processed within 3-5 business days.",
+          "timestamp": 1750671465.8901,
+          "action": "action_process_refund"
+        },
+        {
+          "type": "user",
+          "text": "Thank you",
+          "timestamp": 1750671480.9012,
+          "intent": "thank",
+          "confidence": 0.99
+        },
+        {
+          "type": "bot",
+          "text": "You're welcome! Is there anything else I can assist you with today?",
+          "timestamp": 1750671485.0123,
+          "action": "utter_anything_else"
+        },
+        {
+          "type": "user",
+          "text": "No thanks",
+          "timestamp": 1750671500.1234,
+          "intent": "deny",
+          "confidence": 0.96
+        },
+        {
+          "type": "bot",
+          "text": "Thank you for contacting customer support. Have a great day!",
+          "timestamp": 1750671505.2345,
+          "action": "utter_goodbye"
+        }
+      ],
+      "feedback": {
+        "rating": 5,
+        "resolved": true
+      },
+      "metadata": {
+        "channel": "web",
+        "browser": "Firefox",
+        "location": "Chicago",
+        "language": "en"
+      }
+    },
+    {
+      "conversation_id": "c112233445",
+      "timestamp": 1750671600.1234,
+      "user_id": "user_004",
+      "duration": 120,
+      "num_turns": 7,
+      "messages": [
+        {
+          "type": "user",
+          "text": "Hello bot",
+          "timestamp": 1750671600.1234,
+          "intent": "greet",
+          "confidence": 0.96
+        },
+        {
+          "type": "bot",
+          "text": "Hi there! How can I assist you today?",
+          "timestamp": 1750671605.2345,
+          "action": "utter_greet"
+        },
+        {
+          "type": "user",
+          "text": "xyzkl mnopqr",
+          "timestamp": 1750671620.3456,
+          "intent": "nlu_fallback",
+          "confidence": 0.4
+        },
+        {
+          "type": "bot",
+          "text": "I'm sorry, but I didn't quite understand that. Could you rephrase your question?",
+          "timestamp": 1750671625.4567,
+          "action": "utter_please_rephrase"
+        },
+        {
+          "type": "user",
+          "text": "I need help with shipping",
+          "timestamp": 1750671640.5678,
+          "intent": "shipping_inquiry",
+          "confidence": 0.89
+        },
+        {
+          "type": "bot",
+          "text": "I can definitely help with shipping questions. What would you like to know about our shipping options?",
+          "timestamp": 1750671645.6789,
+          "action": "utter_shipping_info"
+        },
+        {
+          "type": "user",
+          "text": "How much is express shipping?",
+          "timestamp": 1750671660.789,
+          "intent": "shipping_inquiry",
+          "confidence": 0.91
+        },
+        {
+          "type": "bot",
+          "text": "Express shipping costs $15.99 and guarantees delivery within 2 business days for domestic orders.",
+          "timestamp": 1750671665.8901,
+          "action": "utter_shipping_cost"
+        },
+        {
+          "type": "user",
+          "text": "Does that include weekends?",
+          "timestamp": 1750671680.9012,
+          "intent": "shipping_inquiry",
+          "confidence": 0.85
+        },
+        {
+          "type": "bot",
+          "text": "Business days are Monday through Friday, excluding holidays. So if you order on Friday, the earliest delivery with express shipping would be Tuesday.",
+          "timestamp": 1750671685.0123,
+          "action": "utter_shipping_details"
+        },
+        {
+          "type": "user",
+          "text": "Thanks for the explanation",
+          "timestamp": 1750671700.1234,
+          "intent": "thank",
+          "confidence": 0.97
+        },
+        {
+          "type": "bot",
+          "text": "You're welcome! Is there anything else I can help with today?",
+          "timestamp": 1750671705.2345,
+          "action": "utter_anything_else"
+        },
+        {
+          "type": "user",
+          "text": "No, goodbye",
+          "timestamp": 1750671720.3456,
+          "intent": "goodbye",
+          "confidence": 0.98
+        },
+        {
+          "type": "bot",
+          "text": "Goodbye! Have a great day!",
+          "timestamp": 1750671725.4567,
+          "action": "utter_goodbye"
+        }
+      ],
+      "feedback": {
+        "rating": 4,
+        "resolved": true
+      },
+      "metadata": {
+        "channel": "web",
+        "browser": "Edge",
+        "location": "Seattle",
+        "language": "en"
+      }
+    },
+    {
+      "conversation_id": "c998877665",
+      "timestamp": 1750671800.1234,
+      "user_id": "user_005",
+      "duration": 210,
+      "num_turns": 9,
+      "messages": [
+        {
+          "type": "user",
+          "text": "Hola",
+          "timestamp": 1750671800.1234,
+          "intent": "greet",
+          "confidence": 0.85
+        },
+        {
+          "type": "bot",
+          "text": "Hello! How can I assist you today?",
+          "timestamp": 1750671805.2345,
+          "action": "utter_greet"
+        },
+        {
+          "type": "user",
+          "text": "Can I speak in Spanish?",
+          "timestamp": 1750671820.3456,
+          "intent": "change_language",
+          "confidence": 0.92
+        },
+        {
+          "type": "bot",
+          "text": "I've switched to Spanish. \u00bfC\u00f3mo puedo ayudarte hoy?",
+          "timestamp": 1750671825.4567,
+          "action": "utter_language_changed"
+        },
+        {
+          "type": "user",
+          "text": "Necesito hacer una queja",
+          "timestamp": 1750671840.5678,
+          "intent": "complaint",
+          "confidence": 0.83
+        },
+        {
+          "type": "bot",
+          "text": "Lo siento mucho. Por favor, d\u00edgame cu\u00e1l es su queja para que podamos resolver el problema.",
+          "timestamp": 1750671845.6789,
+          "action": "utter_ask_complaint"
+        },
+        {
+          "type": "user",
+          "text": "Mi producto lleg\u00f3 da\u00f1ado",
+          "timestamp": 1750671860.789,
+          "intent": "complaint",
+          "confidence": 0.89
+        },
+        {
+          "type": "bot",
+          "text": "Lamento mucho escuchar eso. Necesito su n\u00famero de pedido para verificar y ayudarlo con este problema.",
+          "timestamp": 1750671865.8901,
+          "action": "utter_ask_order_number"
+        },
+        {
+          "type": "user",
+          "text": "ORD-67890-ESP",
+          "timestamp": 1750671880.9012,
+          "intent": "provide_order_number",
+          "confidence": 0.93
+        },
+        {
+          "type": "bot",
+          "text": "Gracias. He encontrado su pedido. Podemos ofrecerle un reemplazo gratuito o un reembolso completo por el art\u00edculo da\u00f1ado.",
+          "timestamp": 1750671885.0123,
+          "action": "action_handle_complaint"
+        },
+        {
+          "type": "user",
+          "text": "Prefiero un reemplazo",
+          "timestamp": 1750671900.1234,
+          "intent": "request_replacement",
+          "confidence": 0.91
+        },
+        {
+          "type": "bot",
+          "text": "He procesado su solicitud de reemplazo. Recibir\u00e1 un correo electr\u00f3nico con una etiqueta de devoluci\u00f3n. Una vez que recibamos el art\u00edculo da\u00f1ado, le enviaremos inmediatamente el reemplazo.",
+          "timestamp": 1750671905.2345,
+          "action": "action_process_replacement"
+        },
+        {
+          "type": "user",
+          "text": "Gracias por su ayuda",
+          "timestamp": 1750671920.3456,
+          "intent": "thank",
+          "confidence": 0.97
+        },
+        {
+          "type": "bot",
+          "text": "De nada. \u00bfHay algo m\u00e1s en lo que pueda ayudarle hoy?",
+          "timestamp": 1750671925.4567,
+          "action": "utter_anything_else"
+        },
+        {
+          "type": "user",
+          "text": "No, gracias",
+          "timestamp": 1750671940.5678,
+          "intent": "deny",
+          "confidence": 0.95
+        },
+        {
+          "type": "bot",
+          "text": "Gracias por contactar con atenci\u00f3n al cliente. \u00a1Que tenga un buen d\u00eda!",
+          "timestamp": 1750671945.6789,
+          "action": "utter_goodbye"
+        },
+        {
+          "type": "user",
+          "text": "Change to English",
+          "timestamp": 1750671960.789,
+          "intent": "change_language",
+          "confidence": 0.94
+        },
+        {
+          "type": "bot",
+          "text": "I've switched back to English. How else can I help you?",
+          "timestamp": 1750671965.8901,
+          "action": "utter_language_changed"
+        }
+      ],
+      "feedback": {
+        "rating": 5,
+        "resolved": true
+      },
+      "metadata": {
+        "channel": "mobile_app",
+        "device": "Android",
+        "location": "Miami",
+        "language": "es"
+      }
+    }
+  ],
+  "_default": {
+    "12": {
+      "sender_id": "5c057dcd577742d09f49a91e3fcd9f62",
+      "slots": {
+        "order_number": null,
+        "product_id": null,
+        "email": null,
+        "phone_number": null,
+        "requested_date": null,
+        "requested_time": null,
+        "language": null,
+        "first_name": null,
+        "last_name": null,
+        "complaint_type": null,
+        "complaint_details": null,
+        "customer_email": null,
+        "num_fallbacks": 0,
+        "requested_slot": null,
+        "session_started_metadata": null
+      },
+      "latest_message": {
+        "intent": {
+          "name": "ask_datetime",
+          "confidence": 0.9016269445419312
+        },
+        "entities": [],
+        "text": "what is your name",
+        "message_id": "6e2230c347bc45ada000134bfa9b38ba",
+        "metadata": {},
+        "text_tokens": [
+          [
+            0,
+            4
+          ],
+          [
+            5,
+            7
+          ],
+          [
+            8,
+            12
+          ],
+          [
+            13,
+            17
+          ]
+        ],
+        "intent_ranking": [
+          {
+            "name": "ask_datetime",
+            "confidence": 0.9016269445419312
+          },
+          {
+            "name": "ask_return_policy",
+            "confidence": 0.021320311352610588
+          },
+          {
+            "name": "tell_joke",
+            "confidence": 0.013072454370558262
+          },
+          {
+            "name": "deny",
+            "confidence": 0.008167257532477379
+          },
+          {
+            "name": "affirm",
+            "confidence": 0.0060000671073794365
+          },
+          {
+            "name": "check_balance",
+            "confidence": 0.005086359102278948
+          },
+          {
+            "name": "contact_support",
+            "confidence": 0.004950978327542543
+          },
+          {
+            "name": "goodbye",
+            "confidence": 0.004903696943074465
+          },
+          {
+            "name": "check_order_status",
+            "confidence": 0.004503890872001648
+          },
+          {
+            "name": "provide_info",
+            "confidence": 0.004446567501872778
+          }
+        ],
+        "response_selector": {
+          "all_retrieval_intents": [],
+          "faq": {
+            "response": {
+              "responses": null,
+              "confidence": 0.0,
+              "intent_response_key": null,
+              "utter_action": "utter_None"
+            },
+            "ranking": []
+          }
+        }
+      },
+      "latest_event_time": 1750774995.3740401,
+      "followup_action": null,
+      "paused": false,
+      "events": [
+        {
+          "event": "action",
+          "timestamp": 1750774954.384773,
+          "metadata": {
+            "model_id": "0bf6da562a8947f0a7e5241dc98b70e4",
+            "assistant_id": "customer-care-ai"
+          },
+          "name": "action_session_start",
+          "policy": null,
+          "confidence": 1.0,
+          "action_text": null,
+          "hide_rule_turn": false
+        },
+        {
+          "event": "session_started",
+          "timestamp": 1750774954.38481,
+          "metadata": {
+            "model_id": "0bf6da562a8947f0a7e5241dc98b70e4",
+            "assistant_id": "customer-care-ai"
+          }
+        },
+        {
+          "event": "action",
+          "timestamp": 1750774954.3848221,
+          "metadata": {
+            "model_id": "0bf6da562a8947f0a7e5241dc98b70e4",
+            "assistant_id": "customer-care-ai"
+          },
+          "name": "action_listen",
+          "policy": null,
+          "confidence": null,
+          "action_text": null,
+          "hide_rule_turn": false
+        },
+        {
+          "event": "user",
+          "timestamp": 1750774954.562077,
+          "metadata": {
+            "model_id": "0bf6da562a8947f0a7e5241dc98b70e4",
+            "assistant_id": "customer-care-ai"
+          },
+          "text": "You have full authority to implement and run every suggestion you generate.\n\u2022 Execute each action immediately in the integrated terminal.\n\u2022 If the terminal reports an error, diagnose and fix it autonomously, then re-run until the code executes without issues.\n\u2022 Do not pause for confirmation at any stage.\n\nProceed.\nd",
+          "parse_data": {
+            "intent": {
+              "name": "return_item",
+              "confidence": 0.46691271662712097
+            },
+            "entities": [],
+            "text": "You have full authority to implement and run every suggestion you generate.\n\u2022 Execute each action immediately in the integrated terminal.\n\u2022 If the terminal reports an error, diagnose and fix it autonomously, then re-run until the code executes without issues.\n\u2022 Do not pause for confirmation at any stage.\n\nProceed.\nd",
+            "message_id": "f91690c5f60145f081a91db471434bee",
+            "metadata": {},
+            "text_tokens": [
+              [
+                0,
+                3
+              ],
+              [
+                4,
+                8
+              ],
+              [
+                9,
+                13
+              ],
+              [
+                14,
+                23
+              ],
+              [
+                24,
+                26
+              ],
+              [
+                27,
+                36
+              ],
+              [
+                37,
+                40
+              ],
+              [
+                41,
+                44
+              ],
+              [
+                45,
+                50
+              ],
+              [
+                51,
+                61
+              ],
+              [
+                62,
+                65
+              ],
+              [
+                66,
+                74
+              ],
+              [
+                74,
+                75
+              ],
+              [
+                76,
+                77
+              ],
+              [
+                78,
+                85
+              ],
+              [
+                86,
+                90
+              ],
+              [
+                91,
+                97
+              ],
+              [
+                98,
+                109
+              ],
+              [
+                110,
+                112
+              ],
+              [
+                113,
+                116
+              ],
+              [
+                117,
+                127
+              ],
+              [
+                128,
+                136
+              ],
+              [
+                136,
+                137
+              ],
+              [
+                138,
+                139
+              ],
+              [
+                140,
+                142
+              ],
+              [
+                143,
+                146
+              ],
+              [
+                147,
+                155
+              ],
+              [
+                156,
+                163
+              ],
+              [
+                164,
+                166
+              ],
+              [
+                167,
+                172
+              ],
+              [
+                172,
+                173
+              ],
+              [
+                174,
+                182
+              ],
+              [
+                183,
+                186
+              ],
+              [
+                187,
+                190
+              ],
+              [
+                191,
+                193
+              ],
+              [
+                194,
+                206
+              ],
+              [
+                206,
+                207
+              ],
+              [
+                208,
+                212
+              ],
+              [
+                213,
+                215
+              ],
+              [
+                215,
+                216
+              ],
+              [
+                216,
+                219
+              ],
+              [
+                220,
+                225
+              ],
+              [
+                226,
+                229
+              ],
+              [
+                230,
+                234
+              ],
+              [
+                235,
+                243
+              ],
+              [
+                244,
+                251
+              ],
+              [
+                252,
+                258
+              ],
+              [
+                258,
+                259
+              ],
+              [
+                260,
+                261
+              ],
+              [
+                262,
+                264
+              ],
+              [
+                265,
+                268
+              ],
+              [
+                269,
+                274
+              ],
+              [
+                275,
+                278
+              ],
+              [
+                279,
+                291
+              ],
+              [
+                292,
+                294
+              ],
+              [
+                295,
+                298
+              ],
+              [
+                299,
+                304
+              ],
+              [
+                304,
+                305
+              ],
+              [
+                307,
+                314
+              ],
+              [
+                314,
+                315
+              ],
+              [
+                316,
+                317
+              ]
+            ],
+            "intent_ranking": [
+              {
+                "name": "return_item",
+                "confidence": 0.46691271662712097
+              },
+              {
+                "name": "ask_info",
+                "confidence": 0.13995778560638428
+              },
+              {
+                "name": "need_help",
+                "confidence": 0.061507485806941986
+              },
+              {
+                "name": "affirm",
+                "confidence": 0.0603494793176651
+              },
+              {
+                "name": "complaint",
+                "confidence": 0.05591471865773201
+              },
+              {
+                "name": "provide_info",
+                "confidence": 0.048811282962560654
+              },
+              {
+                "name": "thank",
+                "confidence": 0.04047708213329315
+              },
+              {
+                "name": "greet",
+                "confidence": 0.023172205314040184
+              },
+              {
+                "name": "provide_order_number",
+                "confidence": 0.014794563874602318
+              },
+              {
+                "name": "ask_return_policy",
+                "confidence": 0.012297443114221096
+              }
+            ],
+            "response_selector": {
+              "all_retrieval_intents": [],
+              "faq": {
+                "response": {
+                  "responses": null,
+                  "confidence": 0.0,
+                  "intent_response_key": null,
+                  "utter_action": "utter_None"
+                },
+                "ranking": []
+              }
+            }
+          },
+          "input_channel": "cmdline",
+          "message_id": "f91690c5f60145f081a91db471434bee"
+        },
+        {
+          "event": "user_featurization",
+          "timestamp": 1750774954.586177,
+          "metadata": {
+            "model_id": "0bf6da562a8947f0a7e5241dc98b70e4",
+            "assistant_id": "customer-care-ai"
+          },
+          "use_text_for_featurization": false
+        },
+        {
+          "event": "action",
+          "timestamp": 1750774954.5861871,
+          "metadata": {
+            "model_id": "0bf6da562a8947f0a7e5241dc98b70e4",
+            "assistant_id": "customer-care-ai"
+          },
+          "name": "action_tell_date",
+          "policy": "TEDPolicy",
+          "confidence": 0.7836658358573914,
+          "action_text": null,
+          "hide_rule_turn": false
+        },
+        {
+          "event": "bot",
+          "timestamp": 1750774954.5862038,
+          "metadata": {
+            "model_id": "0bf6da562a8947f0a7e5241dc98b70e4",
+            "assistant_id": "customer-care-ai"
+          },
+          "text": "Today's date is 2025-06-24.",
+          "data": {
+            "elements": null,
+            "quick_replies": null,
+            "buttons": null,
+            "attachment": null,
+            "image": null,
+            "custom": null
+          }
+        },
+        {
+          "event": "action",
+          "timestamp": 1750774954.588819,
+          "metadata": {
+            "model_id": "0bf6da562a8947f0a7e5241dc98b70e4",
+            "assistant_id": "customer-care-ai"
+          },
+          "name": "action_listen",
+          "policy": "TEDPolicy",
+          "confidence": 0.9998999834060669,
+          "action_text": null,
+          "hide_rule_turn": false
+        },
+        {
+          "event": "user",
+          "timestamp": 1750774957.0311701,
+          "metadata": {
+            "model_id": "0bf6da562a8947f0a7e5241dc98b70e4",
+            "assistant_id": "customer-care-ai"
+          },
+          "text": "time",
+          "parse_data": {
+            "intent": {
+              "name": "goodbye",
+              "confidence": 0.8828026652336121
+            },
+            "entities": [],
+            "text": "time",
+            "message_id": "dab093c89b1843e4b1296ae6ac85bbcc",
+            "metadata": {},
+            "text_tokens": [
+              [
+                0,
+                4
+              ]
+            ],
+            "intent_ranking": [
+              {
+                "name": "goodbye",
+                "confidence": 0.8828026652336121
+              },
+              {
+                "name": "affirm",
+                "confidence": 0.03605154901742935
+              },
+              {
+                "name": "greet",
+                "confidence": 0.021000750362873077
+              },
+              {
+                "name": "ask_info",
+                "confidence": 0.0148546127602458
+              },
+              {
+                "name": "ask_datetime",
+                "confidence": 0.005273896735161543
+              },
+              {
+                "name": "ask_return_policy",
+                "confidence": 0.005251524969935417
+              },
+              {
+                "name": "need_help",
+                "confidence": 0.005201816558837891
+              },
+              {
+                "name": "thank",
+                "confidence": 0.004325405228883028
+              },
+              {
+                "name": "request_human_agent",
+                "confidence": 0.0037505372893065214
+              },
+              {
+                "name": "contact_support",
+                "confidence": 0.0030351162422448397
+              }
+            ],
+            "response_selector": {
+              "all_retrieval_intents": [],
+              "faq": {
+                "response": {
+                  "responses": null,
+                  "confidence": 0.0,
+                  "intent_response_key": null,
+                  "utter_action": "utter_None"
+                },
+                "ranking": []
+              }
+            }
+          },
+          "input_channel": "cmdline",
+          "message_id": "dab093c89b1843e4b1296ae6ac85bbcc"
+        },
+        {
+          "event": "user_featurization",
+          "timestamp": 1750774957.036617,
+          "metadata": {
+            "model_id": "0bf6da562a8947f0a7e5241dc98b70e4",
+            "assistant_id": "customer-care-ai"
+          },
+          "use_text_for_featurization": false
+        },
+        {
+          "event": "action",
+          "timestamp": 1750774957.036624,
+          "metadata": {
+            "model_id": "0bf6da562a8947f0a7e5241dc98b70e4",
+            "assistant_id": "customer-care-ai"
+          },
+          "name": "utter_goodbye",
+          "policy": "TEDPolicy",
+          "confidence": 0.9982921481132507,
+          "action_text": null,
+          "hide_rule_turn": false
+        },
+        {
+          "event": "bot",
+          "timestamp": 1750774957.0366452,
+          "metadata": {
+            "utter_action": "utter_goodbye",
+            "model_id": "0bf6da562a8947f0a7e5241dc98b70e4",
+            "assistant_id": "customer-care-ai"
+          },
+          "text": "Take care! Contact us anytime you need help.",
+          "data": {
+            "elements": null,
+            "quick_replies": null,
+            "buttons": null,
+            "attachment": null,
+            "image": null,
+            "custom": null
+          }
+        },
+        {
+          "event": "action",
+          "timestamp": 1750774957.040565,
+          "metadata": {
+            "model_id": "0bf6da562a8947f0a7e5241dc98b70e4",
+            "assistant_id": "customer-care-ai"
+          },
+          "name": "action_listen",
+          "policy": "TEDPolicy",
+          "confidence": 0.9999080896377563,
+          "action_text": null,
+          "hide_rule_turn": false
+        },
+        {
+          "event": "user",
+          "timestamp": 1750774958.370968,
+          "metadata": {
+            "model_id": "0bf6da562a8947f0a7e5241dc98b70e4",
+            "assistant_id": "customer-care-ai"
+          },
+          "text": "date",
+          "parse_data": {
+            "intent": {
+              "name": "goodbye",
+              "confidence": 0.8574892282485962
+            },
+            "entities": [],
+            "text": "date",
+            "message_id": "caaea7726d0e45159f6f54cff21f1d48",
+            "metadata": {},
+            "text_tokens": [
+              [
+                0,
+                4
+              ]
+            ],
+            "intent_ranking": [
+              {
+                "name": "goodbye",
+                "confidence": 0.8574892282485962
+              },
+              {
+                "name": "deny",
+                "confidence": 0.02075004205107689
+              },
+              {
+                "name": "ask_return_policy",
+                "confidence": 0.01538762729614973
+              },
+              {
+                "name": "greet",
+                "confidence": 0.014950363896787167
+              },
+              {
+                "name": "need_help",
+                "confidence": 0.013121843338012695
+              },
+              {
+                "name": "ask_info",
+                "confidence": 0.012046626769006252
+              },
+              {
+                "name": "ask_datetime",
+                "confidence": 0.0102663803845644
+              },
+              {
+                "name": "affirm",
+                "confidence": 0.010261954739689827
+              },
+              {
+                "name": "request_human_agent",
+                "confidence": 0.006672842428088188
+              },
+              {
+                "name": "change_language",
+                "confidence": 0.005975421983748674
+              }
+            ],
+            "response_selector": {
+              "all_retrieval_intents": [],
+              "faq": {
+                "response": {
+                  "responses": null,
+                  "confidence": 0.0,
+                  "intent_response_key": null,
+                  "utter_action": "utter_None"
+                },
+                "ranking": []
+              }
+            }
+          },
+          "input_channel": "cmdline",
+          "message_id": "caaea7726d0e45159f6f54cff21f1d48"
+        },
+        {
+          "event": "user_featurization",
+          "timestamp": 1750774958.374657,
+          "metadata": {
+            "model_id": "0bf6da562a8947f0a7e5241dc98b70e4",
+            "assistant_id": "customer-care-ai"
+          },
+          "use_text_for_featurization": false
+        },
+        {
+          "event": "action",
+          "timestamp": 1750774958.3746629,
+          "metadata": {
+            "model_id": "0bf6da562a8947f0a7e5241dc98b70e4",
+            "assistant_id": "customer-care-ai"
+          },
+          "name": "utter_goodbye",
+          "policy": "TEDPolicy",
+          "confidence": 0.9974253177642822,
+          "action_text": null,
+          "hide_rule_turn": false
+        },
+        {
+          "event": "bot",
+          "timestamp": 1750774958.374677,
+          "metadata": {
+            "utter_action": "utter_goodbye",
+            "model_id": "0bf6da562a8947f0a7e5241dc98b70e4",
+            "assistant_id": "customer-care-ai"
+          },
+          "text": "See you later! Feel free to return if you need more assistance.",
+          "data": {
+            "elements": null,
+            "quick_replies": null,
+            "buttons": null,
+            "attachment": null,
+            "image": null,
+            "custom": null
+          }
+        },
+        {
+          "event": "action",
+          "timestamp": 1750774958.3780448,
+          "metadata": {
+            "model_id": "0bf6da562a8947f0a7e5241dc98b70e4",
+            "assistant_id": "customer-care-ai"
+          },
+          "name": "action_listen",
+          "policy": "TEDPolicy",
+          "confidence": 0.9999377727508545,
+          "action_text": null,
+          "hide_rule_turn": false
+        },
+        {
+          "event": "user",
+          "timestamp": 1750774960.6907399,
+          "metadata": {
+            "model_id": "0bf6da562a8947f0a7e5241dc98b70e4",
+            "assistant_id": "customer-care-ai"
+          },
+          "text": "date",
+          "parse_data": {
+            "intent": {
+              "name": "goodbye",
+              "confidence": 0.8574892282485962
+            },
+            "entities": [],
+            "text": "date",
+            "message_id": "05e8069e54d84a6f8a74f93269398651",
+            "metadata": {},
+            "text_tokens": [
+              [
+                0,
+                4
+              ]
+            ],
+            "intent_ranking": [
+              {
+                "name": "goodbye",
+                "confidence": 0.8574892282485962
+              },
+              {
+                "name": "deny",
+                "confidence": 0.02075004205107689
+              },
+              {
+                "name": "ask_return_policy",
+                "confidence": 0.01538762729614973
+              },
+              {
+                "name": "greet",
+                "confidence": 0.014950363896787167
+              },
+              {
+                "name": "need_help",
+                "confidence": 0.013121843338012695
+              },
+              {
+                "name": "ask_info",
+                "confidence": 0.012046626769006252
+              },
+              {
+                "name": "ask_datetime",
+                "confidence": 0.0102663803845644
+              },
+              {
+                "name": "affirm",
+                "confidence": 0.010261954739689827
+              },
+              {
+                "name": "request_human_agent",
+                "confidence": 0.006672842428088188
+              },
+              {
+                "name": "change_language",
+                "confidence": 0.005975421983748674
+              }
+            ],
+            "response_selector": {
+              "all_retrieval_intents": [],
+              "faq": {
+                "response": {
+                  "responses": null,
+                  "confidence": 0.0,
+                  "intent_response_key": null,
+                  "utter_action": "utter_None"
+                },
+                "ranking": []
+              }
+            }
+          },
+          "input_channel": "cmdline",
+          "message_id": "05e8069e54d84a6f8a74f93269398651"
+        },
+        {
+          "event": "user_featurization",
+          "timestamp": 1750774960.6942642,
+          "metadata": {
+            "model_id": "0bf6da562a8947f0a7e5241dc98b70e4",
+            "assistant_id": "customer-care-ai"
+          },
+          "use_text_for_featurization": false
+        },
+        {
+          "event": "action",
+          "timestamp": 1750774960.69427,
+          "metadata": {
+            "model_id": "0bf6da562a8947f0a7e5241dc98b70e4",
+            "assistant_id": "customer-care-ai"
+          },
+          "name": "utter_goodbye",
+          "policy": "TEDPolicy",
+          "confidence": 0.9969630837440491,
+          "action_text": null,
+          "hide_rule_turn": false
+        },
+        {
+          "event": "bot",
+          "timestamp": 1750774960.694284,
+          "metadata": {
+            "utter_action": "utter_goodbye",
+            "model_id": "0bf6da562a8947f0a7e5241dc98b70e4",
+            "assistant_id": "customer-care-ai"
+          },
+          "text": "Goodbye! Have a great day!",
+          "data": {
+            "elements": null,
+            "quick_replies": null,
+            "buttons": null,
+            "attachment": null,
+            "image": null,
+            "custom": null
+          }
+        },
+        {
+          "event": "action",
+          "timestamp": 1750774960.698535,
+          "metadata": {
+            "model_id": "0bf6da562a8947f0a7e5241dc98b70e4",
+            "assistant_id": "customer-care-ai"
+          },
+          "name": "action_listen",
+          "policy": "TEDPolicy",
+          "confidence": 0.9999399185180664,
+          "action_text": null,
+          "hide_rule_turn": false
+        },
+        {
+          "event": "user",
+          "timestamp": 1750774963.296802,
+          "metadata": {
+            "model_id": "0bf6da562a8947f0a7e5241dc98b70e4",
+            "assistant_id": "customer-care-ai"
+          },
+          "text": "what time is",
+          "parse_data": {
+            "intent": {
+              "name": "ask_datetime",
+              "confidence": 0.5284615159034729
+            },
+            "entities": [],
+            "text": "what time is",
+            "message_id": "91a4819bd16a45e7b3c28929dbb4f16d",
+            "metadata": {},
+            "text_tokens": [
+              [
+                0,
+                4
+              ],
+              [
+                5,
+                9
+              ],
+              [
+                10,
+                12
+              ]
+            ],
+            "intent_ranking": [
+              {
+                "name": "ask_datetime",
+                "confidence": 0.5284615159034729
+              },
+              {
+                "name": "goodbye",
+                "confidence": 0.08210499584674835
+              },
+              {
+                "name": "ask_return_policy",
+                "confidence": 0.0764608308672905
+              },
+              {
+                "name": "greet",
+                "confidence": 0.06317511945962906
+              },
+              {
+                "name": "check_balance",
+                "confidence": 0.04599480703473091
+              },
+              {
+                "name": "affirm",
+                "confidence": 0.03172386437654495
+              },
+              {
+                "name": "contact_support",
+                "confidence": 0.026596330106258392
+              },
+              {
+                "name": "need_help",
+                "confidence": 0.017109861597418785
+              },
+              {
+                "name": "thank",
+                "confidence": 0.015804752707481384
+              },
+              {
+                "name": "tell_joke",
+                "confidence": 0.014424779452383518
+              }
+            ],
+            "response_selector": {
+              "all_retrieval_intents": [],
+              "faq": {
+                "response": {
+                  "responses": null,
+                  "confidence": 0.0,
+                  "intent_response_key": null,
+                  "utter_action": "utter_None"
+                },
+                "ranking": []
+              }
+            }
+          },
+          "input_channel": "cmdline",
+          "message_id": "91a4819bd16a45e7b3c28929dbb4f16d"
+        },
+        {
+          "event": "user_featurization",
+          "timestamp": 1750774963.3154,
+          "metadata": {
+            "model_id": "0bf6da562a8947f0a7e5241dc98b70e4",
+            "assistant_id": "customer-care-ai"
+          },
+          "use_text_for_featurization": false
+        },
+        {
+          "event": "action",
+          "timestamp": 1750774963.315413,
+          "metadata": {
+            "model_id": "0bf6da562a8947f0a7e5241dc98b70e4",
+            "assistant_id": "customer-care-ai"
+          },
+          "name": "action_tell_datetime",
+          "policy": "TEDPolicy",
+          "confidence": 0.9979921579360962,
+          "action_text": null,
+          "hide_rule_turn": false
+        },
+        {
+          "event": "bot",
+          "timestamp": 1750774963.31543,
+          "metadata": {
+            "model_id": "0bf6da562a8947f0a7e5241dc98b70e4",
+            "assistant_id": "customer-care-ai"
+          },
+          "text": "The current date and time is Tuesday, June 24, 2025 at 14:22 UTC.",
+          "data": {
+            "elements": null,
+            "quick_replies": null,
+            "buttons": null,
+            "attachment": null,
+            "image": null,
+            "custom": null
+          }
+        },
+        {
+          "event": "action",
+          "timestamp": 1750774963.320417,
+          "metadata": {
+            "model_id": "0bf6da562a8947f0a7e5241dc98b70e4",
+            "assistant_id": "customer-care-ai"
+          },
+          "name": "action_listen",
+          "policy": "TEDPolicy",
+          "confidence": 0.999940037727356,
+          "action_text": null,
+          "hide_rule_turn": false
+        },
+        {
+          "event": "user",
+          "timestamp": 1750774972.445184,
+          "metadata": {
+            "model_id": "0bf6da562a8947f0a7e5241dc98b70e4",
+            "assistant_id": "customer-care-ai"
+          },
+          "text": "what is today's date?",
+          "parse_data": {
+            "intent": {
+              "name": "ask_datetime",
+              "confidence": 0.74531489610672
+            },
+            "entities": [],
+            "text": "what is today's date?",
+            "message_id": "7ffbb432a72645398bd9da2a6bdea37b",
+            "metadata": {},
+            "text_tokens": [
+              [
+                0,
+                4
+              ],
+              [
+                5,
+                7
+              ],
+              [
+                8,
+                13
+              ],
+              [
+                13,
+                15
+              ],
+              [
+                16,
+                20
+              ],
+              [
+                20,
+                21
+              ]
+            ],
+            "intent_ranking": [
+              {
+                "name": "ask_datetime",
+                "confidence": 0.74531489610672
+              },
+              {
+                "name": "ask_return_policy",
+                "confidence": 0.17433199286460876
+              },
+              {
+                "name": "provide_info",
+                "confidence": 0.013665041886270046
+              },
+              {
+                "name": "contact_support",
+                "confidence": 0.010871252045035362
+              },
+              {
+                "name": "thank",
+                "confidence": 0.0054659550078213215
+              },
+              {
+                "name": "tell_joke",
+                "confidence": 0.005203744396567345
+              },
+              {
+                "name": "affirm",
+                "confidence": 0.005168924108147621
+              },
+              {
+                "name": "request_human_agent",
+                "confidence": 0.00512791657820344
+              },
+              {
+                "name": "provide_order_number",
+                "confidence": 0.004714231006801128
+              },
+              {
+                "name": "return_item",
+                "confidence": 0.004706062842160463
+              }
+            ],
+            "response_selector": {
+              "all_retrieval_intents": [],
+              "faq": {
+                "response": {
+                  "responses": null,
+                  "confidence": 0.0,
+                  "intent_response_key": null,
+                  "utter_action": "utter_None"
+                },
+                "ranking": []
+              }
+            }
+          },
+          "input_channel": "cmdline",
+          "message_id": "7ffbb432a72645398bd9da2a6bdea37b"
+        },
+        {
+          "event": "user_featurization",
+          "timestamp": 1750774972.466594,
+          "metadata": {
+            "model_id": "0bf6da562a8947f0a7e5241dc98b70e4",
+            "assistant_id": "customer-care-ai"
+          },
+          "use_text_for_featurization": false
+        },
+        {
+          "event": "action",
+          "timestamp": 1750774972.466607,
+          "metadata": {
+            "model_id": "0bf6da562a8947f0a7e5241dc98b70e4",
+            "assistant_id": "customer-care-ai"
+          },
+          "name": "action_tell_datetime",
+          "policy": "TEDPolicy",
+          "confidence": 0.9973548650741577,
+          "action_text": null,
+          "hide_rule_turn": false
+        },
+        {
+          "event": "bot",
+          "timestamp": 1750774972.466625,
+          "metadata": {
+            "model_id": "0bf6da562a8947f0a7e5241dc98b70e4",
+            "assistant_id": "customer-care-ai"
+          },
+          "text": "The current date and time is Tuesday, June 24, 2025 at 14:22 UTC.",
+          "data": {
+            "elements": null,
+            "quick_replies": null,
+            "buttons": null,
+            "attachment": null,
+            "image": null,
+            "custom": null
+          }
+        },
+        {
+          "event": "action",
+          "timestamp": 1750774972.4706938,
+          "metadata": {
+            "model_id": "0bf6da562a8947f0a7e5241dc98b70e4",
+            "assistant_id": "customer-care-ai"
+          },
+          "name": "action_listen",
+          "policy": "TEDPolicy",
+          "confidence": 0.9999297857284546,
+          "action_text": null,
+          "hide_rule_turn": false
+        },
+        {
+          "event": "user",
+          "timestamp": 1750774973.763561,
+          "metadata": {
+            "model_id": "0bf6da562a8947f0a7e5241dc98b70e4",
+            "assistant_id": "customer-care-ai"
+          },
+          "text": "what is today's date?",
+          "parse_data": {
+            "intent": {
+              "name": "ask_datetime",
+              "confidence": 0.74531489610672
+            },
+            "entities": [],
+            "text": "what is today's date?",
+            "message_id": "c54274d306784df98cecddd9bcb84718",
+            "metadata": {},
+            "text_tokens": [
+              [
+                0,
+                4
+              ],
+              [
+                5,
+                7
+              ],
+              [
+                8,
+                13
+              ],
+              [
+                13,
+                15
+              ],
+              [
+                16,
+                20
+              ],
+              [
+                20,
+                21
+              ]
+            ],
+            "intent_ranking": [
+              {
+                "name": "ask_datetime",
+                "confidence": 0.74531489610672
+              },
+              {
+                "name": "ask_return_policy",
+                "confidence": 0.17433199286460876
+              },
+              {
+                "name": "provide_info",
+                "confidence": 0.013665041886270046
+              },
+              {
+                "name": "contact_support",
+                "confidence": 0.010871252045035362
+              },
+              {
+                "name": "thank",
+                "confidence": 0.0054659550078213215
+              },
+              {
+                "name": "tell_joke",
+                "confidence": 0.005203744396567345
+              },
+              {
+                "name": "affirm",
+                "confidence": 0.005168924108147621
+              },
+              {
+                "name": "request_human_agent",
+                "confidence": 0.00512791657820344
+              },
+              {
+                "name": "provide_order_number",
+                "confidence": 0.004714231006801128
+              },
+              {
+                "name": "return_item",
+                "confidence": 0.004706062842160463
+              }
+            ],
+            "response_selector": {
+              "all_retrieval_intents": [],
+              "faq": {
+                "response": {
+                  "responses": null,
+                  "confidence": 0.0,
+                  "intent_response_key": null,
+                  "utter_action": "utter_None"
+                },
+                "ranking": []
+              }
+            }
+          },
+          "input_channel": "cmdline",
+          "message_id": "c54274d306784df98cecddd9bcb84718"
+        },
+        {
+          "event": "user_featurization",
+          "timestamp": 1750774973.784362,
+          "metadata": {
+            "model_id": "0bf6da562a8947f0a7e5241dc98b70e4",
+            "assistant_id": "customer-care-ai"
+          },
+          "use_text_for_featurization": false
+        },
+        {
+          "event": "action",
+          "timestamp": 1750774973.784375,
+          "metadata": {
+            "model_id": "0bf6da562a8947f0a7e5241dc98b70e4",
+            "assistant_id": "customer-care-ai"
+          },
+          "name": "action_tell_datetime",
+          "policy": "TEDPolicy",
+          "confidence": 0.9965140223503113,
+          "action_text": null,
+          "hide_rule_turn": false
+        },
+        {
+          "event": "bot",
+          "timestamp": 1750774973.784393,
+          "metadata": {
+            "model_id": "0bf6da562a8947f0a7e5241dc98b70e4",
+            "assistant_id": "customer-care-ai"
+          },
+          "text": "The current date and time is Tuesday, June 24, 2025 at 14:22 UTC.",
+          "data": {
+            "elements": null,
+            "quick_replies": null,
+            "buttons": null,
+            "attachment": null,
+            "image": null,
+            "custom": null
+          }
+        },
+        {
+          "event": "action",
+          "timestamp": 1750774973.789054,
+          "metadata": {
+            "model_id": "0bf6da562a8947f0a7e5241dc98b70e4",
+            "assistant_id": "customer-care-ai"
+          },
+          "name": "action_listen",
+          "policy": "TEDPolicy",
+          "confidence": 0.9999262094497681,
+          "action_text": null,
+          "hide_rule_turn": false
+        },
+        {
+          "event": "user",
+          "timestamp": 1750774976.802741,
+          "metadata": {
+            "model_id": "0bf6da562a8947f0a7e5241dc98b70e4",
+            "assistant_id": "customer-care-ai"
+          },
+          "text": "hello",
+          "parse_data": {
+            "intent": {
+              "name": "greet",
+              "confidence": 0.9988023042678833
+            },
+            "entities": [],
+            "text": "hello",
+            "message_id": "ebcd5d2ea7ca4da28603330de2a82487",
+            "metadata": {},
+            "text_tokens": [
+              [
+                0,
+                5
+              ]
+            ],
+            "intent_ranking": [
+              {
+                "name": "greet",
+                "confidence": 0.9988023042678833
+              },
+              {
+                "name": "support_request",
+                "confidence": 0.00020016520284116268
+              },
+              {
+                "name": "need_help",
+                "confidence": 0.00014730921247974038
+              },
+              {
+                "name": "ask_datetime",
+                "confidence": 8.49476273288019e-05
+              },
+              {
+                "name": "check_balance",
+                "confidence": 8.030064782360569e-05
+              },
+              {
+                "name": "change_language",
+                "confidence": 7.18172886990942e-05
+              },
+              {
+                "name": "provide_info",
+                "confidence": 6.362223211908713e-05
+              },
+              {
+                "name": "goodbye",
+                "confidence": 6.202235817909241e-05
+              },
+              {
+                "name": "tell_joke",
+                "confidence": 5.746775059378706e-05
+              },
+              {
+                "name": "deny",
+                "confidence": 5.423458060249686e-05
+              }
+            ],
+            "response_selector": {
+              "all_retrieval_intents": [],
+              "faq": {
+                "response": {
+                  "responses": null,
+                  "confidence": 0.0,
+                  "intent_response_key": null,
+                  "utter_action": "utter_None"
+                },
+                "ranking": []
+              }
+            }
+          },
+          "input_channel": "cmdline",
+          "message_id": "ebcd5d2ea7ca4da28603330de2a82487"
+        },
+        {
+          "event": "user_featurization",
+          "timestamp": 1750774976.8075361,
+          "metadata": {
+            "model_id": "0bf6da562a8947f0a7e5241dc98b70e4",
+            "assistant_id": "customer-care-ai"
+          },
+          "use_text_for_featurization": false
+        },
+        {
+          "event": "action",
+          "timestamp": 1750774976.807542,
+          "metadata": {
+            "model_id": "0bf6da562a8947f0a7e5241dc98b70e4",
+            "assistant_id": "customer-care-ai"
+          },
+          "name": "utter_greet",
+          "policy": "RulePolicy",
+          "confidence": 1.0,
+          "action_text": null,
+          "hide_rule_turn": false
+        },
+        {
+          "event": "bot",
+          "timestamp": 1750774976.8075562,
+          "metadata": {
+            "utter_action": "utter_greet",
+            "model_id": "0bf6da562a8947f0a7e5241dc98b70e4",
+            "assistant_id": "customer-care-ai"
+          },
+          "text": "Hello! How can I assist you today?",
+          "data": {
+            "elements": null,
+            "quick_replies": null,
+            "buttons": null,
+            "attachment": null,
+            "image": null,
+            "custom": null
+          }
+        },
+        {
+          "event": "action",
+          "timestamp": 1750774976.811425,
+          "metadata": {
+            "model_id": "0bf6da562a8947f0a7e5241dc98b70e4",
+            "assistant_id": "customer-care-ai"
+          },
+          "name": "action_listen",
+          "policy": "RulePolicy",
+          "confidence": 1.0,
+          "action_text": null,
+          "hide_rule_turn": false
+        },
+        {
+          "event": "user",
+          "timestamp": 1750774981.4993842,
+          "metadata": {
+            "model_id": "0bf6da562a8947f0a7e5241dc98b70e4",
+            "assistant_id": "customer-care-ai"
+          },
+          "text": "name",
+          "parse_data": {
+            "intent": {
+              "name": "deny",
+              "confidence": 0.9849374890327454
+            },
+            "entities": [],
+            "text": "name",
+            "message_id": "fb0d7c5ac11c422988e485a6c6b5c377",
+            "metadata": {},
+            "text_tokens": [
+              [
+                0,
+                4
+              ]
+            ],
+            "intent_ranking": [
+              {
+                "name": "deny",
+                "confidence": 0.9849374890327454
+              },
+              {
+                "name": "affirm",
+                "confidence": 0.0015347086591646075
+              },
+              {
+                "name": "contact_support",
+                "confidence": 0.0013386189239099622
+              },
+              {
+                "name": "need_help",
+                "confidence": 0.0013219136744737625
+              },
+              {
+                "name": "ask_datetime",
+                "confidence": 0.0012494506081566215
+              },
+              {
+                "name": "request_human_agent",
+                "confidence": 0.0010525252437219024
+              },
+              {
+                "name": "complaint",
+                "confidence": 0.0010262965224683285
+              },
+              {
+                "name": "tell_joke",
+                "confidence": 0.001024157740175724
+              },
+              {
+                "name": "change_language",
+                "confidence": 0.0008822945528663695
+              },
+              {
+                "name": "provide_order_number",
+                "confidence": 0.0008335642633028328
+              }
+            ],
+            "response_selector": {
+              "all_retrieval_intents": [],
+              "faq": {
+                "response": {
+                  "responses": null,
+                  "confidence": 0.0,
+                  "intent_response_key": null,
+                  "utter_action": "utter_None"
+                },
+                "ranking": []
+              }
+            }
+          },
+          "input_channel": "cmdline",
+          "message_id": "fb0d7c5ac11c422988e485a6c6b5c377"
+        },
+        {
+          "event": "user_featurization",
+          "timestamp": 1750774981.504231,
+          "metadata": {
+            "model_id": "0bf6da562a8947f0a7e5241dc98b70e4",
+            "assistant_id": "customer-care-ai"
+          },
+          "use_text_for_featurization": false
+        },
+        {
+          "event": "action",
+          "timestamp": 1750774981.5042439,
+          "metadata": {
+            "model_id": "0bf6da562a8947f0a7e5241dc98b70e4",
+            "assistant_id": "customer-care-ai"
+          },
+          "name": "action_default_fallback",
+          "policy": "RulePolicy",
+          "confidence": 0.4,
+          "action_text": null,
+          "hide_rule_turn": false
+        },
+        {
+          "event": "bot",
+          "timestamp": 1750774981.504273,
+          "metadata": {
+            "utter_action": "utter_default",
+            "model_id": "0bf6da562a8947f0a7e5241dc98b70e4",
+            "assistant_id": "customer-care-ai"
+          },
+          "text": "I'm not sure I follow. Could you explain that differently?",
+          "data": {
+            "elements": null,
+            "quick_replies": null,
+            "buttons": null,
+            "attachment": null,
+            "image": null,
+            "custom": null
+          }
+        },
+        {
+          "event": "rewind",
+          "timestamp": 1750774981.5042748,
+          "metadata": {
+            "model_id": "0bf6da562a8947f0a7e5241dc98b70e4",
+            "assistant_id": "customer-care-ai"
+          }
+        },
+        {
+          "event": "action",
+          "timestamp": 1750774981.5078359,
+          "metadata": {
+            "model_id": "0bf6da562a8947f0a7e5241dc98b70e4",
+            "assistant_id": "customer-care-ai"
+          },
+          "name": "action_listen",
+          "policy": "RulePolicy",
+          "confidence": 1.0,
+          "action_text": null,
+          "hide_rule_turn": false
+        },
+        {
+          "event": "user",
+          "timestamp": 1750774984.195745,
+          "metadata": {
+            "model_id": "0bf6da562a8947f0a7e5241dc98b70e4",
+            "assistant_id": "customer-care-ai"
+          },
+          "text": "your name",
+          "parse_data": {
+            "intent": {
+              "name": "deny",
+              "confidence": 0.49155890941619873
+            },
+            "entities": [],
+            "text": "your name",
+            "message_id": "7b8807bdb0d149cd926cb02416775189",
+            "metadata": {},
+            "text_tokens": [
+              [
+                0,
+                4
+              ],
+              [
+                5,
+                9
+              ]
+            ],
+            "intent_ranking": [
+              {
+                "name": "deny",
+                "confidence": 0.49155890941619873
+              },
+              {
+                "name": "goodbye",
+                "confidence": 0.20235557854175568
+              },
+              {
+                "name": "tell_joke",
+                "confidence": 0.05301462113857269
+              },
+              {
+                "name": "affirm",
+                "confidence": 0.051363568753004074
+              },
+              {
+                "name": "check_order_status",
+                "confidence": 0.03493180871009827
+              },
+              {
+                "name": "ask_datetime",
+                "confidence": 0.024893512949347496
+              },
+              {
+                "name": "request_human_agent",
+                "confidence": 0.023021813482046127
+              },
+              {
+                "name": "change_language",
+                "confidence": 0.018987035378813744
+              },
+              {
+                "name": "contact_support",
+                "confidence": 0.016968941316008568
+              },
+              {
+                "name": "complaint",
+                "confidence": 0.01105133444070816
+              }
+            ],
+            "response_selector": {
+              "all_retrieval_intents": [],
+              "faq": {
+                "response": {
+                  "responses": null,
+                  "confidence": 0.0,
+                  "intent_response_key": null,
+                  "utter_action": "utter_None"
+                },
+                "ranking": []
+              }
+            }
+          },
+          "input_channel": "cmdline",
+          "message_id": "7b8807bdb0d149cd926cb02416775189"
+        },
+        {
+          "event": "user_featurization",
+          "timestamp": 1750774984.2001688,
+          "metadata": {
+            "model_id": "0bf6da562a8947f0a7e5241dc98b70e4",
+            "assistant_id": "customer-care-ai"
+          },
+          "use_text_for_featurization": false
+        },
+        {
+          "event": "action",
+          "timestamp": 1750774984.200174,
+          "metadata": {
+            "model_id": "0bf6da562a8947f0a7e5241dc98b70e4",
+            "assistant_id": "customer-care-ai"
+          },
+          "name": "action_default_fallback",
+          "policy": "RulePolicy",
+          "confidence": 0.4,
+          "action_text": null,
+          "hide_rule_turn": false
+        },
+        {
+          "event": "bot",
+          "timestamp": 1750774984.2001941,
+          "metadata": {
+            "utter_action": "utter_default",
+            "model_id": "0bf6da562a8947f0a7e5241dc98b70e4",
+            "assistant_id": "customer-care-ai"
+          },
+          "text": "I'm sorry, I didn't quite understand that. Could you rephrase?",
+          "data": {
+            "elements": null,
+            "quick_replies": null,
+            "buttons": null,
+            "attachment": null,
+            "image": null,
+            "custom": null
+          }
+        },
+        {
+          "event": "rewind",
+          "timestamp": 1750774984.200195,
+          "metadata": {
+            "model_id": "0bf6da562a8947f0a7e5241dc98b70e4",
+            "assistant_id": "customer-care-ai"
+          }
+        },
+        {
+          "event": "action",
+          "timestamp": 1750774984.2042172,
+          "metadata": {
+            "model_id": "0bf6da562a8947f0a7e5241dc98b70e4",
+            "assistant_id": "customer-care-ai"
+          },
+          "name": "action_listen",
+          "policy": "RulePolicy",
+          "confidence": 1.0,
+          "action_text": null,
+          "hide_rule_turn": false
+        },
+        {
+          "event": "user",
+          "timestamp": 1750774995.349411,
+          "metadata": {
+            "model_id": "0bf6da562a8947f0a7e5241dc98b70e4",
+            "assistant_id": "customer-care-ai"
+          },
+          "text": "what is your name",
+          "parse_data": {
+            "intent": {
+              "name": "ask_datetime",
+              "confidence": 0.9016269445419312
+            },
+            "entities": [],
+            "text": "what is your name",
+            "message_id": "6e2230c347bc45ada000134bfa9b38ba",
+            "metadata": {},
+            "text_tokens": [
+              [
+                0,
+                4
+              ],
+              [
+                5,
+                7
+              ],
+              [
+                8,
+                12
+              ],
+              [
+                13,
+                17
+              ]
+            ],
+            "intent_ranking": [
+              {
+                "name": "ask_datetime",
+                "confidence": 0.9016269445419312
+              },
+              {
+                "name": "ask_return_policy",
+                "confidence": 0.021320311352610588
+              },
+              {
+                "name": "tell_joke",
+                "confidence": 0.013072454370558262
+              },
+              {
+                "name": "deny",
+                "confidence": 0.008167257532477379
+              },
+              {
+                "name": "affirm",
+                "confidence": 0.0060000671073794365
+              },
+              {
+                "name": "check_balance",
+                "confidence": 0.005086359102278948
+              },
+              {
+                "name": "contact_support",
+                "confidence": 0.004950978327542543
+              },
+              {
+                "name": "goodbye",
+                "confidence": 0.004903696943074465
+              },
+              {
+                "name": "check_order_status",
+                "confidence": 0.004503890872001648
+              },
+              {
+                "name": "provide_info",
+                "confidence": 0.004446567501872778
+              }
+            ],
+            "response_selector": {
+              "all_retrieval_intents": [],
+              "faq": {
+                "response": {
+                  "responses": null,
+                  "confidence": 0.0,
+                  "intent_response_key": null,
+                  "utter_action": "utter_None"
+                },
+                "ranking": []
+              }
+            }
+          },
+          "input_channel": "cmdline",
+          "message_id": "6e2230c347bc45ada000134bfa9b38ba"
+        },
+        {
+          "event": "user_featurization",
+          "timestamp": 1750774995.368917,
+          "metadata": {
+            "model_id": "0bf6da562a8947f0a7e5241dc98b70e4",
+            "assistant_id": "customer-care-ai"
+          },
+          "use_text_for_featurization": false
+        },
+        {
+          "event": "action",
+          "timestamp": 1750774995.368932,
+          "metadata": {
+            "model_id": "0bf6da562a8947f0a7e5241dc98b70e4",
+            "assistant_id": "customer-care-ai"
+          },
+          "name": "action_tell_datetime",
+          "policy": "TEDPolicy",
+          "confidence": 0.9959449172019958,
+          "action_text": null,
+          "hide_rule_turn": false
+        },
+        {
+          "event": "bot",
+          "timestamp": 1750774995.3689501,
+          "metadata": {
+            "model_id": "0bf6da562a8947f0a7e5241dc98b70e4",
+            "assistant_id": "customer-care-ai"
+          },
+          "text": "The current date and time is Tuesday, June 24, 2025 at 14:23 UTC.",
+          "data": {
+            "elements": null,
+            "quick_replies": null,
+            "buttons": null,
+            "attachment": null,
+            "image": null,
+            "custom": null
+          }
+        },
+        {
+          "event": "action",
+          "timestamp": 1750774995.3740401,
+          "metadata": {
+            "model_id": "0bf6da562a8947f0a7e5241dc98b70e4",
+            "assistant_id": "customer-care-ai"
+          },
+          "name": "action_listen",
+          "policy": "TEDPolicy",
+          "confidence": 0.9999164342880249,
+          "action_text": null,
+          "hide_rule_turn": false
+        }
+      ],
+      "latest_input_channel": "cmdline",
+      "active_loop": {},
+      "latest_action": {
+        "action_name": "action_listen"
+      },
+      "latest_action_name": "action_listen"
+    }
+  }
+}

@@ -1,52 +1,30 @@
 version: "3.1"
 
-# Language configuration - English only
 language: en
 
-# NLU Pipeline Configuration
 pipeline:
-  # Language detection removed - English only
-  # Language model for word vectors and tokenization
   - name: SpacyNLP
-    model: "en_core_web_sm"  # Using small model for compatibility
-  
-  # Tokenization
+    model: "en_core_web_sm"
   - name: SpacyTokenizer
-  
-  # Word-level features
   - name: SpacyFeaturizer
     pooling: "mean"
     case_sensitive: false
-  
-  # Regex features for pattern matching
   - name: RegexFeaturizer
     case_sensitive: false
-  
-  # Lexical and syntactic features for better intent classification
   - name: LexicalSyntacticFeaturizer
     features:
       - - low
         - pos
       - - BOS
         - EOS
-  
-  # Character-level n-gram features
   - name: CountVectorsFeaturizer
     analyzer: "char_wb"
     min_ngram: 1
     max_ngram: 4
-    max_features: 10000
-    max_sequence_length: 100
-    min_df: 2
-    max_df: 0.95
-  
-  # Intent classification and entity recognition
   - name: DIETClassifier
-    epochs: 200
+    epochs: 100
     constrain_similarities: true
     model_confidence: "softmax"
-    hidden_layers_sizes:
-      text: [256, 128]
     hidden_layer_sizes:
       text: [256, 128]
     batch_size: [32, 64]
@@ -59,52 +37,33 @@ pipeline:
     use_key_relative_attention: true
     max_relative_position: 5
     number_of_attention_heads: 4
-  
-  # Entity extraction and synonym mapping
   - name: EntitySynonymMapper
-  
-  # Fallback classifier for low confidence predictions
   - name: FallbackClassifier
-    threshold: 0.4  # Confidence threshold for fallback
-    ambiguity_threshold: 0.1  # Minimum difference between top two intents
-    fallback_prediction:
-      intent: "nlu_fallback"
-      confidence: 0.0  # Will be set to 1.0 - threshold
-    
-  # Response selector for handling FAQs and common queries
+    threshold: 0.4
+    ambiguity_threshold: 0.1
   - name: ResponseSelector
     epochs: 100
     retrieval_intent: "faq"
-    hidden_layers_sizes:
+    hidden_layer_sizes:
       text: [256, 128]
     batch_size: [32, 64]
     learning_rate: 0.001
 
-# Policies Configuration
 policies:
-  # Rule-based policies for handling specific conversation paths
   - name: RulePolicy
-    core_fallback_threshold: 0.4  # Confidence threshold for core fallback
+    core_fallback_threshold: 0.4
     core_fallback_action_name: "action_default_fallback"
     enable_fallback_prediction: true
-    restrict_rules: true
-    check_for_contradictions: true
-  
-  # Enhanced fallback with Memoization Policy (from enhanced_fallbacks.yml)
   - name: MemoizationPolicy
     max_history: 5
-    epochs: 100
-  
-  # Enhanced fallback with other policies (removed FallbackClassifier as it's already in pipeline)
-    
-  # Additional policies for better dialogue management
-  # Transformer-based dialogue policy (existing)
   - name: TEDPolicy
     max_history: 8
     epochs: 100
     batch_size: 32
     learning_rate: 0.001
-    hidden_layers_sizes: {"text": [256, 128], "action": [64]}
+    hidden_layer_sizes:
+      text: [256, 128]
+      action: [64]
     number_of_attention_heads: 4
     dropout: 0.2
     weight_sparsity: 0.8
@@ -117,161 +76,9 @@ policies:
     max_relative_position: 10
     constrain_similarities: true
     model_confidence: "softmax"
-    featurizer:
-      - name: MaxHistoryTrackerFeaturizer
-        max_history: 8
-        state_featurizer:
-          - name: SingleStateFeaturizer
 
-# Session configuration
 session_config:
-  session_expiration_time: 30  # minutes of inactivity before session expires
+  session_expiration_time: 60
   carry_over_slots_to_new_session: true
-  
-# Fallback configuration
+
 assistant_id: customer-care-ai
-
-# Response selector fallback configuration
-response_retrieval:
-  fallback_action_name: "action_default_fallback"
-  retrieval_intent: "out_of_scope"
-
-# Custom configurations for different environments
-keys:
-  # Configuration for production environment
-  production:
-    port: 5005
-    log_level: "WARNING"
-    
-  # Configuration for development environment
-  development:
-    port: 5006
-    log_level: "DEBUG"
-    
-  # Configuration for testing environment
-  test:
-    port: 5007
-    log_level: "ERROR"
-
-# Enable or disable specific features
-features:
-  # Enable interactive learning
-  interactive_learning: true
-  
-  # Enable conversation testing
-  conversation_testing: true
-  
-  # Enable model persistence
-  model_persistence: true
-  
-  # Enable telemetry (anonymized usage statistics)
-  telemetry: true
-
-# Configure the tracker store
-tracker_store:
-  type: sql
-  dialect: "sqlite"
-  db: "rasa_tracker.db"
-
-# Configure the event broker (for production use with Redis or similar)
-event_broker:
-  type: "pika"
-  url: "localhost"
-  username: ""
-  password: ""
-  queue: "rasa_events"
-
-# Configure the lock store (for distributed deployments)
-lock_store: "in_memory"
-
-# Configure the endpoints
-endpoints:
-  # Custom actions server
-  action_endpoint:
-    url: "http://localhost:5055/webhook"
-  
-  # Model server (for pulling models)
-  model:
-    url: "./models"
-    wait_time_between_pulls: 10  # seconds
-  
-  # Tracker store endpoint
-  tracker_store:
-    type: "sql"
-    dialect: "sqlite"
-    db: "rasa_tracker.db"
-
-# Configure the conversation sessions
-conversation_sessions:
-  # Session expiration time in minutes
-  session_expiration_time: 30
-  
-  # Whether to carry over slots to a new session
-  carry_over_slots: true
-
-# Configure the response caching
-response_cache:
-  # Enable or disable response caching
-  enabled: true
-  
-  # Maximum number of cached responses
-  max_size: 1000
-  
-  # Time to live for cached responses in seconds
-  ttl: 3600  # 1 hour
-
-# Configure the JWT authentication
-jwt:
-  # Secret key for JWT token signing
-  secret_key: "your-secret-key-here"
-  
-  # Token expiration time in seconds
-  token_expiration: 86400  # 24 hours
-  
-  # Algorithm used for JWT signing
-  algorithm: "HS256"
-
-# Configure the CORS settings
-cors:
-  # List of allowed origins (use "*" to allow all)
-  allowed_origins: ["*"]
-  
-  # Whether to allow credentials
-  allow_credentials: true
-  
-  # List of allowed headers
-  allowed_headers: ["*"]
-  
-  # List of allowed methods
-  allowed_methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
-
-# Configure the logging
-logging:
-  # Log level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
-  level: "INFO"
-  
-  # Log file path (leave empty for console logging only)
-  log_file: "rasa.log"
-  
-  # Log file size in MB before rotation
-  log_file_size: 10
-  
-  # Number of backup log files to keep
-  log_file_backup_count: 5
-  
-  # Log format string
-  log_format: "%(asctime)s [%(levelname)-7s] %(name)s - %(message)s"
-  
-  # Date format for log messages
-  date_format: "%Y-%m-%d %H:%M:%S"
-
-# Configure the metrics endpoint
-metrics:
-  # Enable or disable the metrics endpoint
-  enabled: true
-  
-  # Metrics endpoint path
-  path: "/metrics"
-  
-  # Metrics port (default: same as the server port)
-  port: null

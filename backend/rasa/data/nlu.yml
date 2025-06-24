@@ -1,0 +1,211 @@
+version: "3.1"
+
+nlu:
+  - intent: greet
+    examples: |
+      - hello
+      - hi
+      - hey
+      - hi there
+      - hello there
+      - good morning
+      - good evening
+      - good afternoon
+      - howdy
+
+  - intent: goodbye
+    examples: |
+      - bye
+      - goodbye
+      - see you later
+      - talk to you later
+      - have a nice day
+      - take care
+      - catch you later
+      - until next time
+
+  - intent: affirm
+    examples: |
+      - yes
+      - y
+      - indeed
+      - of course
+      - that sounds good
+      - correct
+      - sure
+      - ok
+      - okay
+
+  - intent: deny
+    examples: |
+      - no
+      - n
+      - never
+      - I don't think so
+      - don't like that
+      - no way
+      - not really
+      - nope
+
+  - intent: thank
+    examples: |
+      - thanks
+      - thank you
+      - appreciate it
+      - thanks a lot
+      - thank you so much
+      - thanks for your help
+      - that's helpful
+
+  - intent: check_order_status
+    examples: |
+      - where is my order
+      - when will my order arrive
+      - what's the status of my order
+      - can you tell me about my order
+      - is my order on the way
+      - has my order shipped
+      - tracking for my order
+      - order status
+
+  - intent: check_balance
+    examples: |
+      - what's my balance
+      - how much money do I have
+      - show me my balance
+      - check my account balance
+      - current balance
+      - balance inquiry
+
+  - intent: support_request
+    examples: |
+      - I need help
+      - can you assist me
+      - support please
+      - customer service
+      - I have a problem
+      - something isn't working
+      - need assistance
+      - help me please
+      - I need to speak with support
+
+  - intent: complaint
+    examples: |
+      - I want to complain
+      - I'm not happy with the service
+      - this is unacceptable
+      - I'm upset about my recent experience
+      - I want to file a complaint
+      - I have a serious issue
+
+  - intent: change_language
+    examples: |
+      - Change language
+      - Switch to English
+      - I want to speak in Spanish
+      - Can you change the language?
+      - Set language to French
+      - Let's talk in German
+      - Change to Japanese
+
+  - intent: ask_time
+    examples: |
+      - What time is it right now?
+      - What's the current time in your timezone?
+      - What's the exact time right now?
+      - What's the time where you are?
+      - Can you tell me what time it is?
+
+  - intent: ask_date
+    examples: |
+      - What's today's date?
+      - Could you tell me today's date?
+      - What day is it today?
+      - What's the date today?
+      - What day of the week is it today?
+
+  - intent: ask_datetime
+    examples: |
+      - What's the current date and time?
+      - What's today's date and time?
+      - Could you give me the current date and time?
+      - Can you tell me the current date and time?
+
+  - intent: product_inquiry
+    examples: |
+      - Tell me about your products
+      - What products do you have?
+      - I have a question about a product
+      - Can you give me information on your items?
+
+  - intent: ask_info
+    examples: |
+      - I need some information
+      - Tell me about your return policy
+      - Can you explain how this works?
+      - I have a question about your products
+      - What can you tell me about this service?
+
+  - intent: provide_info
+    examples: |
+      - My email is example@email.com
+      - My phone number is 555-123-4567
+      - My address is 123 Main Street
+      - My account number is ABC12345
+      - My order number is 987654
+
+  - intent: request_human_agent
+    examples: |
+      - I want to speak to a person
+      - Connect me with a human
+      - Can I talk to an agent?
+      - I need to speak with someone real
+      - No bots, give me a human
+
+  - intent: tell_joke
+    examples: |
+      - Tell me a joke
+      - Say something funny
+      - I need a laugh
+      - Do you know any jokes?
+      - Make me smile
+
+  - intent: ask_return_policy
+    examples: |
+      - What's your return policy?
+      - How do returns work?
+      - Can I return something I bought?
+      - What's the policy for exchanges?
+      - How many days do I have to return?
+
+  - intent: contact_support
+    examples: |
+      - How do I contact support?
+      - What's your support email?
+      - Give me your contact information
+      - What's the support phone number?
+      - How can I reach customer service?
+
+  - intent: need_help
+    examples: |
+      - I need help with my account
+      - Help me use this feature
+      - I'm stuck and need assistance
+      - Can you help me navigate?
+      - I'm having trouble with this
+
+  - intent: provide_order_number
+    examples: |
+      - My order number is 12345
+      - Order #67890
+      - Here's my order ID: ABC123
+      - The order reference is XYZ-789
+      - My purchase number is 987-654-321
+
+  - intent: return_item
+    examples: |
+      - I want to return something I bought
+      - How do I return an item?
+      - I need to send back a product
+      - Process a return for me
+      - I'm not satisfied with my purchase and want to return it
