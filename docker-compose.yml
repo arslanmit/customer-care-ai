@@ -1,8 +1,10 @@
 services:
-  # Rasa Core Service
+  # Rasa Server
   rasa:
     image: rasa/rasa:3.6.21-full
-    command: ["run", "--enable-api", "--debug", "--cors", "*", "--credentials", "/app/credentials.yml", "--endpoints", "/app/endpoints.yml", "--model", "/app/models/20250625-022246-allegro-partition.tar.gz"]
+    platform: linux/amd64
+
+    command: ["run", "--enable-api", "--debug", "--cors", "*", "--credentials", "/app/credentials.yml", "--endpoints", "/app/endpoints.yml", "--model", "/app/models/latest_rasa_model.tar.gz"]
     ports:
       - "5005:5005"
     volumes:
@@ -11,31 +13,65 @@ services:
       - ./backend/rasa/domain.yml:/app/domain.yml
       - ./backend/rasa/endpoints.yml:/app/endpoints.yml
       - ./backend/rasa/credentials.yml:/app/credentials.yml
-      - ./backend/rasa:/app/data
+      - ./backend/rasa/data:/app/data
     environment:
-      - RASA_ENVIRONMENT=production
+
+      - RASA_ENVIRONMENT=development
       - RASA_TELEMETRY_ENABLED=false
       - RASA_ACTIONS_URL=http://actions:5055/webhook
+      - CORS_ORIGINS='["*"]'
+      - SANIC_WORKERS=2
+      - SANIC_NUM_WORKERS=2
+      - SANIC_REQUEST_TIMEOUT=300
+      - SANIC_KEEP_ALIVE_TIMEOUT=60
+      - PYTHONUNBUFFERED=1
+      - TF_CPP_MIN_LOG_LEVEL=2
+      - RASA_LOG_LEVEL=DEBUG
+      - RASA_CONSOLE_OUTPUT_VERBOSITY=DEBUG
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:5005/status"]
-      interval: 10s
-      timeout: 5s
+      test: ["CMD", "python", "-c", "import sys; import urllib.request; sys.exit(0) if urllib.request.urlopen('http://localhost:5005/status', timeout=5).getcode() == 200 else sys.exit(1)"]
+      interval: 30s
+      timeout: 30s
       retries: 3
-      start_period: 10s
-    restart: unless-stopped
+      start_period: 60s
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 4G
+    ulimits:
+      nproc: 65535
+      nofile:
+        soft: 65535
+        hard: 65535
     networks:
       - rasa-network
 
   # Rasa Actions Server
   actions:
     image: rasa/rasa-sdk:3.6.0
+    platform: linux/amd64
     volumes:
       - ./actions:/app/actions
     environment:
       - RASA_ACTIONS_SANIC_WORKERS=2
+      - SANIC_WORKERS=2
+      - SANIC_REQUEST_TIMEOUT=300
+      - PYTHONUNBUFFERED=1
     expose:
       - "5055"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import sys; import urllib.request; sys.exit(0) if urllib.request.urlopen('http://localhost:5055/health', timeout=5).getcode() == 200 else sys.exit(1)"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
     restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 1G
     networks:
       - rasa-network
       
@@ -48,11 +84,30 @@ services:
       - "8080:8080"
     volumes:
       - ./web-interface:/app
+    environment:
+      - NODE_ENV=production
+      - RASABOT_HOST=rasa
+      - RASABOT_PORT=5005
+      - NODE_OPTIONS=--max-old-space-size=512
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:8080/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
     restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 1G
     networks:
       - rasa-network
     depends_on:
-      - rasa
+      rasa:
+        condition: service_healthy
+      actions:
+        condition: service_healthy
 
 networks:
   rasa-network:
