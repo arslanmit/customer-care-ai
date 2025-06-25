@@ -28,14 +28,15 @@ Rasa sits at the centre of all user interactions. The lightweight web chat or an
 
 ## Components
 
-| Component        | Purpose                                                        |
-|------------------|----------------------------------------------------------------|
-| Rasa (NLU+Core)  | Handles intent detection and dialogue management.              |
-| Action Server    | Runs inside the same container to execute custom actions.      |
-| TinyDB Tracker   | Persists conversation state to `data/rasa_conversations.json`. |
-| FileEventBroker  | Writes an append-only event log to `data/events.json`.         |
-| Streamlit        | Visualises conversation logs for analytics.                    |
-| Cloud Build      | Builds the Docker image and deploys to Cloud Run.              |
+| Component       | Purpose |
+| --------------- | --------------------------------------------------------------- |
+| Rasa (NLU+Core) | Handles intent detection and dialogue management. |
+| Action Server   | Runs inside the same container to execute custom actions. |
+| TinyDB Tracker  | Persists conversation state to `data/rasa_conversations.json`. |
+| FileEventBroker | Writes an append-only event log to `data/events.json`. |
+| Streamlit       | Visualises conversation logs for analytics. |
+| Cloud Build     | Builds the Docker image and deploys to Cloud Run. |
+
 
 External clients (a simple HTML page or a future React app) communicate with Rasa via the REST channel. An optional FastAPI service supplies JWT-based authentication if required.
 
