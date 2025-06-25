@@ -1,84 +1,0 @@
-🤖 Starting RASA training pipeline at Mon Jun 23 10:09:28 UTC 2025
-🔍 Validating training data...
-/Users/umitarslan/customer-care-ai/.venv/lib/python3.10/site-packages/rasa/core/tracker_store.py:1044: MovedIn20Warning: Deprecated API features detected! These feature(s) are not compatible with SQLAlchemy 2.0. To prevent incompatible upgrades prior to updating applications, ensure requirements files are pinned to "sqlalchemy<2.0". Set environment variable SQLALCHEMY_WARN_20=1 to show all deprecation warnings.  Set environment variable SQLALCHEMY_SILENCE_UBER_WARNING=1 to silence this message. (Background on SQLAlchemy 2.0 at: https://sqlalche.me/e/b8d9)
-  Base: DeclarativeMeta = declarative_base()
-/Users/umitarslan/customer-care-ai/.venv/lib/python3.10/site-packages/rasa/shared/utils/validation.py:134: DeprecationWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html
-  import pkg_resources
-/Users/umitarslan/customer-care-ai/.venv/lib/python3.10/site-packages/pkg_resources/__init__.py:3117: DeprecationWarning: Deprecated call to `pkg_resources.declare_namespace('mpl_toolkits')`.
-Implementing implicit namespace packages (as specified in PEP 420) is preferred to `pkg_resources.declare_namespace`. See https://setuptools.pypa.io/en/latest/references/keywords.html#keyword-namespace-packages
-  declare_namespace(pkg)
-/Users/umitarslan/customer-care-ai/.venv/lib/python3.10/site-packages/pkg_resources/__init__.py:3117: DeprecationWarning: Deprecated call to `pkg_resources.declare_namespace('ruamel')`.
-Implementing implicit namespace packages (as specified in PEP 420) is preferred to `pkg_resources.declare_namespace`. See https://setuptools.pypa.io/en/latest/references/keywords.html#keyword-namespace-packages
-  declare_namespace(pkg)
-/Users/umitarslan/customer-care-ai/.venv/lib/python3.10/site-packages/tensorflow/lite/python/util.py:52: DeprecationWarning: jax.xla_computation is deprecated. Please use the AOT APIs.
-  from jax import xla_computation as _xla_computation
-[93m/Users/umitarslan/customer-care-ai/.venv/lib/python3.10/site-packages/rasa/shared/utils/io.py:100: UserWarning: The action 'action_increment_fallback_count' is used in the 'Handle NLU fallback' block, but it is not listed in the domain file. You should add it to your domain file!
-  More info at https://rasa.com/docs/rasa/domain
-[0m[93m/Users/umitarslan/customer-care-ai/.venv/lib/python3.10/site-packages/rasa/shared/utils/io.py:100: UserWarning: The action 'action_tell_time' is used in the 'Answer time inquiry' block, but it is not listed in the domain file. You should add it to your domain file!
-  More info at https://rasa.com/docs/rasa/domain
-[0m[93m/Users/umitarslan/customer-care-ai/.venv/lib/python3.10/site-packages/rasa/shared/utils/io.py:100: UserWarning: The action 'action_tell_joke' is used in the 'Tell a joke on request' block, but it is not listed in the domain file. You should add it to your domain file!
-  More info at https://rasa.com/docs/rasa/domain
-[0m[93m/Users/umitarslan/customer-care-ai/.venv/lib/python3.10/site-packages/rasa/shared/utils/io.py:100: UserWarning: The action 'action_handoff_to_human' is used in the 'Handle human agent request' block, but it is not listed in the domain file. You should add it to your domain file!
-  More info at https://rasa.com/docs/rasa/domain
-[0m[93m/Users/umitarslan/customer-care-ai/.venv/lib/python3.10/site-packages/rasa/shared/utils/io.py:100: UserWarning: The action 'action_set_language' is used in the 'Handle language change request' block, but it is not listed in the domain file. You should add it to your domain file!
-  More info at https://rasa.com/docs/rasa/domain
-[0m[93m/Users/umitarslan/customer-care-ai/.venv/lib/python3.10/site-packages/rasa/shared/utils/io.py:100: UserWarning: The action 'action_ask_order_number' is used in the 'Handle order status inquiry' block, but it is not listed in the domain file. You should add it to your domain file!
-  More info at https://rasa.com/docs/rasa/domain
-[0m[93m/Users/umitarslan/customer-care-ai/.venv/lib/python3.10/site-packages/rasa/shared/utils/io.py:100: UserWarning: The action 'action_escalate_to_human' is used in the 'Submit complaint form and escalate' block, but it is not listed in the domain file. You should add it to your domain file!
-  More info at https://rasa.com/docs/rasa/domain
-[0m[93m/Users/umitarslan/customer-care-ai/.venv/lib/python3.10/site-packages/rasa/shared/utils/io.py:100: UserWarning: The action 'action_tell_date' is used in the 'date inquiry' block, but it is not listed in the domain file. You should add it to your domain file!
-  More info at https://rasa.com/docs/rasa/domain
-[0m[93m/Users/umitarslan/customer-care-ai/.venv/lib/python3.10/site-packages/rasa/shared/utils/io.py:100: UserWarning: The action 'action_tell_datetime' is used in the 'datetime inquiry' block, but it is not listed in the domain file. You should add it to your domain file!
-  More info at https://rasa.com/docs/rasa/domain
-[0m[93m/Users/umitarslan/customer-care-ai/.venv/lib/python3.10/site-packages/rasa/shared/utils/io.py:100: UserWarning: The form 'name_form' is used in the 'Activate name form' block, but it is not listed in the domain file. You should add it to your domain file!
-  More info at https://rasa.com/docs/rasa/forms
-[0m[93m/Users/umitarslan/customer-care-ai/.venv/lib/python3.10/site-packages/rasa/shared/utils/io.py:100: UserWarning: The form 'complaint_form' is used in the 'Handle customer complaint' block, but it is not listed in the domain file. You should add it to your domain file!
-  More info at https://rasa.com/docs/rasa/forms
-[0m2025-06-23 10:09:33 INFO     rasa.validator  - Validating intents...
-[93m/Users/umitarslan/customer-care-ai/.venv/lib/python3.10/site-packages/rasa/shared/utils/io.py:100: UserWarning: The intent 'ask_date' is listed in the domain file, but is not found in the NLU training data.
-[0m[93m/Users/umitarslan/customer-care-ai/.venv/lib/python3.10/site-packages/rasa/shared/utils/io.py:100: UserWarning: The intent 'ask_time' is listed in the domain file, but is not found in the NLU training data.
-[0m[93m/Users/umitarslan/customer-care-ai/.venv/lib/python3.10/site-packages/rasa/shared/utils/io.py:100: UserWarning: The intent 'complain' is listed in the domain file, but is not found in the NLU training data.
-[0m[93m/Users/umitarslan/customer-care-ai/.venv/lib/python3.10/site-packages/rasa/shared/utils/io.py:100: UserWarning: The intent 'product_inquiry' is listed in the domain file, but is not found in the NLU training data.
-[0m[93m/Users/umitarslan/customer-care-ai/.venv/lib/python3.10/site-packages/rasa/shared/utils/io.py:100: UserWarning: The intent 'affirm' is not used in any story or rule.
-[0m[93m/Users/umitarslan/customer-care-ai/.venv/lib/python3.10/site-packages/rasa/shared/utils/io.py:100: UserWarning: The intent 'ask_return_policy' is not used in any story or rule.
-[0m[93m/Users/umitarslan/customer-care-ai/.venv/lib/python3.10/site-packages/rasa/shared/utils/io.py:100: UserWarning: The intent 'check_balance' is not used in any story or rule.
-[0m[93m/Users/umitarslan/customer-care-ai/.venv/lib/python3.10/site-packages/rasa/shared/utils/io.py:100: UserWarning: The intent 'complaint' is not used in any story or rule.
-[0m[93m/Users/umitarslan/customer-care-ai/.venv/lib/python3.10/site-packages/rasa/shared/utils/io.py:100: UserWarning: The intent 'contact_support' is not used in any story or rule.
-[0m[93m/Users/umitarslan/customer-care-ai/.venv/lib/python3.10/site-packages/rasa/shared/utils/io.py:100: UserWarning: The intent 'deny' is not used in any story or rule.
-[0m[93m/Users/umitarslan/customer-care-ai/.venv/lib/python3.10/site-packages/rasa/shared/utils/io.py:100: UserWarning: The intent 'need_help' is not used in any story or rule.
-[0m[93m/Users/umitarslan/customer-care-ai/.venv/lib/python3.10/site-packages/rasa/shared/utils/io.py:100: UserWarning: The intent 'provide_order_number' is not used in any story or rule.
-[0m[93m/Users/umitarslan/customer-care-ai/.venv/lib/python3.10/site-packages/rasa/shared/utils/io.py:100: UserWarning: The intent 'return_item' is not used in any story or rule.
-[0m[93m/Users/umitarslan/customer-care-ai/.venv/lib/python3.10/site-packages/rasa/shared/utils/io.py:100: UserWarning: The intent 'thank' is not used in any story or rule.
-[0m2025-06-23 10:09:33 INFO     rasa.validator  - Validating uniqueness of intents and stories...
-2025-06-23 10:09:33 INFO     rasa.validator  - Validating utterances...
-[93m/Users/umitarslan/customer-care-ai/.venv/lib/python3.10/site-packages/rasa/shared/utils/io.py:100: UserWarning: The action 'utter_thank_you' is used in the stories, but is not a valid utterance action. Please make sure the action is listed in your domain and there is a template defined with its name.
-  More info at https://rasa.com/docs/rasa/actions#utterance-actions
-[0m[93m/Users/umitarslan/customer-care-ai/.venv/lib/python3.10/site-packages/rasa/shared/utils/io.py:100: UserWarning: The action 'utter_support_help' is used in the stories, but is not a valid utterance action. Please make sure the action is listed in your domain and there is a template defined with its name.
-  More info at https://rasa.com/docs/rasa/actions#utterance-actions
-[0m[93m/Users/umitarslan/customer-care-ai/.venv/lib/python3.10/site-packages/rasa/shared/utils/io.py:100: UserWarning: The action 'utter_transfer_to_agent' is used in the stories, but is not a valid utterance action. Please make sure the action is listed in your domain and there is a template defined with its name.
-  More info at https://rasa.com/docs/rasa/actions#utterance-actions
-[0m[93m/Users/umitarslan/customer-care-ai/.venv/lib/python3.10/site-packages/rasa/shared/utils/io.py:100: UserWarning: The action 'utter_product_info' is used in the stories, but is not a valid utterance action. Please make sure the action is listed in your domain and there is a template defined with its name.
-  More info at https://rasa.com/docs/rasa/actions#utterance-actions
-[0m[93m/Users/umitarslan/customer-care-ai/.venv/lib/python3.10/site-packages/rasa/shared/utils/io.py:100: UserWarning: The action 'utter_escalate_to_agent' is used in the stories, but is not a valid utterance action. Please make sure the action is listed in your domain and there is a template defined with its name.
-  More info at https://rasa.com/docs/rasa/actions#utterance-actions
-[0m[93m/Users/umitarslan/customer-care-ai/.venv/lib/python3.10/site-packages/rasa/shared/utils/io.py:100: UserWarning: The action 'utter_apologize_for_issue' is used in the stories, but is not a valid utterance action. Please make sure the action is listed in your domain and there is a template defined with its name.
-  More info at https://rasa.com/docs/rasa/actions#utterance-actions
-[0m[93m/Users/umitarslan/customer-care-ai/.venv/lib/python3.10/site-packages/rasa/shared/utils/io.py:100: UserWarning: The action 'utter_info' is used in the stories, but is not a valid utterance action. Please make sure the action is listed in your domain and there is a template defined with its name.
-  More info at https://rasa.com/docs/rasa/actions#utterance-actions
-[0m[93m/Users/umitarslan/customer-care-ai/.venv/lib/python3.10/site-packages/rasa/shared/utils/io.py:100: UserWarning: The utterance 'utter_ask_continue' is not used in any story or rule.
-[0m[93m/Users/umitarslan/customer-care-ai/.venv/lib/python3.10/site-packages/rasa/shared/utils/io.py:100: UserWarning: The utterance 'utter_order_status' is not used in any story or rule.
-[0m[93m/Users/umitarslan/customer-care-ai/.venv/lib/python3.10/site-packages/rasa/shared/utils/io.py:100: UserWarning: The utterance 'utter_iamabot' is not used in any story or rule.
-[0m[93m/Users/umitarslan/customer-care-ai/.venv/lib/python3.10/site-packages/rasa/shared/utils/io.py:100: UserWarning: The utterance 'utter_ask_rephrase' is not used in any story or rule.
-[0m[93m/Users/umitarslan/customer-care-ai/.venv/lib/python3.10/site-packages/rasa/shared/utils/io.py:100: UserWarning: The utterance 'utter_human_handoff' is not used in any story or rule.
-[0m[93m/Users/umitarslan/customer-care-ai/.venv/lib/python3.10/site-packages/rasa/shared/utils/io.py:100: UserWarning: The utterance 'utter_thank' is not used in any story or rule.
-[0m[93m/Users/umitarslan/customer-care-ai/.venv/lib/python3.10/site-packages/rasa/shared/utils/io.py:100: UserWarning: The utterance 'utter_please_wait' is not used in any story or rule.
-[0m[93m/Users/umitarslan/customer-care-ai/.venv/lib/python3.10/site-packages/rasa/shared/utils/io.py:100: UserWarning: The utterance 'utter_joke' is not used in any story or rule.
-[0m[93m/Users/umitarslan/customer-care-ai/.venv/lib/python3.10/site-packages/rasa/shared/utils/io.py:100: UserWarning: The utterance 'utter_confirm' is not used in any story or rule.
-[0m[93m/Users/umitarslan/customer-care-ai/.venv/lib/python3.10/site-packages/rasa/shared/utils/io.py:100: UserWarning: The utterance 'utter_out_of_scope' is not used in any story or rule.
-[0m[93m/Users/umitarslan/customer-care-ai/.venv/lib/python3.10/site-packages/rasa/shared/utils/io.py:100: UserWarning: The utterance 'utter_ask_order_number' is not used in any story or rule.
-[0m2025-06-23 10:09:33 INFO     rasa.validator  - Story structure validation...
-Processed story blocks:   0%|          | 0/11 [00:00<?, ?it/s]Processed story blocks:   0%|          | 0/11 [00:00<?, ?it/s, # trackers=1]Processed story blocks:   0%|          | 0/11 [00:00<?, ?it/s, # trackers=1]Processed story blocks:   0%|          | 0/11 [00:00<?, ?it/s, # trackers=1]Processed story blocks:   0%|          | 0/11 [00:00<?, ?it/s, # trackers=1]Processed story blocks:   0%|          | 0/11 [00:00<?, ?it/s, # trackers=1]Processed story blocks:   0%|          | 0/11 [00:00<?, ?it/s, # trackers=1]Processed story blocks:   0%|          | 0/11 [00:00<?, ?it/s, # trackers=1]Processed story blocks:   0%|          | 0/11 [00:00<?, ?it/s, # trackers=1]Processed story blocks:   0%|          | 0/11 [00:00<?, ?it/s, # trackers=1]Processed story blocks:   0%|          | 0/11 [00:00<?, ?it/s, # trackers=1]Processed story blocks:   0%|          | 0/11 [00:00<?, ?it/s, # trackers=1]Processed story blocks: 100%|██████████| 11/11 [00:00<00:00, 3014.53it/s, # trackers=1]
-2025-06-23 10:09:33 INFO     rasa.core.training.story_conflict  - Considering all preceding turns for conflict analysis.
-2025-06-23 10:09:33 INFO     rasa.validator  - No story structure conflicts found.
-[91mProject validation completed with errors.[0m
-❌ Data validation failed
