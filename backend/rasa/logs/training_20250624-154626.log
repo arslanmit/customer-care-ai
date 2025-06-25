@@ -1,0 +1,31 @@
+🤖 Starting RASA training pipeline at Tue Jun 24 15:46:26 UTC 2025
+🔍 Validating training data...
+Traceback (most recent call last):
+  File "/Users/umitarslan/customer-care-ai/.venv/bin/rasa", line 5, in <module>
+    from rasa.__main__ import main
+  File "/Users/umitarslan/customer-care-ai/.venv/lib/python3.10/site-packages/rasa/__main__.py", line 7, in <module>
+    from rasa_sdk import __version__ as rasa_sdk_version
+  File "/Users/umitarslan/customer-care-ai/.venv/lib/python3.10/site-packages/rasa_sdk/__init__.py", line 5, in <module>
+    import rasa_sdk.plugin
+  File "/Users/umitarslan/customer-care-ai/.venv/lib/python3.10/site-packages/rasa_sdk/plugin.py", line 6, in <module>
+    from sanic import Sanic
+  File "/Users/umitarslan/customer-care-ai/.venv/lib/python3.10/site-packages/sanic/__init__.py", line 2, in <module>
+    from sanic.app import Sanic
+  File "/Users/umitarslan/customer-care-ai/.venv/lib/python3.10/site-packages/sanic/app.py", line 62, in <module>
+    from sanic.asgi import ASGIApp
+  File "/Users/umitarslan/customer-care-ai/.venv/lib/python3.10/site-packages/sanic/asgi.py", line 12, in <module>
+    from sanic.models.asgi import ASGIReceive, ASGIScope, ASGISend, MockTransport
+  File "/Users/umitarslan/customer-care-ai/.venv/lib/python3.10/site-packages/sanic/models/asgi.py", line 7, in <module>
+    from sanic.server.websockets.connection import WebSocketConnection
+  File "/Users/umitarslan/customer-care-ai/.venv/lib/python3.10/site-packages/sanic/server/__init__.py", line 4, in <module>
+    from sanic.server.protocols.http_protocol import HttpProtocol
+  File "/Users/umitarslan/customer-care-ai/.venv/lib/python3.10/site-packages/sanic/server/protocols/http_protocol.py", line 18, in <module>
+    from sanic.request import Request
+  File "/Users/umitarslan/customer-care-ai/.venv/lib/python3.10/site-packages/sanic/request.py", line 30, in <module>
+    from httptools import parse_url  # type: ignore
+  File "/Users/umitarslan/customer-care-ai/.venv/lib/python3.10/site-packages/httptools/__init__.py", line 1, in <module>
+    from . import parser
+  File "/Users/umitarslan/customer-care-ai/.venv/lib/python3.10/site-packages/httptools/parser/__init__.py", line 1, in <module>
+    from .parser import *  # NoQA
+ModuleNotFoundError: No module named 'httptools.parser.parser'
+❌ Data validation failed
