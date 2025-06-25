@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const cors = require('cors');
+const fetch = require('node-fetch');
 const monitoring = require('./monitoring');
 
 const app = express();
@@ -53,6 +54,58 @@ app.use((err, req, res, next) => {
 app.use(express.static(path.join(__dirname, 'public')));
 
 // API Routes
+app.post('/api/message', async (req, res) => {
+    try {
+        const { message, sender = 'default' } = req.body;
+        
+        if (!message) {
+            return res.status(400).json({ error: 'Message is required' });
+        }
+        
+        // Forward message to Rasa
+        const rasaResponse = await fetch('http://rasa:5005/webhooks/rest/webhook', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                sender: sender,
+                message: message
+            })
+        });
+        
+        if (!rasaResponse.ok) {
+            throw new Error(`Rasa server returned ${rasaResponse.status}`);
+        }
+        
+        const data = await rasaResponse.json();
+        res.json({ status: 'success', data });
+        
+        // Track successful message processing
+        monitoring.trackMessage(
+            req.ip,
+            'Message processed successfully',
+            false,
+            { 
+                type: 'message',
+                message: message,
+                response: data
+            }
+        );
+    } catch (error) {
+        console.error('Error forwarding message to Rasa:', error);
+        monitoring.trackError(error, { 
+            route: '/api/message',
+            message: req.body.message
+        });
+        res.status(500).json({ 
+            status: 'error', 
+            message: 'Failed to process message',
+            error: error.message 
+        });
+    }
+});
+
 app.get('/api/health', (req, res) => {
     res.json({
         status: 'ok',
