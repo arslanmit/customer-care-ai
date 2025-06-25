@@ -1,8 +1,10 @@
 # Architecture Overview
 
-This project runs Rasa together with its action server in a single Docker
-container.  The system is designed to be deployed on Google Cloud Run via a
-Cloud Build trigger.  Source code lives in a private GitHub repository.
+The core of the system is **Rasa**. Both the Rasa server and its action
+server run inside a single Docker container so custom actions can execute
+alongside the NLU and Core services. The container is built and deployed to
+Google Cloud Run via a Cloud Build trigger. Source code lives in a private
+GitHub repository.
 
 ```
 +-------------+        push         +-------------+       build/deploy
@@ -19,6 +21,10 @@ Cloud Build trigger.  Source code lives in a private GitHub repository.
                                  | Cloud Run      |
                                  +----------------+
 ```
+Client --> Rasa REST API --> Rasa (NLU+Core + Actions)
+```
+
+Rasa sits at the centre of all user interactions. The lightweight web chat or any other client simply posts messages to the REST endpoint.
 
 ## Components
 
@@ -30,6 +36,8 @@ Cloud Build trigger.  Source code lives in a private GitHub repository.
 | FileEventBroker  | Writes an append-only event log to `data/events.json`.         |
 | Streamlit        | Visualises conversation logs for analytics.                    |
 | Cloud Build      | Builds the Docker image and deploys to Cloud Run.              |
+
+External clients (a simple HTML page or a future React app) communicate with Rasa via the REST channel. An optional FastAPI service supplies JWT-based authentication if required.
 
 ### Rasa Settings
 
