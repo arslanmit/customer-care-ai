@@ -49,10 +49,11 @@ services:
 
   # Rasa Actions Server
   actions:
-    image: rasa/rasa-sdk:3.6.0
+    image: rasa/rasa-sdk:3.12.1
     platform: linux/amd64
+    command: ["run", "actions", "--actions", "backend/rasa/actions"]
     volumes:
-      - ./actions:/app/actions
+      - ./backend/rasa/actions:/app/backend/rasa/actions
     environment:
       - RASA_ACTIONS_SANIC_WORKERS=2
       - SANIC_WORKERS=2
