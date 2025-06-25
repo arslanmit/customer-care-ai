@@ -1,8 +1,10 @@
+version: "3"
+
 services:
   # Rasa Core Service
   rasa:
     image: rasa/rasa:3.6.21-full
-    command: bash -c 'if [ -z "$$RASA_MODEL_PATH" ]; then echo "Error: RASA_MODEL_PATH environment variable is required" && exit 1; else rasa run --enable-api --model $$RASA_MODEL_PATH --endpoints /app/endpoints.yml --credentials /app/credentials.yml; fi'
+    command: rasa run --enable-api --debug --credentials /app/credentials.yml --endpoints /app/endpoints.yml
     ports:
       - "5005:5005"
     volumes:
@@ -23,7 +25,7 @@ services:
 
   # Rasa Actions Server
   actions:
-    image: rasa/rasa-sdk:3.13.0rc1-latest
+    image: rasa/rasa-sdk:3.6.0
     volumes:
       - ./actions:/app/actions
     environment:
@@ -33,7 +35,21 @@ services:
     restart: unless-stopped
     networks:
       - rasa-network
-
+      
+  # Web Interface
+  web-interface:
+    build:
+      context: ./web-interface
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./web-interface:/app
+    restart: unless-stopped
+    networks:
+      - rasa-network
+    depends_on:
+      - rasa
 
 networks:
   rasa-network:
