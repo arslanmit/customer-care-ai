@@ -1,0 +1,6 @@
+[2025-06-23 10:02:53] [0;34m🔄 Starting RASA watchdog service...[0m
+[2025-06-23 10:02:53] [0;33m⚠️ RASA server down, attempting restart...[0m
+[2025-06-23 10:03:05] [0;31m❌ Failed to restart RASA server[0m
+[2025-06-23 10:03:05] [0;33m⚠️ Action server down, attempting restart...[0m
+[2025-06-23 10:03:12] [0;32m✅ Action server restarted successfully[0m
+[2025-06-23 10:03:42] [0;32m✅ All services running normally again[0m

@@ -1,6 +1,7 @@
 from typing import Any, Text, Dict, List
 from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
+from rasa_sdk.events import SlotSet
 from datetime import datetime
 import pytz
 
@@ -46,3 +47,20 @@ class ActionIncrementFallbackCount(Action):
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         # This is a placeholder action. You can add logic here if needed.
         return []
+
+class ActionSetLanguage(Action):
+    def name(self) -> Text:
+        return "action_set_language"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        
+        language = next(tracker.get_latest_entity_values("language"), None)
+        
+        if language:
+            dispatcher.utter_message(text=f"I'll remember you want to speak in {language}.")
+            return [SlotSet("language", language)]
+        else:
+            dispatcher.utter_message(text="I didn't catch which language you'd like to use.")
+            return []

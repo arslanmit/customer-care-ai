@@ -1,0 +1,30 @@
+🤖 Starting RASA training pipeline at Tue Jun 24 15:47:14 UTC 2025
+🔍 Validating training data...
+Traceback (most recent call last):
+  File "/Users/umitarslan/customer-care-ai/.venv/lib/python3.10/site-packages/scipy/__init__.py", line 154, in <module>
+    from scipy._lib._ccallback import LowLevelCallable
+  File "/Users/umitarslan/customer-care-ai/.venv/lib/python3.10/site-packages/scipy/_lib/_ccallback.py", line 1, in <module>
+    from . import _ccallback_c
+ImportError: cannot import name '_ccallback_c' from 'scipy._lib' (/Users/umitarslan/customer-care-ai/.venv/lib/python3.10/site-packages/scipy/_lib/__init__.py)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/umitarslan/customer-care-ai/.venv/bin/rasa", line 5, in <module>
+    from rasa.__main__ import main
+  File "/Users/umitarslan/customer-care-ai/.venv/lib/python3.10/site-packages/rasa/__main__.py", line 15, in <module>
+    from rasa.cli import (
+  File "/Users/umitarslan/customer-care-ai/.venv/lib/python3.10/site-packages/rasa/cli/data.py", line 11, in <module>
+    import rasa.cli.utils
+  File "/Users/umitarslan/customer-care-ai/.venv/lib/python3.10/site-packages/rasa/cli/utils.py", line 14, in <module>
+    from rasa.shared.importers.importer import TrainingDataImporter
+  File "/Users/umitarslan/customer-care-ai/.venv/lib/python3.10/site-packages/rasa/shared/importers/importer.py", line 20, in <module>
+    from rasa.shared.nlu.training_data.training_data import TrainingData
+  File "/Users/umitarslan/customer-care-ai/.venv/lib/python3.10/site-packages/rasa/shared/nlu/training_data/training_data.py", line 27, in <module>
+    from rasa.shared.nlu.training_data import util
+  File "/Users/umitarslan/customer-care-ai/.venv/lib/python3.10/site-packages/rasa/shared/nlu/training_data/util.py", line 7, in <module>
+    import scipy.sparse
+  File "/Users/umitarslan/customer-care-ai/.venv/lib/python3.10/site-packages/scipy/__init__.py", line 159, in <module>
+    raise ImportError(msg) from e
+ImportError: The `scipy` install you are using seems to be broken, (extension modules cannot be imported), please try reinstalling.
+❌ Data validation failed

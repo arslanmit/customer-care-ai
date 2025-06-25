@@ -1,0 +1,45 @@
+🤖 Starting RASA training pipeline at Tue Jun 24 15:48:42 UTC 2025
+🔍 Validating training data...
+/Users/umitarslan/customer-care-ai/.venv/lib/python3.10/site-packages/rasa/core/tracker_store.py:1044: MovedIn20Warning: Deprecated API features detected! These feature(s) are not compatible with SQLAlchemy 2.0. To prevent incompatible upgrades prior to updating applications, ensure requirements files are pinned to "sqlalchemy<2.0". Set environment variable SQLALCHEMY_WARN_20=1 to show all deprecation warnings.  Set environment variable SQLALCHEMY_SILENCE_UBER_WARNING=1 to silence this message. (Background on SQLAlchemy 2.0 at: https://sqlalche.me/e/b8d9)
+  Base: DeclarativeMeta = declarative_base()
+/Users/umitarslan/customer-care-ai/.venv/lib/python3.10/site-packages/rasa/shared/utils/validation.py:134: DeprecationWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html
+  import pkg_resources
+/Users/umitarslan/customer-care-ai/.venv/lib/python3.10/site-packages/pkg_resources/__init__.py:3117: DeprecationWarning: Deprecated call to `pkg_resources.declare_namespace('mpl_toolkits')`.
+Implementing implicit namespace packages (as specified in PEP 420) is preferred to `pkg_resources.declare_namespace`. See https://setuptools.pypa.io/en/latest/references/keywords.html#keyword-namespace-packages
+  declare_namespace(pkg)
+/Users/umitarslan/customer-care-ai/.venv/lib/python3.10/site-packages/pkg_resources/__init__.py:3117: DeprecationWarning: Deprecated call to `pkg_resources.declare_namespace('ruamel')`.
+Implementing implicit namespace packages (as specified in PEP 420) is preferred to `pkg_resources.declare_namespace`. See https://setuptools.pypa.io/en/latest/references/keywords.html#keyword-namespace-packages
+  declare_namespace(pkg)
+Traceback (most recent call last):
+  File "/Users/umitarslan/customer-care-ai/.venv/bin/rasa", line 8, in <module>
+    sys.exit(main())
+  File "/Users/umitarslan/customer-care-ai/.venv/lib/python3.10/site-packages/rasa/__main__.py", line 133, in main
+    cmdline_arguments.func(cmdline_arguments)
+  File "/Users/umitarslan/customer-care-ai/.venv/lib/python3.10/site-packages/rasa/cli/data.py", line 122, in <lambda>
+    func=lambda args: rasa.cli.utils.validate_files(
+  File "/Users/umitarslan/customer-care-ai/.venv/lib/python3.10/site-packages/rasa/cli/utils.py", line 229, in validate_files
+    from rasa.validator import Validator
+  File "/Users/umitarslan/customer-care-ai/.venv/lib/python3.10/site-packages/rasa/validator.py", line 5, in <module>
+    import rasa.core.training.story_conflict
+  File "/Users/umitarslan/customer-care-ai/.venv/lib/python3.10/site-packages/rasa/core/training/story_conflict.py", line 6, in <module>
+    from rasa.core.featurizers.tracker_featurizers import MaxHistoryTrackerFeaturizer
+  File "/Users/umitarslan/customer-care-ai/.venv/lib/python3.10/site-packages/rasa/core/featurizers/tracker_featurizers.py", line 31, in <module>
+    from rasa.core.featurizers.single_state_featurizer import SingleStateFeaturizer
+  File "/Users/umitarslan/customer-care-ai/.venv/lib/python3.10/site-packages/rasa/core/featurizers/single_state_featurizer.py", line 8, in <module>
+    from rasa.nlu.extractors.extractor import EntityTagSpec
+  File "/Users/umitarslan/customer-care-ai/.venv/lib/python3.10/site-packages/rasa/nlu/extractors/extractor.py", line 30, in <module>
+    import rasa.utils.train_utils
+  File "/Users/umitarslan/customer-care-ai/.venv/lib/python3.10/site-packages/rasa/utils/train_utils.py", line 31, in <module>
+    from rasa.utils.tensorflow.callback import RasaTrainingLogger, RasaModelCheckpoint
+  File "/Users/umitarslan/customer-care-ai/.venv/lib/python3.10/site-packages/rasa/utils/tensorflow/callback.py", line 5, in <module>
+    import tensorflow as tf
+  File "/Users/umitarslan/customer-care-ai/.venv/lib/python3.10/site-packages/tensorflow/__init__.py", line 37, in <module>
+    from tensorflow.python.tools import module_util as _module_util
+  File "/Users/umitarslan/customer-care-ai/.venv/lib/python3.10/site-packages/tensorflow/python/__init__.py", line 36, in <module>
+    from tensorflow.python import pywrap_tensorflow as _pywrap_tensorflow
+  File "/Users/umitarslan/customer-care-ai/.venv/lib/python3.10/site-packages/tensorflow/python/pywrap_tensorflow.py", line 26, in <module>
+    self_check.preload_check()
+  File "/Users/umitarslan/customer-care-ai/.venv/lib/python3.10/site-packages/tensorflow/python/platform/self_check.py", line 63, in preload_check
+    from tensorflow.python.platform import _pywrap_cpu_feature_guard
+ImportError: cannot import name '_pywrap_cpu_feature_guard' from 'tensorflow.python.platform' (/Users/umitarslan/customer-care-ai/.venv/lib/python3.10/site-packages/tensorflow/python/platform/__init__.py)
+❌ Data validation failed

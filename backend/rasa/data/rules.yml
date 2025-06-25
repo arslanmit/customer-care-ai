@@ -1,8 +1,7 @@
 version: "3.1"
 
 rules:
-  - rule: Always respond with time after getting time
+  - rule: Ask for time
     steps:
     - intent: ask_time
     - action: action_get_time
-    - action: utter_time_response

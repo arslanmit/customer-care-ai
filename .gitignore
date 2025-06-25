@@ -12,58 +12,17 @@ env/
 venv/
 ENV/
 
-# Node artifacts
-node_modules/
-
 # Package distributions
 build/
 dist/
 .eggs/
 *.egg-info/
 
-# Logs and coverage
-*.log
-htmlcov/
-*.cover
-*.py.cover
-coverage.xml
-*.lcov
-
 # Environment variables
 .env
 .env.*
 .env.production
 !.env.example
-
-# Certificate files
-*.crt
-*.pem
-*.key
-
-# Ignore all model binaries
-models/
-models/*.tar.gz
-models/*.whl
-models/*.bin
-models/*.pt
-models/*.h5
-models/*.pkl
-models/*.zip
-models/*.gz
-models/*.bz2
-
-# Track only README and __init__.py in models/
-!models/README.md
-!models/__init__.py
-
-data/models/
-data/models/*
-!data/models/.gitkeep
-
-
-# Migration environment
-migration.env
-
 
 # IDE settings
 .vscode/
@@ -72,21 +31,13 @@ migration.env
 # Rasa caches and models
 .rasa/
 
-# Ignore all model files by default
-models/**
-
-# Explicitly track the spaCy wheel file
-!models/spacy/
-!models/spacy/en_core_web_sm-3.7.1-py3-none-any.whl
-
 # Ignore Rasa model archives
 **/*.tar.gz
 .python-version
 # Misc
 *.swp
 *~
-essay/chatbot_design_assignment.txt
-essay/chatbot_design_assignment.txt
+
 # Python
 __pycache__/
 *.py[cod]
@@ -128,14 +79,6 @@ yarn-error.log*
 *.swp
 *.swo
 
-# Testing
-.coverage
-htmlcov/
-.pytest_cache/
-
-# Jupyter Notebook
-.ipynb_checkpoints
-
 # OS generated files
 .DS_Store
 .DS_Store?
@@ -144,3 +87,5 @@ htmlcov/
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+docs/preliminary/essay/chatbot_design_assignment.txt

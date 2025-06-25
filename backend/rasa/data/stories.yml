@@ -3,45 +3,52 @@ version: "3.1"
 stories:
   - story: handle time queries
     steps:
+      - intent: greet
+      - action: utter_greet
       - intent: ask_time
       - action: action_get_time
-      - action: utter_time_response
+      - intent: goodbye
+      - action: utter_goodbye
 
   - story: handle date queries
     steps:
+      - intent: greet
+      - action: utter_greet
       - intent: ask_date
       - action: action_get_date
-      - action: utter_date_response
+      - intent: goodbye
+      - action: utter_goodbye
 
   - story: handle datetime queries
     steps:
+      - intent: greet
+      - action: utter_greet
       - intent: ask_datetime
       - action: action_tell_datetime
-      - action: utter_datetime_response
-      
+      - intent: goodbye
+      - action: utter_goodbye
+
   - story: chained date time queries
     steps:
       - intent: greet
       - action: utter_greet
       - intent: ask_time
       - action: action_get_time
-      - action: utter_time_response
       - intent: ask_date
       - action: action_get_date
-      - action: utter_date_response
       - intent: ask_datetime
       - action: action_tell_datetime
-      - action: utter_datetime_response
       - intent: goodbye
       - action: utter_goodbye
 
   - story: date time after support
     steps:
+      - intent: greet
+      - action: utter_greet
       - intent: support_request
       - action: utter_support_help
       - intent: ask_time
       - action: action_get_time
-      - action: utter_time_response
       - intent: goodbye
       - action: utter_goodbye
   - story: simple greeting and goodbye
@@ -68,7 +75,7 @@ stories:
       - action: action_tell_joke
       - intent: goodbye
       - action: utter_goodbye
-      
+
   - story: customer support request
     steps:
       - intent: greet
@@ -91,22 +98,25 @@ stories:
       - action: utter_support_help
       - intent: goodbye
       - action: utter_goodbye
-      
+
   - story: language change request
     steps:
+      - intent: greet
+      - action: utter_greet
       - intent: change_language
       - action: action_set_language
       - action: utter_language_changed
       - intent: ask_info
       - action: utter_info
-      
+      - intent: goodbye
+      - action: utter_goodbye
+
   - story: time inquiry with joke
     steps:
       - intent: greet
       - action: utter_greet
       - intent: ask_time
       - action: action_get_time
-      - action: utter_time_response
       - intent: tell_joke
       - action: action_tell_joke
       - intent: goodbye
@@ -114,9 +124,12 @@ stories:
 
   - story: date inquiry
     steps:
+      - intent: greet
+      - action: utter_greet
       - intent: ask_date
       - action: action_get_date
-      - action: utter_date_response
+      - intent: goodbye
+      - action: utter_goodbye
 
   - story: date inquiry with follow up
     steps:
@@ -133,9 +146,12 @@ stories:
 
   - story: datetime inquiry
     steps:
+      - intent: greet
+      - action: utter_greet
       - intent: ask_datetime
       - action: action_tell_datetime
-      - action: utter_datetime_response
+      - intent: goodbye
+      - action: utter_goodbye
 
   - story: datetime inquiry with follow up
     steps:
