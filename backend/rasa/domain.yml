@@ -304,3 +304,6 @@ actions:
   - action_set_language
   - action_ask_order_number
   - action_escalate_to_human
+  - action_track_order
+  - action_log_complaint
+  - action_recommend_product
