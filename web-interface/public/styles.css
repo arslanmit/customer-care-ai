@@ -1,0 +1,466 @@
+:root {
+    --primary-color: #4a6fa5;
+    --secondary-color: #6c8fc7;
+    --accent-color: #3498db;
+    --text-color: #333;
+    --light-text: #777;
+    --background-color: #f5f8fb;
+    --bot-message-bg: #f0f4f8;
+    --user-message-bg: #ebf5ff;
+    --user-message-text: #0a48b3;
+    --quick-reply-bg: #fff;
+    --quick-reply-border: #ddd;
+    --quick-reply-hover: #f0f7ff;
+    --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+}
+
+body {
+    background-color: var(--background-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    padding: 20px;
+}
+
+.chat-container {
+    width: 100%;
+    max-width: 500px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    height: 90vh;
+    max-height: 800px;
+    overflow: hidden;
+    position: relative;
+}
+
+.chat-header {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+}
+
+.company-info {
+    display: flex;
+    align-items: center;
+}
+
+.company-logo {
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    margin-right: 12px;
+    object-fit: cover;
+}
+
+.company-name {
+    font-weight: 500;
+    font-size: 18px;
+}
+
+.header-buttons button {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.header-buttons button:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.chat-messages {
+    flex-grow: 1;
+    padding: 20px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.message {
+    display: flex;
+    flex-direction: column;
+    max-width: 80%;
+}
+
+.message-content {
+    padding: 12px 15px;
+    border-radius: 18px;
+    position: relative;
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+.message-timestamp {
+    font-size: 11px;
+    color: var(--light-text);
+    margin-top: 5px;
+}
+
+.bot-message {
+    align-self: flex-start;
+}
+
+.bot-message .message-content {
+    background-color: var(--bot-message-bg);
+    border-bottom-left-radius: 5px;
+    color: var(--text-color);
+}
+
+.user-message {
+    align-self: flex-end;
+}
+
+.user-message .message-content {
+    background-color: var(--user-message-bg);
+    color: var(--user-message-text);
+    border-bottom-right-radius: 5px;
+}
+
+.bot-message .message-timestamp {
+    align-self: flex-start;
+}
+
+.user-message .message-timestamp {
+    align-self: flex-end;
+}
+
+.typing-indicator {
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    background-color: var(--bot-message-bg);
+    border-radius: 18px;
+    width: fit-content;
+}
+
+.typing-dot {
+    height: 8px;
+    width: 8px;
+    border-radius: 50%;
+    background-color: var(--light-text);
+    margin: 0 2px;
+    animation: typingAnimation 1s infinite;
+}
+
+.typing-dot:nth-child(1) {
+    animation-delay: 0s;
+}
+
+.typing-dot:nth-child(2) {
+    animation-delay: 0.3s;
+}
+
+.typing-dot:nth-child(3) {
+    animation-delay: 0.6s;
+}
+
+@keyframes typingAnimation {
+    0% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-5px);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+
+.quick-replies {
+    padding: 10px 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+}
+
+.quick-reply {
+    background-color: var(--quick-reply-bg);
+    border: 1px solid var(--quick-reply-border);
+    border-radius: 20px;
+    padding: 8px 15px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+
+.quick-reply:hover {
+    background-color: var(--quick-reply-hover);
+    border-color: var(--secondary-color);
+    transform: translateY(-1px);
+}
+
+.chat-input-container {
+    display: flex;
+    padding: 15px;
+    background-color: white;
+    border-top: 1px solid #eee;
+}
+
+#userInput {
+    flex-grow: 1;
+    border: 1px solid #ddd;
+    border-radius: 25px;
+    padding: 12px 20px;
+    font-size: 15px;
+    outline: none;
+    transition: border 0.2s;
+}
+
+#userInput:focus {
+    border-color: var(--accent-color);
+}
+
+#sendButton {
+    border: none;
+    background-color: var(--accent-color);
+    color: white;
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    margin-left: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+}
+
+#sendButton:hover {
+    background-color: #2980b9;
+}
+
+.rich-content {
+    margin-top: 10px;
+    padding: 10px;
+    background: #fff;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+}
+
+.product-card {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    overflow: hidden;
+    background: white;
+    margin-top: 10px;
+    max-width: 280px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.product-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+img {
+    width: 100%;
+    height: 120px;
+    object-fit: cover;
+}
+
+.product-card h3 {
+    padding: 10px 10px 5px 10px;
+    margin: 0;
+    font-size: 16px;
+}
+
+.product-card p {
+    padding: 0 10px;
+    margin: 5px 0;
+    font-size: 13px;
+    color: var(--light-text);
+}
+
+.product-card .price {
+    padding: 0 10px;
+    font-weight: 600;
+    color: #e74c3c;
+    display: block;
+    margin-top: 5px;
+}
+
+.product-info {
+    padding: 10px;
+}
+
+.product-name {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.product-price {
+    color: #e74c3c;
+    font-weight: 500;
+}
+
+.product-description {
+    font-size: 13px;
+    color: var(--light-text);
+    margin-top: 5px;
+}
+
+.product-action {
+    padding: 8px 10px;
+    background: var(--accent-color);
+    color: white;
+    text-align: center;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.product-action:hover {
+    background: #2980b9;
+}
+
+/* Order Status Card */
+.order-status-card {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    overflow: hidden;
+    background: white;
+    margin-top: 10px;
+    padding: 15px;
+    width: 100%;
+    max-width: 300px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.order-status-card h3 {
+    margin: 0 0 10px 0;
+    color: var(--primary-color);
+    font-size: 16px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 8px;
+}
+
+.status-info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.status-label {
+    font-weight: 500;
+    margin-right: 5px;
+}
+
+.status-value {
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: uppercase;
+}
+
+.status-value.delivered {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.status-value.shipped {
+    background-color: #cce5ff;
+    color: #004085;
+}
+
+.status-value.processing {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.status-value.cancelled {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.order-details {
+    margin-bottom: 10px;
+}
+
+.order-details p {
+    margin: 5px 0;
+    font-size: 14px;
+}
+
+.order-items {
+    font-size: 14px;
+    border-top: 1px solid #eee;
+    padding-top: 10px;
+}
+
+/* Add to Cart Button */
+.buy-button {
+    background-color: var(--accent-color);
+    color: white;
+    border: none;
+    padding: 8px 0;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    margin-top: 10px;
+    border-radius: 4px;
+}
+
+.buy-button:hover {
+    background-color: #2980b9;
+}
+
+/* Stock indicator */
+.stock {
+    display: inline-block;
+    font-size: 12px;
+    color: #2ecc71;
+    margin-top: 5px;
+    font-weight: 500;
+}
+
+.low-stock {
+    color: #e74c3c;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 500px) {
+    .chat-container {
+        height: 100vh;
+        border-radius: 0;
+        max-height: none;
+    }
+    
+    .chat-header {
+        border-radius: 0;
+    }
+    
+    .message {
+        max-width: 90%;
+    }
+}
