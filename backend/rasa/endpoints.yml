@@ -11,13 +11,13 @@ action_endpoint:
 #   url: ${RASA_MODEL_PATH}
 #   wait_time_between_pulls: 10  # seconds
 
-# tracker_store:
-#   type: tinydb_tracker_store.TinyDBTrackerStore
-#   db_path: data/rasa_conversations.json
-# 
-# event_broker:
-#   type: FileEventBroker
-#   path: data/events.json
+tracker_store:
+  type: tinydb_tracker_store.TinyDBTrackerStore
+  db_path: data/rasa_conversations.json
+
+event_broker:
+  type: FileEventBroker
+  path: data/events.json
 
 # Uncomment to run a separate actions server
 # action_server:

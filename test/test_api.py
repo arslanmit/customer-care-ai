@@ -1,6 +1,6 @@
 from fastapi.testclient import TestClient
 
-from backend.api.main import _create_jwt, app
+from backend.rasa.api.main import _create_jwt, app
 
 
 def test_me_endpoint_requires_auth():
