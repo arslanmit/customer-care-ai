@@ -45,7 +45,7 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     APP_USER=appuser \
     APP_HOME=/home/appuser
 
-RUN apt-get update && apt-get install -y --no-install-recommends libpq5 && \
+RUN apt-get update && apt-get install -y --no-install-recommends libpq5 curl && \
     rm -rf /var/lib/apt/lists/*
 
 RUN groupadd -r $APP_USER && \
@@ -58,7 +58,6 @@ WORKDIR /app
 COPY --from=builder /app/requirements-clean.txt /app/requirements.txt
 
 RUN pip install --no-cache-dir -r /app/requirements.txt && \
-    pip install --no-cache-dir rasa==3.6.21 rasa-sdk==3.6.21 && \
     find /usr/local -type d -name 'test*' -o -name 'tests' -o -name 'idle_test' | xargs rm -rf 2>/dev/null || true && \
     find /usr/local -type f -name '*.pyc' -o -name '*.pyo' | xargs rm -f 2>/dev/null || true && \
     rm -f /app/requirements-clean.txt
@@ -66,7 +65,7 @@ RUN pip install --no-cache-dir -r /app/requirements.txt && \
 ENV PYTHONPATH=/app
 
 COPY --chown=$APP_USER:$APP_USER backend/ ./backend/
-COPY --chown=$APP_USER:$APP_USER scripts/run/run.py .
+COPY --chown=$APP_USER:$APP_USER scripts/entrypoint.sh /usr/local/bin/entrypoint.sh
 
 RUN chown -R $APP_USER:$APP_USER /app
 
@@ -82,17 +81,5 @@ EXPOSE $PORT
 LABEL maintainer="arslanmit@gmail.com" \
       org.opencontainers.image.source="https://github.com/arslanmit/customer-care-ai"
 
-# Start Rasa with the configured port and API
-# Enable API endpoints and CORS for all origins
-# Increase timeout for Cloud Run's health checks
-CMD python -m rasa run \
-    --enable-api \
-    --cors "*" \
-    --debug \
-    --port ${PORT} \
-    --endpoints /app/backend/endpoints.yml \
-    --credentials /app/backend/credentials.yml \
-    --model /app/backend/models \
-    --response-timeout 600 \
-    --connector webex_teams.webex_teams_input.WebexTeamsInput \
-    -v
+# Start Rasa using the entrypoint script
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]

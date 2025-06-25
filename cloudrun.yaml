@@ -38,14 +38,14 @@ spec:
         # Configure graceful shutdown
         run.googleapis.com/cloudsql-instances: ${_CLOUDSQL_INSTANCE}
       labels:
-        version: ${SHORT_SHA}
-        commit: ${COMMIT_SHA}
+        version: BUILD_ID_SHORT_PLACEHOLDER
+        build: BUILD_ID_PLACEHOLDER
     spec:
       containerConcurrency: 80
       timeoutSeconds: 300
       serviceAccountName: ${_SERVICE_ACCOUNT}
       containers:
-      - image: ${_GCR_HOSTNAME}/${PROJECT_ID}/${_REPOSITORY}/${_SERVICE_NAME}:${COMMIT_SHA}
+      - image: ${_GCR_HOSTNAME}/${PROJECT_ID}/${_SERVICE_NAME}:BUILD_ID_PLACEHOLDER
         ports:
         - name: http1
           containerPort: 8080
