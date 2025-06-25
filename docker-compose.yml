@@ -49,11 +49,12 @@ services:
 
   # Rasa Actions Server
   actions:
-    image: rasa/rasa-sdk:3.12.1
+    build:
+      context: ./backend/rasa/actions
+      dockerfile: Dockerfile
     platform: linux/amd64
     volumes:
       - ./backend/rasa/actions:/app/actions
-      - ./backend/rasa/actions/requirements-actions.txt:/app/requirements-actions.txt
     environment:
       - PYTHONPATH=/app
       - RASA_ACTIONS_SANIC_WORKERS=2
