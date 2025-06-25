@@ -4,6 +4,7 @@ import os
 from typing import Optional
 
 from fastapi import Depends, FastAPI, Header, HTTPException, status
+from passlib.context import CryptContext
 from fastapi.middleware.cors import CORSMiddleware
 from jose import JWTError, jwt
 from pydantic import BaseModel, EmailStr
@@ -20,7 +21,7 @@ ACCESS_TOKEN_EXPIRE_SECONDS = int(os.getenv("JWT_EXPIRE", "3600"))
 origins = [
     "http://localhost",
     "http://localhost:5173",  # Vite dev server
-    
+
 ]
 
 app = FastAPI(title="Customer-Care AI Auth API", version="1.0.0")
@@ -31,6 +32,10 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Simple in-memory user store and password hashing context
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+users_db: dict[str, dict] = {}
 
 
 # ---------------------------------------------------------------------------
@@ -98,15 +103,34 @@ async def get_current_user(authorization: str = Header(None)) -> dict:
 # ---------------------------------------------------------------------------
 @app.post("/register", response_model=TokenOut, status_code=status.HTTP_201_CREATED)
 async def register(data: RegisterIn):
+    """Register a new user and return a JWT."""
 
-    raise HTTPException(status_code=501, detail="User registration is not implemented.")
+    if data.email in users_db:
+        raise HTTPException(status_code=400, detail="User already exists")
+
+    user = {
+        "id": data.email,
+        "email": data.email,
+        "name": data.name,
+        "password_hash": pwd_context.hash(data.password),
+        "role": "user",
+    }
+    users_db[data.email] = user
+    token = _create_jwt(user)
+    return TokenOut(access_token=token)
 
 
 
 @app.post("/login", response_model=TokenOut)
 async def login(data: LoginIn):
+    """Authenticate a user and return a JWT."""
 
-    raise HTTPException(status_code=501, detail="User login is not implemented.")
+    user = users_db.get(data.email)
+    if not user or not pwd_context.verify(data.password, user["password_hash"]):
+        raise HTTPException(status_code=401, detail="Invalid credentials")
+
+    token = _create_jwt(user)
+    return TokenOut(access_token=token)
 
 
 

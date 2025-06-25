@@ -28,9 +28,11 @@
 2. Copy `.env.example` to `.env` and adjust values.
 3. Start services with Docker (or use `scripts/setup/setup.sh`):
    ```bash
-   docker-compose up --build -d
-   ```
-   Rasa API is available at <http://localhost:5005> and the dashboard at <http://localhost:8501>.
+  docker-compose up --build -d
+  ```
+  Rasa API is available at <http://localhost:5005> and the dashboard at <http://localhost:8501>.
+
+4. Open `frontend/index.html` in your browser to try the minimal web chat interface.
 
 For local development without Docker use `scripts/dev/start_dev.sh`. This script will set up the environment and start the necessary services.
 Additional documentation can be found in the [`docs/`](docs/) folder.
