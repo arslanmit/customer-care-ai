@@ -1,14 +1,12 @@
-version: "3"
-
 services:
   # Rasa Core Service
   rasa:
     image: rasa/rasa:3.6.21-full
-    command: rasa run --enable-api --debug --credentials /app/credentials.yml --endpoints /app/endpoints.yml
+    command: ["run", "--enable-api", "--debug", "--cors", "*", "--credentials", "/app/credentials.yml", "--endpoints", "/app/endpoints.yml", "--model", "/app/models/20250625-022246-allegro-partition.tar.gz"]
     ports:
       - "5005:5005"
     volumes:
-      - ./models:/app/models
+      - ./backend/rasa/models:/app/models
       - ./backend/rasa/config.yml:/app/config.yml
       - ./backend/rasa/domain.yml:/app/domain.yml
       - ./backend/rasa/endpoints.yml:/app/endpoints.yml
@@ -18,7 +16,12 @@ services:
       - RASA_ENVIRONMENT=production
       - RASA_TELEMETRY_ENABLED=false
       - RASA_ACTIONS_URL=http://actions:5055/webhook
-      # RASA_MODEL_PATH must be provided when starting the container
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5005/status"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
     restart: unless-stopped
     networks:
       - rasa-network
@@ -42,7 +45,7 @@ services:
       context: ./web-interface
       dockerfile: Dockerfile
     ports:
-      - "8000:8000"
+      - "8080:8080"
     volumes:
       - ./web-interface:/app
     restart: unless-stopped

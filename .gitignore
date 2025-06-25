@@ -27,7 +27,7 @@ dist/
 .rasa/
 
 # Ignore Rasa model archives
-**/*.tar.gz
+
 .python-version
 # Misc
 *.swp
@@ -79,5 +79,4 @@ yarn-error.log*
 .Trashes
 ehthumbs.db
 Thumbs.db
-
-docs/preliminary/essay/chatbot_design_assignment.txt
+ 
