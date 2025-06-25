@@ -42,6 +42,10 @@ entities:
   - time
   - language
   - amount
+  - first_name
+  - last_name
+  - complaint_type
+  - complaint_details
 
 # ===== SLOTS =====
 slots:

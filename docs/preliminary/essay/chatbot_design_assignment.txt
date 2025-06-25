@@ -1,19 +1,19 @@
-Design and create lean Architecture Overview optimised for a 4‑hour build window and the exact toolchain you specified:
+Design and create a lean Architecture Overview optimised for a 12‑hour build window and the exact toolchain you specified:
 
 
 Rasa most importıng part.
-* Coding happens only in WindSurf IDE on your laptop.
-* Source lives in GitHub Pro (private repo).
-* CI/CD uses GitHub → Cloud Build Triggers → Cloud Run – no GitHub Actions, no local tunnelling.
-* Runtime stack is trimmed to the single critical service: Rasa (NLU + Core + Action server in one container).
-* No Mobile PWA, no extra micro‑services.
+* Coding happens only in WindSurf IDE on your laptop.
+* Source lives in GitHub Pro (private repo).
+* CI/CD uses GitHub → Cloud Build Triggers → Cloud Run – no GitHub Actions )
+* Runtime stack is trimmed to the single critical service: Rasa (NLU + Core + Action server in one container and everything).
+* No Mobile PWA, no extra micro‑services.
 
-* Use the FileEventBroker (for a full append-only log) and a TinyDB-backed TrackerStore (so Rasa can reload conversation state) in your Rasa project
+* Use the FileEventBroker (for a full append-only log) and a TinyDB-backed TrackerStore (so Rasa can reload conversation state) in your Rasa project
 
 use https://streamlit.io/
 
 
-Copy the diagram and tables directly into the Architecture
+Copy the diagram and tables directly into the Architecture .
 
 
 Chatbot Design Assignment
@@ -93,5 +93,4 @@ Prepare a comprehensive report showcasing your chatbot design, implementation, a
 - Include screenshots or embedded visuals illustrating conversation flows, UI designs, model architecture, training progress, and evaluation metrics.  
 - Ensure all code is well-commented with clear replication instructions.  
 - Your report must be clear, organized, and visually appealing.  
-- Python scripts should be uploaded to a repository platform, GitHub, with a shared link included.  
-- Cite all sources using the Harvard Referencing System.
+- Python scripts should be uploaded to a repository platform, GitHub, with a shared link included.   
