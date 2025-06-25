@@ -51,18 +51,16 @@ services:
   actions:
     image: rasa/rasa-sdk:3.12.1
     platform: linux/amd64
-    working_dir: /app
-    command: ["python", "-m", "rasa_sdk", "--actions", "actions.actions"]
     volumes:
       - ./backend/rasa/actions:/app/actions
       - ./backend/rasa/actions/requirements-actions.txt:/app/requirements-actions.txt
-    user: root  # Required to install dependencies
     environment:
       - PYTHONPATH=/app
       - RASA_ACTIONS_SANIC_WORKERS=2
       - SANIC_WORKERS=2
       - SANIC_REQUEST_TIMEOUT=300
       - PYTHONUNBUFFERED=1
+    command: ["start", "--actions", "actions.actions"]
     expose:
       - "5055"
     healthcheck:
