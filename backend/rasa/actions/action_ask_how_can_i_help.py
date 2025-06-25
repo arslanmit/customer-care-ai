@@ -6,6 +6,10 @@ class ActionAskHowCanIHelp(Action):
     def name(self) -> Text:
         return "action_ask_how_can_i_help"
 
-    async def run(self, dispatcher, tracker, domain):
-        dispatcher.utter_message(text="[Placeholder] This is action_ask_how_can_i_help.")
+    async def run(
+        self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]
+    ) -> List[Dict[Text, Any]]:
+        """Politely ask the user how the assistant can help."""
+
+        dispatcher.utter_message(text="How can I help you today?")
         return []

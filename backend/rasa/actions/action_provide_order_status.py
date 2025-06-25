@@ -6,6 +6,31 @@ class ActionProvideOrderStatus(Action):
     def name(self) -> Text:
         return "action_provide_order_status"
 
-    def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        dispatcher.utter_message(text="I'll check your order status. Could you please provide your order number?")
+    def run(
+        self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]
+    ) -> List[Dict[Text, Any]]:
+        """Provide a simple order status message."""
+
+        order_number = tracker.get_slot("order_number")
+        if not order_number:
+            dispatcher.utter_message(response="utter_ask_order_number")
+            return []
+
+        # Reuse the same fake database as ActionCheckOrderStatus
+        fake_db = {
+            "1001": "shipped",
+            "1002": "processing",
+            "1003": "delivered",
+        }
+
+        status = fake_db.get(str(order_number), "not found")
+        if status == "not found":
+            dispatcher.utter_message(
+                text=f"I couldn't find an order with number {order_number}."
+            )
+        else:
+            dispatcher.utter_message(
+                text=f"Order {order_number} is currently {status}."
+            )
+
         return []
