@@ -1,7 +1,7 @@
 const express = require('express');
 const path = require('path');
 const cors = require('cors');
-const fetch = require('node-fetch');
+const http = require('http');
 const monitoring = require('./monitoring');
 
 const app = express();
@@ -53,6 +53,45 @@ app.use((err, req, res, next) => {
 // Serve static files from the public directory
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Helper function to make HTTP requests
+function makeRequest(options, data) {
+    return new Promise((resolve, reject) => {
+        const req = http.request(options, (res) => {
+            let responseData = '';
+            
+            res.on('data', (chunk) => {
+                responseData += chunk;
+            });
+            
+            res.on('end', () => {
+                if (res.statusCode >= 200 && res.statusCode < 300) {
+                    try {
+                        const parsedData = JSON.parse(responseData);
+                        resolve({
+                            status: res.statusCode,
+                            data: parsedData
+                        });
+                    } catch (e) {
+                        reject(new Error(`Error parsing response: ${e.message}`));
+                    }
+                } else {
+                    reject(new Error(`Request failed with status ${res.statusCode}`));
+                }
+            });
+        });
+        
+        req.on('error', (error) => {
+            reject(error);
+        });
+        
+        if (data) {
+            req.write(JSON.stringify(data));
+        }
+        
+        req.end();
+    });
+}
+
 // API Routes
 app.post('/api/message', async (req, res) => {
     try {
@@ -63,23 +102,22 @@ app.post('/api/message', async (req, res) => {
         }
         
         // Forward message to Rasa
-        const rasaResponse = await fetch('http://rasa:5005/webhooks/rest/webhook', {
+        const options = {
+            hostname: 'rasa',
+            port: 5005,
+            path: '/webhooks/rest/webhook',
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                sender: sender,
-                message: message
-            })
+            }
+        };
+        
+        const response = await makeRequest(options, {
+            sender: sender,
+            message: message
         });
         
-        if (!rasaResponse.ok) {
-            throw new Error(`Rasa server returned ${rasaResponse.status}`);
-        }
-        
-        const data = await rasaResponse.json();
-        res.json({ status: 'success', data });
+        res.json({ status: 'success', data: response.data });
         
         // Track successful message processing
         monitoring.trackMessage(
@@ -89,7 +127,7 @@ app.post('/api/message', async (req, res) => {
             { 
                 type: 'message',
                 message: message,
-                response: data
+                response: response.data
             }
         );
     } catch (error) {
@@ -189,7 +227,7 @@ app.post('/api/track', (req, res) => {
 
 // Default route
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'index.html'));
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 // Start server

@@ -27,6 +27,8 @@ RUN grep -v '^models/' requirements.txt > /app/requirements-clean.txt && \
 
 FROM python:3.10-slim
 
+# Cloud Run requires the PORT environment variable to be set to 8080
+# but we'll make it configurable for local development
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     PYTHONFAULTHANDLER=1 \
@@ -34,7 +36,12 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     PIP_DISABLE_PIP_VERSION_CHECK=on \
     PIP_DEFAULT_TIMEOUT=100 \
     PYTHONPATH=/app/backend \
+    # Default to 5005 for local development, overridden by Cloud Run to 8080
     PORT=5005 \
+    # RASA environment variables
+    RASA_ENVIRONMENT=production \
+    RASA_ACTIONS_URL=http://localhost:5055/webhook \
+    # Application settings
     APP_USER=appuser \
     APP_HOME=/home/appuser
 
@@ -65,7 +72,9 @@ RUN chown -R $APP_USER:$APP_USER /app
 
 USER $APP_USER
 
-HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
+# Health check for Cloud Run
+# Note: Cloud Run has its own health checking, but we'll keep this for local development
+HEALTHCHECK --interval=30s --timeout=30s --start-period=30s --retries=3 \
     CMD curl -f http://localhost:$PORT/ || exit 1
 
 EXPOSE $PORT
@@ -73,4 +82,17 @@ EXPOSE $PORT
 LABEL maintainer="arslanmit@gmail.com" \
       org.opencontainers.image.source="https://github.com/arslanmit/customer-care-ai"
 
-CMD ["python", "-m", "rasa", "run", "--enable-api", "--cors", "*", "--debug", "--port", "${PORT}"]
+# Start Rasa with the configured port and API
+# Enable API endpoints and CORS for all origins
+# Increase timeout for Cloud Run's health checks
+CMD python -m rasa run \
+    --enable-api \
+    --cors "*" \
+    --debug \
+    --port ${PORT} \
+    --endpoints /app/backend/endpoints.yml \
+    --credentials /app/backend/credentials.yml \
+    --model /app/backend/models \
+    --response-timeout 600 \
+    --connector webex_teams.webex_teams_input.WebexTeamsInput \
+    -v
