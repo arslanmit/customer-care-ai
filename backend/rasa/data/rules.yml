@@ -1,7 +1,123 @@
 version: "3.1"
 
 rules:
-  - rule: Ask for time
+  # Time and date rules
+  - rule: Get current time
+    condition:
+    - active_loop: null
     steps:
     - intent: ask_time
     - action: action_get_time
+
+  - rule: Extract order number when provided
+    condition:
+    - active_loop: null
+    - slot_was_set:
+      - type: from_entity
+        entity: order_number
+    steps:
+    - action: action_extract_order_number
+
+  - rule: Extract product ID when provided
+    condition:
+    - active_loop: null
+    - slot_was_set:
+      - type: from_entity
+        entity: product_id
+    steps:
+    - action: action_extract_product_id
+
+  # Info extraction rules with conditions
+  - rule: Extract email when provided
+    condition:
+    - active_loop: null
+    - slot_was_set:
+      - type: from_entity
+        entity: email
+    steps:
+    - action: action_extract_email
+
+  - rule: Extract phone number when provided
+    condition:
+    - active_loop: null
+    - slot_was_set:
+      - type: from_entity
+        entity: phone_number
+    steps:
+    - action: action_extract_phone_number
+
+  - rule: Extract date when asking about datetime
+    condition:
+    - active_loop: null
+    - slot_was_set:
+      - type: from_entity
+        entity: date
+    steps:
+    - action: action_extract_date
+
+  - rule: Extract time when asking about time
+    condition:
+    - active_loop: null
+    - slot_was_set:
+      - type: from_entity
+        entity: time
+    steps:
+    - action: action_extract_time
+
+  # Language rules
+  - rule: Change language when requested
+    condition:
+    - active_loop: null
+    - slot_was_set:
+      - type: from_entity
+        entity: language
+    steps:
+    - action: action_set_language
+
+  # Name extraction rules
+  - rule: Extract first name when provided
+    condition:
+    - active_loop: null
+    - slot_was_set:
+      - type: from_entity
+        entity: first_name
+    steps:
+    - action: action_extract_first_name
+
+  - rule: Extract last name when provided
+    condition:
+    - active_loop: null
+    - slot_was_set:
+      - type: from_entity
+        entity: last_name
+    steps:
+    - action: action_extract_last_name
+
+  # Complaint handling rules
+  - rule: Handle complaint type
+    condition:
+    - active_loop: null
+    - slot_was_set:
+      - type: from_entity
+        entity: complaint_type
+    steps:
+    - action: action_extract_complaint_type
+
+  - rule: Handle complaint details
+    condition:
+    - active_loop: null
+    - slot_was_set:
+      - type: from_entity
+        entity: complaint_details
+    steps:
+    - action: action_extract_complaint_details
+
+  # Customer email extraction
+  - rule: Extract customer email
+    condition:
+    - active_loop: null
+    - slot_was_set:
+      - type: from_entity
+        entity: customer_email
+    steps:
+    - action: action_extract_customer_email

@@ -59,10 +59,16 @@ nlu:
 
   - intent: check_order_status
     examples: |
+      - check my order status
       - where is my order
+      - order status
+      - status of my order
+      - track my order
       - when will my order arrive
-      - what's the status of my order
-      - can you tell me about my order
+      - what's the status of order [ORD12345](order_number)
+      - track order [PROD67890](product_id)
+      - where is my order #[ORD98765](order_number)
+      - status for order number [ABC12345](order_number)
       - is my order on the way
       - has my order shipped
       - tracking for my order
@@ -196,11 +202,21 @@ nlu:
 
   - intent: provide_order_number
     examples: |
-      - My order number is 12345
-      - Order #67890
-      - Here's my order ID: ABC123
-      - The order reference is XYZ-789
-      - My purchase number is 987-654-321
+      - my order number is [ORD12345](order_number)
+      - order #[PROD67890](product_id)
+      - the order number is [ABC12345](order_number)
+      - [XYZ98765](order_number) is my order number
+      - order #[12345-6789](order_number)
+      - it's [98765](order_number)
+      - the number is [ABC-123-XYZ](order_number)
+      - My purchase number is [987-654-321](order_number)
+      - order #[ABC-123](order_number)
+      - order number: [1234-5678-9012](order_number)
+      - my order id is [A1B2C3](order_number)
+      - the order reference is [REF-9876](order_number)
+      - order [ZYX-987](order_number)
+      - order #[4567](order_number)
+      - order number [XYZ-789-ABC](order_number)
 
   - intent: return_item
     examples: |

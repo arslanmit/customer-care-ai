@@ -12,6 +12,22 @@ from .action_tell_date import ActionTellDate
 from .action_tell_joke import ActionTellJoke
 from .action_tell_time import ActionTellTime
 
+# Import slot extraction actions
+from .action_extract_slots import (
+    ActionExtractOrderNumber,
+    ActionExtractProductId,
+    ActionExtractEmail,
+    ActionExtractPhoneNumber,
+    ActionExtractDate,
+    ActionExtractTime,
+    ActionExtractLanguage,
+    ActionExtractFirstName,
+    ActionExtractLastName,
+    ActionExtractComplaintType,
+    ActionExtractComplaintDetails,
+    ActionExtractCustomerEmail
+)
+
 # Also import from actions.py if it contains additional actions
 from .actions import (
     ActionGetTime,
@@ -24,3 +40,44 @@ from .actions import (
     ActionRecommendProduct,
     ActionEscalateToHuman
 )
+
+__all__ = [
+    # Original actions
+    'ActionAskHowCanIHelp',
+    'ActionAskOrderNumber',
+    'ActionCheckOrderStatus',
+    'ActionContactSupport',
+    'ActionDefaultFallback',
+    'ActionHandoffToHuman',
+    'ActionProvideOrderStatus',
+    'ActionProvideReturnPolicy',
+    'ActionReturnItem',
+    'ActionTellDate',
+    'ActionTellJoke',
+    'ActionTellTime',
+    
+    # Slot extraction actions
+    'ActionExtractOrderNumber',
+    'ActionExtractProductId',
+    'ActionExtractEmail',
+    'ActionExtractPhoneNumber',
+    'ActionExtractDate',
+    'ActionExtractTime',
+    'ActionExtractLanguage',
+    'ActionExtractFirstName',
+    'ActionExtractLastName',
+    'ActionExtractComplaintType',
+    'ActionExtractComplaintDetails',
+    'ActionExtractCustomerEmail',
+    
+    # Core actions
+    'ActionGetTime',
+    'ActionGetDate',
+    'ActionTellDateTime',
+    'CoreIncrementFallbackCount',
+    'ActionSetLanguage',
+    'ActionTrackOrder',
+    'ActionLogComplaint',
+    'ActionRecommendProduct',
+    'ActionEscalateToHuman'
+]
