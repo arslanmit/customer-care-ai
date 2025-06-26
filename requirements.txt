@@ -1,9 +1,7 @@
-aiohttp>=3.9.0,<4.0.0
-
-Core dependencies
-
 rasa==3.6.21
 rasa-sdk==3.6.2
+
+# Core ML / NLP
 numpy<1.24.0,>=1.23.5
 scipy<2.0.0,>=1.10.1
 scikit-learn<2.0.0,>=1.1.3
@@ -14,51 +12,59 @@ keras==2.12.0
 tensorflow-text==2.12.0
 sentence-transformers<3.0.0,>=2.2.2
 dask==2022.10.2
+
+# Async messaging
 aio-pika<9.0.0,>=8.2.3
 aiormq<7.0.0,>=6.4.2
+aiohttp<3.10,>=3.9.0
 
-Web & API
-
+# Web framework
 fastapi<1.0.0,>=0.68.2
 uvicorn<1.0.0,>=0.34.3
+
+# SocketIO
 python-socketio<6.0.0,>=5.13.0
 python-engineio<5.0.0,>=4.12.2
+
+# HTTP client
 httpx>=0.23.0
 
-Messaging & Queue
-
+# Kafka
 kafka-python<3.0.0,>=2.0.2
+
+# Redis / MongoDB / Postgres
 redis<5.0.0,>=4.6.0
 pymongo<5.0.0,>=4.3.3
 psycopg2-binary<3.0.0,>=2.9.10
+SQLAlchemy<1.5.0,>=1.4.0
 
-Cloud & Logging
-
+# Cloud logging
 google-cloud-logging>=2.7.0
+
+# AWS
 boto3<2.0.0,>=1.26.136
 tensorflow-io-gcs-filesystem==0.32
+
+# Chat integrations
 rocketchat_API<1.31.0,>=0.6.31
 slack-sdk<4.0.0,>=3.19.2
 fbmessenger<6.1.0,>=6.0.0
 mattermostwrapper<2.3,>=2.2
 twilio<8.3,>=6.26
 webexteamssdk<1.7.0,>=1.1.1
-aiogram>=3.0.0,<4.0.0  # Updated to v3.x to resolve aiohttp conflict
+aiogram<2.26,>=2.25.2
 
-Translation & NLP
-
+# Translation / NLP helpers
 deep-translator>=1.11.0
 transformers<5.0.0,>=4.30.0
 
-Monitoring & Observability
-
+# Observability
 sentry-sdk<2.0.0,>=1.14.0
 prometheus-client<1.0.0,>=0.17.1
 jaeger-client>=4.8.0
 structlog<24.0.0,>=23.1.0
 
-Utilities & Tools
-
+# Utilities & CLI tools
 python-dotenv<2.0.0,>=1.1.0
 python-dateutil<3.0.0,>=2.8.2
 pytz<2024.0.0,>=2022.7.1
@@ -68,9 +74,11 @@ colorhash<1.3.0,>=1.0.2
 flatbuffers>=2.0
 cachecontrol<0.13.0,>=0.12.9
 tabulate>=0.8.8
-threadpoolctl>=2.0.0
 joblib>=1.0.0
+threadpoolctl>=2.0.0
 starlette<0.41.0,>=0.37.2
+
+# Testing & linting
 pytest<9.0.0,>=8.4.1
 pytest-cov<7.0.0,>=6.2.1
 pytest-asyncio<1.0.0,>=0.21.1
@@ -82,98 +90,19 @@ flake8<8.0.0,>=7.1.0
 mypy<2.0.0,>=1.10.0
 pre-commit<4.0.0,>=3.7.0
 questionary<1.11.0,>=1.5.1
+
+# YAML & templating
 ruamel.yaml<0.17.22,>=0.16.5
 jinja2==3.1.6
+
+# Data formats & validation
 pydantic<1.10.10
 attrs<22.2,>=19.3
-aiohttp<3.10,>=3.9.0  # Explicitly satisfy Rasa
-portalocker<3.0.0,>=2.7.0
-tomli>=1.0
 jsonpickle<3.1,>=1.3
 jsonschema<4.18,>=3.2
+pykwalify<1.9,>=1.7
+
+# Math & plotting
 matplotlib<3.6,>=3.1
 networkx<2.7,>=2.4
 sympy==1.13.1
-coverage[toml]>=7.5
-execnet>=2.1
-platformdirs>=2
-PyJWT[crypto]<3.0.0,>=2.0.0
-tensorflow==2.12.0  # Pin to match tensorflow-cpu
-setuptools<70.4.0,>=70.3.0
-pydot<1.5,>=1.4
-pymongo[srv,tls]<4.4,>=3.8
-requests<3.0,>=2.23
-sanic-jwt<2.0.0,>=1.6.0
-aio-pika<9.0.0,>=8.2.3  # Duplicate entry removed
-pytz<2024.0.0,>=2022.7.1  # Duplicate entry removed
-urllib3<2,>=1
-cryptography>=41.0.7
-PyYAML>=6.0
-sanic-cors<2.1.0,>=2.0.0
-sklearn-crfsuite<0.4,>=0.3
-apscheduler<3.10,>=3.6
-SQLAlchemy<1.5.0,>=1.4.0
-sanic-routing<0.8.0,>=0.7.2
-protobuf<4.23.4,>=4.23.3
-skops==0.9.0
-certifi>=2023.7.22
-google-auth<3
-ujson<6.0,>=1.35
-tensorflow_hub<0.14.0,>=0.13.0
-absl-py<1.5,>=0.9
-pluggy<2.0.0,>=1.0.0
-confluent-kafka<3.0.0,>=1.9.2
-tqdm<5.0,>=4.31
-packaging<21.0,>=20.0
-terminaltables<3.2.0,>=3.1.0
-typing-extensions<5.0.0,>=4.1.1
-pykwalify<1.9,>=1.7.0
-typing-utils<0.2.0,>=0.1.0
-toml<=0.10.2
-dataclasses  # if needed for Python 3.10
-grpcio<2.0,>=1.24.3
-six>=1.12.0
-termcolor>=1.1.0
-google-pasta>=0.1.1
-opt_einsum>=3.4.0
-gast<=0.4.0,>=0.2.1
-libclang>=13.0.0
-markdown>=2.6.8
-tensorboard-plugin-wit>=1.6.0
-google-auth-oauthlib<0.5,>=0.4.1
-werkzeug>=1.0.1
-tensorboard-data-server<0.8.0,>=0.7.0
-fsspec>=0.6.0
-partd>=0.3.10
-click>=7.0
-cloudpickle>=1.1.1
-toolz>=0.8.2
-MarkupSafe>=2.0
-mpmath<1.4,>=1.1.0
-huggingface-hub>=0.17.0
-Pillow
-torch>=1.11.0
-yarl>=1.0.0
-pamqp==3.2.1
-h11>=0.8
-bidict>=0.21.0
-simple-websocket>=0.10.0
-httpcore==1.*
-idna>=3.0
-anyio>=3.0.0
-async-timeout>=4.0.2
-google-api-core[grpc]!=2.*,<3.0.0,>=1.34.1
-google-cloud-core<3.0.0,>=2.0.0
-google-cloud-audit-log<1.0.0,>=0.3.1
-proto-plus<2.0.0,>=1.22.0
-opentelemetry-api>=1.9.0
-google-cloud-appengine-logging<2.0.0,>=0.1.3
-grpc-google-iam-v1<1.0.0,>=0.12.4
-s3transfer<0.14.0,>=0.13.0
-jmespath<2.0.0,>=0.7.1
-botocore<1.39.0,>=1.38.44
-aiohttp-retry>=2.8.3
-future
-requests-toolbelt
-Babel<2.10.0,>=2.9.1
-magic-filter>=1.0.9
