@@ -54,49 +54,49 @@ slots:
     type: text
     influence_conversation: true
     mappings:
-      - type: custom
+      - type: from_entity
         action: action_extract_order_number
   
   product_id:
     type: text
     influence_conversation: true
     mappings:
-      - type: custom
+      - type: from_entity
         action: action_extract_product_id
   
   email:
     type: text
     influence_conversation: false
     mappings:
-      - type: custom
+      - type: from_entity
         action: action_extract_email
   
   phone_number:
     type: text
     influence_conversation: false
     mappings:
-      - type: custom
+      - type: from_entity
         action: action_extract_phone_number
   
   requested_date:
     type: text
     influence_conversation: true
     mappings:
-      - type: custom
+      - type: from_entity
         action: action_extract_date
   
   requested_time:
     type: text
     influence_conversation: true
     mappings:
-      - type: custom
+      - type: from_entity
         action: action_extract_time
   
   language:
     type: text
     influence_conversation: true
     mappings:
-      - type: custom
+      - type: from_entity
         action: action_extract_language
        
   # Added form slots for name and complaint forms
@@ -104,35 +104,35 @@ slots:
     type: text
     influence_conversation: false
     mappings:
-      - type: custom
+      - type: from_entity
         action: action_extract_first_name
   
   last_name:
     type: text
     influence_conversation: false
     mappings:
-      - type: custom
+      - type: from_entity
         action: action_extract_last_name
   
   complaint_type:
     type: text
     influence_conversation: true
     mappings:
-      - type: custom
+      - type: from_entity
         action: action_extract_complaint_type
   
   complaint_details:
     type: text
     influence_conversation: true
     mappings:
-      - type: custom
+      - type: from_entity
         action: action_extract_complaint_details
   
   customer_email:
     type: text
     influence_conversation: false
     mappings:
-      - type: custom
+      - type: from_entity
         action: action_extract_customer_email
        
   num_fallbacks:
@@ -140,7 +140,7 @@ slots:
     initial_value: 0
     influence_conversation: true
     mappings:
-      - type: custom
+      - type: from_entity
   
   time:
     type: text
