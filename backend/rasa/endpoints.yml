@@ -1,50 +1,10 @@
-# Endpoint configuration for Rasa
-# Action server configuration
 action_endpoint:
   url: "http://actions:5055/webhook"
-  # Add retry configuration for better reliability
-  retry_attempts: 10
-  retry_delay_in_seconds: 5
-  # Enable CORS for all origins in development
-  cors: "*"
 
-# Model configuration
-model:
-  # Using fixed path that matches the Docker volume mount
-  url: "/app/models/20250625-022246-allegro-partition.tar.gz"
-
-# Tracker store configuration
-# Using SQLite for simplicity in Cloud Run
-tracker_store:
-  type: SQL
-  dialect: "sqlite"
-  db: "tracker.db"
-  # Use environment variable for production
-  # url: ${DATABASE_URL}
-
-# Event broker configuration
-# Uncomment and configure for production use
-# event_broker:
-#   type: sql
-#   dialect: "sqlite"
-#   db: "events.db"
-  # For production, use a managed service like Google Pub/Sub
-  # type: googlecloud_pubsub.GoogleCloudPubSub
-  # project_id: ${GCP_PROJECT}
-  # topic: "rasa-events"
-  # subscription: "rasa-events-sub"
-  # topic_events: "rasa-events-{conversation_id}"
-
-# Action server configuration for local development
-action_server:
-  url: http://actions:5055
-  # Wait up to 5 minutes for the action server to be ready
-  wait_time_between_pulls: 10
-  # Number of retries for failed requests
-  retry_attempts: 10
-  # Time between retries in seconds
-  retry_delay_in_seconds: 5
-  # Disable SSL verification for local development
-  ssl_verify: false
-  # No authentication token needed for local development
-  # token: ${RASA_ACTIONS_TOKEN}
+tracing:
+  type: jaeger
+  host: jaeger
+  port: 6831
+  service_name: rasa
+  sampler_type: const
+  sampler_param: 1
