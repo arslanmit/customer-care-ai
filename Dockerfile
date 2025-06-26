@@ -58,6 +58,8 @@ WORKDIR /app
 COPY --from=builder /app/requirements-clean.txt /app/requirements.txt
 
 RUN pip install --no-cache-dir -r /app/requirements.txt && \
+    echo "Verifying absl-py installation..." && \
+    pip show absl-py && \
     find /usr/local -type d -name 'test*' -o -name 'tests' -o -name 'idle_test' | xargs rm -rf 2>/dev/null || true && \
     find /usr/local -type f -name '*.pyc' -o -name '*.pyo' | xargs rm -f 2>/dev/null || true && \
     rm -f /app/requirements-clean.txt
