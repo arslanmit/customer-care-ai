@@ -5,107 +5,147 @@ rules:
   - rule: Get current time
     condition:
     - active_loop: null
+    - slot_was_set:
+        - requested_slot: null
     steps:
     - intent: ask_time
+      entities: []
+    - action: action_extract_time
     - action: action_get_time
 
   - rule: Extract order number when provided
     condition:
     - active_loop: null
-    - entities:
-      - order_number
+    - slot_was_set:
+        - requested_slot: null
     steps:
+    - intent: inform
+      entities:
+      - order_number
     - action: action_extract_order_number
 
   - rule: Extract product ID when provided
     condition:
     - active_loop: null
-    - entities:
-      - product_id
+    - slot_was_set:
+        - requested_slot: null
     steps:
+    - intent: inform
+      entities:
+      - product_id
     - action: action_extract_product_id
 
   # Info extraction rules with conditions
   - rule: Extract email when provided
     condition:
     - active_loop: null
-    - entities:
-      - email
+    - slot_was_set:
+        - requested_slot: null
     steps:
+    - intent: inform
+      entities:
+      - email
     - action: action_extract_email
 
   - rule: Extract phone number when provided
     condition:
     - active_loop: null
-    - entities:
-      - phone_number
+    - slot_was_set:
+        - requested_slot: null
     steps:
+    - intent: inform
+      entities:
+      - phone_number
     - action: action_extract_phone_number
 
   - rule: Extract date when provided
     condition:
     - active_loop: null
-    - entities:
-      - date
+    - slot_was_set:
+        - requested_slot: null
     steps:
+    - intent: inform
+      entities:
+      - date
     - action: action_extract_date
 
   - rule: Extract time when provided
     condition:
     - active_loop: null
-    - entities:
-      - time
+    - slot_was_set:
+        - requested_slot: null
     steps:
+    - intent: inform
+      entities:
+      - time
     - action: action_extract_time
 
   # Language rules
   - rule: Extract language when provided
     condition:
     - active_loop: null
-    - entities:
-      - language
+    - slot_was_set:
+        - requested_slot: null
     steps:
+    - intent: inform
+      entities:
+      - language
     - action: action_extract_language
 
   # Name extraction rules
   - rule: Extract first name when provided
     condition:
     - active_loop: null
-    - entities:
-      - first_name
+    - slot_was_set:
+        - requested_slot: null
     steps:
+    - intent: inform
+      entities:
+      - first_name
     - action: action_extract_first_name
 
   - rule: Extract last name when provided
     condition:
     - active_loop: null
-    - entities:
-      - last_name
+    - slot_was_set:
+        - requested_slot: null
     steps:
+    - intent: inform
+      entities:
+      - last_name
     - action: action_extract_last_name
 
   # Complaint handling rules
   - rule: Extract complaint type when provided
     condition:
     - active_loop: null
-    - entities:
-      - complaint_type
+    - slot_was_set:
+        - requested_slot: null
     steps:
+    - intent: inform
+      entities:
+      - complaint_type
     - action: action_extract_complaint_type
 
   - rule: Extract complaint details when provided
     condition:
     - active_loop: null
-    - entities:
-      - complaint_details
+    - slot_was_set:
+        - requested_slot: null
     steps:
+    - intent: inform
+      entities:
+      - complaint_details
     - action: action_extract_complaint_details
 
   # Customer email extraction
   - rule: Extract customer email when provided
     condition:
     - active_loop: null
-    - entities:
-      - customer_email
+    - slot_was_set:
+        - requested_slot: null
     steps:
+    - intent: inform
+      entities:
+      - customer_email
     - action: action_extract_customer_email
