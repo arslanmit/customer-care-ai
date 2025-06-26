@@ -19,5 +19,4 @@ exec python -m rasa run \
     --credentials /app/backend/credentials.yml \
     --model /app/backend/models \
     --response-timeout 600 \
-    --connector webex_teams.webex_teams_input.WebexTeamsInput \
     $LOG_LEVEL_FLAG
