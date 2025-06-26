@@ -32,13 +32,13 @@ steps:
       - 'DOCKER_BUILDKIT=1'
       - 'COMPOSE_DOCKER_CLI_BUILD=1'
 
-  # Verify the built image by importing absl.testing directly
+  # Verify the built image by overriding the entrypoint
   - name: 'gcr.io/cloud-builders/docker'
     args:
       - 'run'
       - '--rm'
+      - '--entrypoint=python'
       - 'gcr.io/$PROJECT_ID/${_SERVICE_NAME}:$BUILD_ID'
-      - 'python'
       - '-c'
       - 'import absl.testing; print("Successfully imported absl.testing")'
     id: 'verify'
