@@ -299,7 +299,7 @@ actions:
   - action_tell_joke
   - action_handoff_to_human
   - action_get_time
-  - action_get_date
+  - action_tell_date
   - action_tell_datetime
   - action_set_language
   - action_ask_order_number
