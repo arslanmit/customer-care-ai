@@ -29,6 +29,6 @@ cd "$PROJECT_ROOT"
 echo "Installing Python dependencies..."
 pip install -r requirements.txt
 echo "Installing Rasa..."
-pip install rasa==3.6.21 rasa-sdk==3.6.2
+pip install rasa==3.6.20 rasa-sdk==3.6.2
 
 echo "Installation complete!"
