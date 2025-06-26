@@ -6,6 +6,7 @@ stories:
       - intent: greet
       - action: utter_greet
       - intent: ask_time
+      - action: action_extract_time
       - action: action_get_time
       - intent: goodbye
       - action: utter_goodbye
@@ -15,6 +16,7 @@ stories:
       - intent: greet
       - action: utter_greet
       - intent: ask_date
+      - action: action_extract_date
       - action: action_get_date
       - intent: goodbye
       - action: utter_goodbye
@@ -24,6 +26,8 @@ stories:
       - intent: greet
       - action: utter_greet
       - intent: ask_datetime
+      - action: action_extract_date
+      - action: action_extract_time
       - action: action_tell_datetime
       - intent: goodbye
       - action: utter_goodbye
@@ -33,10 +37,14 @@ stories:
       - intent: greet
       - action: utter_greet
       - intent: ask_time
+      - action: action_extract_time
       - action: action_get_time
       - intent: ask_date
+      - action: action_extract_date
       - action: action_get_date
       - intent: ask_datetime
+      - action: action_extract_date
+      - action: action_extract_time
       - action: action_tell_datetime
       - intent: goodbye
       - action: utter_goodbye
@@ -48,6 +56,7 @@ stories:
       - intent: support_request
       - action: utter_support_help
       - intent: ask_time
+      - action: action_extract_time
       - action: action_get_time
       - intent: goodbye
       - action: utter_goodbye
@@ -93,9 +102,22 @@ stories:
       - intent: greet
       - action: utter_greet
       - intent: product_inquiry
+      - action: action_extract_product_id
       - action: utter_product_info
       - intent: support_request
       - action: utter_support_help
+      - intent: goodbye
+      - action: utter_goodbye
+
+  - story: order status inquiry
+    steps:
+      - intent: greet
+      - action: utter_greet
+      - intent: check_order_status
+      - action: utter_ask_order_number
+      - intent: provide_order_number
+      - action: action_extract_order_number
+      - action: action_check_order_status
       - intent: goodbye
       - action: utter_goodbye
 
