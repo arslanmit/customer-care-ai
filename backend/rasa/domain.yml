@@ -1,12 +1,11 @@
 version: "3.1"
 
-# Session configuration controls conversation session handling
+# Session configuration
 session_config:
   session_expiration_time: 60    # minutes of inactivity before session expires
   carry_over_slots_to_new_session: true  # maintain slot values between sessions
 
 # ===== INTENTS =====
-# User intents that the assistant can recognize
 intents:
   - greet
   - goodbye
@@ -30,8 +29,8 @@ intents:
   - provide_order_number
   - return_item
   - product_inquiry
-  - out_of_scope    # user asks something outside supported scope
-  - nlu_fallback    # low-confidence fallback trigger
+  - out_of_scope
+  - nlu_fallback
 
 # ===== ENTITIES =====
 entities:
@@ -55,107 +54,119 @@ slots:
     influence_conversation: true
     mappings:
       - type: from_entity
-        action: action_extract_order_number
-  
+        entity: order_number
+
   product_id:
     type: text
     influence_conversation: true
     mappings:
       - type: from_entity
-        action: action_extract_product_id
-  
+        entity: product_id
+
   email:
     type: text
     influence_conversation: false
     mappings:
       - type: from_entity
-        action: action_extract_email
-  
+        entity: email
+
   phone_number:
     type: text
     influence_conversation: false
     mappings:
       - type: from_entity
-        action: action_extract_phone_number
-  
+        entity: phone_number
+
   requested_date:
     type: text
     influence_conversation: true
     mappings:
       - type: from_entity
-        action: action_extract_date
-  
+        entity: date
+
   requested_time:
     type: text
     influence_conversation: true
     mappings:
       - type: from_entity
-        action: action_extract_time
-  
+        entity: time
+
   language:
     type: text
     influence_conversation: true
     mappings:
       - type: from_entity
-        action: action_extract_language
-       
-  # Added form slots for name and complaint forms
+        entity: language
+
   first_name:
     type: text
     influence_conversation: false
     mappings:
       - type: from_entity
-        action: action_extract_first_name
-  
+        entity: first_name
+
   last_name:
     type: text
     influence_conversation: false
     mappings:
       - type: from_entity
-        action: action_extract_last_name
-  
+        entity: last_name
+
   complaint_type:
     type: text
     influence_conversation: true
     mappings:
       - type: from_entity
-        action: action_extract_complaint_type
-  
+        entity: complaint_type
+
   complaint_details:
     type: text
     influence_conversation: true
     mappings:
       - type: from_entity
-        action: action_extract_complaint_details
-  
+        entity: complaint_details
+
   customer_email:
     type: text
     influence_conversation: false
     mappings:
       - type: from_entity
-        action: action_extract_customer_email
-       
+        entity: email
+
   num_fallbacks:
     type: float
     initial_value: 0
     influence_conversation: true
     mappings:
-      - type: from_entity
-  
+      - type: custom
+
   time:
     type: text
     influence_conversation: false
     mappings: []
-  
+
   date:
     type: text
     influence_conversation: false
     mappings: []
-  
+
   datetime:
     type: text
     influence_conversation: false
     mappings: []
+
+# ===== FORMS =====
+forms:
+  name_form:
+    required_slots:
+      - first_name
+      - last_name
+
+  complaint_form:
+    required_slots:
+      - complaint_type
+      - complaint_details
+      - customer_email
 
 # ===== RESPONSES =====
 responses:
@@ -163,124 +174,96 @@ responses:
     - text: "Hello! How can I assist you today?"
     - text: "Hi there! How may I help you?"
     - text: "Welcome! What can I do for you?"
-  
+
   utter_goodbye:
     - text: "Goodbye! Have a great day!"
     - text: "See you later! Feel free to return if you need more assistance."
     - text: "Take care! Contact us anytime you need help."
-  
-  utter_ask_order_number:
-    - text: "Could you please provide your order number?"
-    - text: "To check your order, I'll need your order number. Can you share it with me?"
-  
-  utter_order_status:
-    - text: "Your order **{order_number}** is currently **{status}**. Is there anything specific you'd like to know about it?"
-  
+
   utter_thank:
     - text: "You're welcome!"
     - text: "Happy to help!"
     - text: "My pleasure!"
-  
+
   utter_default:
     - text: "I'm sorry, I didn't quite understand that. Could you rephrase?"
     - text: "I'm not sure I follow. Could you explain that differently?"
-  
+
   utter_ask_rephrase:
     - text: "I'm sorry, I didn't catch that. Could you say it again in other words?"
     - text: "I didn't understand. Could you rephrase your request for me?"
-  
-  utter_iamabot:
-    - text: "I am a virtual assistant designed to help with your inquiries."
-  
+
   utter_out_of_scope:
     - text: "I'm sorry, but I can't assist with that request. I can help with order status, returns, and general product inquiries."
-  
-  utter_please_wait:
-    - text: "Please wait a moment while I check that for you."
-    - text: "Just a second while I look into that."
-  
-  utter_confirm:
-    - text: "I've confirmed that for you."
-    - text: "That's been verified."
-  
-  utter_ask_anything_else:
-    - text: "Is there anything else I can help you with?"
-    - text: "Can I help you with anything else?"
-    - text: "Would you like to know anything else?"
-    - text: "Is there something more you'd like to ask?"
-    - text: "Do you have any other questions?"
-  
-  utter_time_response:
-    - text: "The current time is **{time} UTC**."
-    - text: "It's **{time} UTC** right now."
-    - text: "My clock shows **{time} UTC**."
-    - text: "The time is currently **{time} UTC**."
-    - text: "It's **{time} UTC** at the moment."
-  
-  utter_date_response:
-    - text: "Today's date is **{date}**."
-    - text: "It's **{date}** today."
-    - text: "The current date is **{date}**."
-    - text: "Today is **{date}**."
-    - text: "According to my calendar, it's **{date}**."
-  
-  utter_datetime_response:
-    - text: "The current date and time is **{datetime}**."
-    - text: "Right now it's **{datetime}**."
-    - text: "It's **{datetime}** at the moment."
-    - text: "According to my system, it's **{datetime}**."
-    - text: "The time is **{datetime}**. Do you need help with anything else?"
-  
-  utter_language_changed:
-    - text: "Language has been changed successfully."
-    - text: "I've switched the language as requested."
-    
+
   utter_thank_you:
     - text: "Thank you for your feedback!"
     - text: "I appreciate your input, thank you!"
-    
-  utter_support_help:
-    - text: "I'm here to help with your issue. What problem are you experiencing?"
-    - text: "Our support team is ready to assist. Can you describe the issue you're facing?"
-    
-  utter_transfer_to_agent:
-    - text: "I'm transferring you to a human agent now. Please hold."
-    - text: "One moment while I connect you with a customer service representative."
-    
-  utter_product_info:
-    - text: "Here's the information about the product you asked for."
-    - text: "Let me tell you more about that product."
-    
-  utter_escalate_to_agent:
-    - text: "I'm escalating your request to a customer service agent who can better assist you."
-    - text: "This requires special attention. I'm connecting you with a specialist."
-    
-  utter_apologize_for_issue:
-    - text: "I apologize for the issue you're experiencing. Let's get this resolved for you."
-    - text: "I'm sorry to hear that. I'll do my best to help you fix this problem."
-    
+
   utter_info:
     - text: "Here's the information you requested."
     - text: "Sure, let me provide the details you asked for."
+
+  utter_support_help:
+    - text: "I'm here to help with your issue. What problem are you experiencing?"
+    - text: "Our support team is ready to assist. Can you describe the issue you're facing?"
+
+  utter_transfer_to_agent:
+    - text: "I'm transferring you to a human agent now. Please hold."
+    - text: "One moment while I connect you with a customer service representative."
+
+  utter_product_info:
+    - text: "Here's the information about the product you asked for."
+    - text: "Let me tell you more about that product."
 
   utter_return_policy:
     - text: "Our return policy allows returns within 30 days of purchase with proof of receipt. Would you like more details?"
 
   utter_contact_info:
     - text: "You can reach our support team at support@example.com or call 1-800-123-4567. How else may I help you today?"
-  
-# ===== FORMS =====
-forms:
-  name_form:
-    required_slots:
-      - first_name
-      - last_name
-  
-  complaint_form:
-    required_slots:
-      - complaint_type
-      - complaint_details
-      - customer_email
+
+  utter_language_changed:
+    - text: "Language has been changed successfully."
+    - text: "I've switched the language as requested."
+
+  utter_ask_anything_else:
+    - text: "Is there anything else I can help you with?"
+    - text: "Can I help you with anything else?"
+
+  utter_escalate_to_agent:
+    - text: "I'm escalating your request to a customer service agent who can better assist you."
+    - text: "This requires special attention. I'm connecting you with a specialist."
+
+  utter_apologize_for_issue:
+    - text: "I apologize for the issue you're experiencing. Let's get this resolved for you."
+    - text: "I'm sorry to hear that. I'll do my best to help you fix this problem."
+
+  utter_ask_order_number:
+    - text: "Could you please provide your order number?"
+    - text: "To check your order, I'll need your order number. Can you share it with me?"
+
+  utter_iamabot:
+    - text: "I am a virtual assistant designed to help with your inquiries."
+
+  utter_please_wait:
+    - text: "Please wait a moment while I check that for you."
+    - text: "Just a second while I look into that."
+
+  utter_confirm:
+    - text: "I've confirmed that for you."
+    - text: "That's been verified."
+
+  utter_time_response:
+    - text: "The current time is {time} UTC."
+    - text: "It's {time} UTC right now."
+
+  utter_date_response:
+    - text: "Today's date is {date}."
+    - text: "It's {date} today."
+
+  utter_datetime_response:
+    - text: "The current date and time is {datetime}."
+    - text: "Right now it's {datetime}."
 
 # ===== ACTIONS =====
 actions:
@@ -318,3 +301,6 @@ actions:
   - action_extract_customer_email
   - action_tell_time
   - action_tell_date
+  - action_return_item
+  - action_contact_support
+  - action_provide_return_policy

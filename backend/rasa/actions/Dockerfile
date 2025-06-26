@@ -8,13 +8,13 @@ WORKDIR /app
 USER root
 
 # Copy the dedicated actions requirements file
-COPY backend/rasa/actions/requirements-actions.txt .
+COPY requirements-actions.txt .
 
 # Install the Python dependencies for the actions
 RUN pip install --no-cache-dir -r requirements-actions.txt
 
 # Copy the actions code into the container
-COPY backend/rasa/actions/ /app/actions/
+COPY . /app/actions/
 
 # Change ownership of the app directory back to the default user (UID 1001)
 RUN chown -R 1001:0 /app

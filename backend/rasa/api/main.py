@@ -5,7 +5,8 @@ from typing import Optional
 
 from fastapi import Depends, FastAPI, Header, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
-from jose import JWTError, jwt
+# JWT auth disabled – removing dependency on jose
+
 from pydantic import BaseModel, EmailStr
 
 
@@ -13,7 +14,8 @@ from pydantic import BaseModel, EmailStr
 # ---------------------------------------------------------------------------
 # Configuration
 # ---------------------------------------------------------------------------
-JWT_SECRET = os.getenv("JWT_SECRET", "CHANGE_ME")
+JWT_SECRET = os.getenv("JWT_SECRET")
+# Auth disabled – no secret validation required
 JWT_ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_SECONDS = int(os.getenv("JWT_EXPIRE", "3600"))
 
@@ -65,32 +67,13 @@ class UserOut(BaseModel):
 
 
 def _create_jwt(user: dict) -> str:
-    """Create a JWT with user claims (including role)."""
-    from datetime import datetime, timedelta
-
-    payload = {
-        "sub": user["id"],
-        "email": user["email"],
-        "role": user.get("role", "user"),
-        "exp": datetime.utcnow() + timedelta(seconds=ACCESS_TOKEN_EXPIRE_SECONDS),
-    }
-    return jwt.encode(payload, JWT_SECRET, algorithm=JWT_ALGORITHM)
+    """Auth disabled – return static token placeholder."""
+    return "auth-disabled"
 
 
-async def get_current_user(authorization: str = Header(None)) -> dict:
-    """Dependency that validates JWT in Authorization header (Bearer token)."""
-    if not authorization or not authorization.startswith("Bearer "):
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED, detail="Not authenticated"
-        )
-    token = authorization.split(" ", 1)[1]
-    try:
-        payload = jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
-    except JWTError as exc:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token"
-        ) from exc
-    return payload  # Return claims
+async def get_current_user(*_args, **_kwargs) -> dict:
+    """Auth disabled – always returns an anonymous user object."""
+    return {"id": "anonymous", "email": "anonymous@example.com", "role": "anonymous"}
 
 
 # ---------------------------------------------------------------------------
@@ -111,10 +94,5 @@ async def login(data: LoginIn):
 
 
 @app.get("/me", response_model=UserOut)
-async def me(claims: dict = Depends(get_current_user)):
-    return UserOut(
-        id=claims["sub"],
-        email=claims["email"],
-        name=claims.get("name"),
-        role=claims.get("role", "user"),
-    )
+async def me() -> UserOut:
+    return UserOut(id="anonymous", email="anonymous@example.com", role="anonymous")

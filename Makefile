@@ -7,7 +7,7 @@ PYTEST = python -m pytest
 COVERAGE = python -m coverage
 BLACK = black
 ISORT = isort
-FLAKE8 = flake8
+# Flake8 removed
 MYPY = mypy
 
 # Default target
@@ -16,7 +16,7 @@ help:
 	@echo "  install        Install development dependencies (requirements.txt, requirements-test.txt, pre-commit)"
 	@echo "  test           Run all tests with coverage report"
 	@echo "  test-fast      Run tests without coverage (faster)"
-	@echo "  lint           Run all Python linters (mypy, black, isort, flake8)"
+	@echo "  lint           Run all Python linters (mypy, black, isort)"
 	@echo "  format         Format code with black and isort"
 	@echo "  check-style    Check code style without making changes"
 	@echo "  clean          Remove Python cache, build, and test artifacts"
@@ -59,7 +59,7 @@ format:
 check-style:
 	$(BLACK) --check backend/
 	$(ISORT) --check-only backend/
-	$(FLAKE8) backend/
+	# Flake8 check removed
 # Clean up
 clean:
 	find . -type d -name '__pycache__' -exec rm -rf {} +

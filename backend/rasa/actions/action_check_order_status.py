@@ -1,6 +1,5 @@
-from rasa_sdk import Action, Tracker
-from rasa_sdk.executor import CollectingDispatcher
-from typing import Any, Dict, List, Text
+from rasa_sdk import Action
+from typing import Text
 
 class ActionCheckOrderStatus(Action):
     def name(self) -> Text:

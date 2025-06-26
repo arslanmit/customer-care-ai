@@ -44,23 +44,7 @@ gcloud projects add-iam-policy-binding ${PROJECT_ID} \
   --role="roles/monitoring.metricWriter" \
   --project=${PROJECT_ID} || true
 
-# Create a secret for JWT if it doesn't exist
-echo "Creating JWT secret..."
-JWT_SECRET=$(openssl rand -base64 32 | tr -d '\n' | base64)
-gcloud secrets create jwt-secret \
-  --replication-policy="automatic" \
-  --project=${PROJECT_ID} || echo "Secret may already exist"
 
-echo -n "${JWT_SECRET}" | gcloud secrets versions add jwt-secret \
-  --data-file=- \
-  --project=${PROJECT_ID} || echo "Secret version may already exist"
-
-# Grant the service account access to the secret
-echo "Granting secret access to service account..."
-gcloud secrets add-iam-policy-binding jwt-secret \
-  --member="serviceAccount:${SERVICE_ACCOUNT}" \
-  --role="roles/secretmanager.secretAccessor" \
-  --project=${PROJECT_ID} || true
 
 # Create a Cloud SQL instance (uncomment if needed)
 echo "Creating Cloud SQL instance..."

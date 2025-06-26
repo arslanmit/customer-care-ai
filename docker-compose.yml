@@ -2,7 +2,7 @@ services:
   # Rasa Server
   rasa:
     image: rasa/rasa:3.6.20-full
-    platform: linux/amd64
+    platform: linux/arm64
 
     command: ["run", "--enable-api", "--debug", "--cors", "*", "--credentials", "/app/credentials.yml", "--endpoints", "/app/endpoints.yml", "--model", "/app/models/latest_rasa_model.tar.gz"]
     ports:
@@ -50,18 +50,20 @@ services:
   # Rasa Actions Server
   actions:
     build:
-      context: .
-      dockerfile: backend/rasa/actions/Dockerfile
-    platform: linux/amd64
+      context: ./backend/rasa/actions
+      dockerfile: Dockerfile
+    platform: linux/arm64
     volumes:
       - ./backend/rasa/actions:/app/actions
       - ./backend/rasa/endpoints.yml:/app/endpoints.yml
+      - ./db:/app/db
     environment:
       - PYTHONPATH=/app
       - RASA_ACTIONS_SANIC_WORKERS=2
       - SANIC_WORKERS=2
       - SANIC_REQUEST_TIMEOUT=300
       - PYTHONUNBUFFERED=1
+      - ADVENTURE_WORKS_DB_PATH=/app/db/AdventureWorks.db
     command: ["start", "--actions", "actions.actions"]
     expose:
       - "5055"
@@ -85,6 +87,7 @@ services:
     build:
       context: ./web-interface
       dockerfile: Dockerfile
+      shm_size: '2gb'
     ports:
       - "8080:8080"
     volumes:
@@ -100,12 +103,12 @@ services:
       timeout: 10s
       retries: 3
       start_period: 30s
-    restart: unless-stopped
     deploy:
       resources:
         limits:
           cpus: '1'
-          memory: 1G
+          memory: 2G
+    restart: unless-stopped
     networks:
       - rasa-network
     depends_on:
@@ -114,16 +117,7 @@ services:
       actions:
         condition: service_healthy
 
-  jaeger:
-    image: jaegertracing/all-in-one:1.57
-    platform: linux/amd64
-    ports:
-      - "16686:16686"
-      - "6831:6831/udp"
-    networks:
-      - rasa-network
-    environment:
-      - COLLECTOR_ZIPKIN_HOST_PORT=:9411
+
 
 networks:
   rasa-network:

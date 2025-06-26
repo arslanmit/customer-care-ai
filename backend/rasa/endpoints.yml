@@ -1,10 +1,4 @@
 action_endpoint:
   url: "http://localhost:5055/webhook"
 
-tracing:
-  type: jaeger
-  host: jaeger
-  port: 6831
-  service_name: rasa
-  sampler_type: const
-  sampler_param: 1
+

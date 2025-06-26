@@ -1,3 +1,0 @@
-Server running on http://localhost:8080
-Metrics available at http://localhost:8080/api/metrics
-Health check at http://localhost:8080/api/health

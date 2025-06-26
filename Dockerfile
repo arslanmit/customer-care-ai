@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1.4
 
 # Use a single stage for simplicity and reliability
-FROM python:3.10
+FROM python:3.8
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \

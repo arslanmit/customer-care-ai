@@ -12,7 +12,6 @@ class ActionExtractOrderNumber(Action):
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        
         order_number = next(tracker.get_latest_entity_values("order_number"), None)
         if order_number:
             return [SlotSet("order_number", order_number)]
@@ -25,7 +24,7 @@ class ActionExtractProductId(Action):
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        
+
         product_id = next(tracker.get_latest_entity_values("product_id"), None)
         if product_id:
             return [SlotSet("product_id", product_id)]
@@ -38,7 +37,7 @@ class ActionExtractEmail(Action):
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        
+
         email = next(tracker.get_latest_entity_values("email"), None)
         if email:
             return [SlotSet("email", email)]
@@ -51,7 +50,7 @@ class ActionExtractPhoneNumber(Action):
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        
+
         phone_number = next(tracker.get_latest_entity_values("phone_number"), None)
         if phone_number:
             return [SlotSet("phone_number", phone_number)]
@@ -64,7 +63,7 @@ class ActionExtractDate(Action):
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        
+
         date = next(tracker.get_latest_entity_values("date"), None)
         if date:
             return [SlotSet("requested_date", date)]
@@ -77,7 +76,7 @@ class ActionExtractTime(Action):
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        
+
         time = next(tracker.get_latest_entity_values("time"), None)
         if time:
             return [SlotSet("requested_time", time)]
@@ -90,7 +89,7 @@ class ActionExtractLanguage(Action):
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        
+
         language = next(tracker.get_latest_entity_values("language"), None)
         if language:
             return [SlotSet("language", language)]
@@ -103,7 +102,7 @@ class ActionExtractFirstName(Action):
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        
+
         first_name = next(tracker.get_latest_entity_values("first_name"), None)
         if first_name:
             return [SlotSet("first_name", first_name)]
@@ -116,7 +115,7 @@ class ActionExtractLastName(Action):
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        
+
         last_name = next(tracker.get_latest_entity_values("last_name"), None)
         if last_name:
             return [SlotSet("last_name", last_name)]
@@ -129,7 +128,7 @@ class ActionExtractComplaintType(Action):
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        
+
         complaint_type = next(tracker.get_latest_entity_values("complaint_type"), None)
         if complaint_type:
             return [SlotSet("complaint_type", complaint_type)]
@@ -142,7 +141,7 @@ class ActionExtractComplaintDetails(Action):
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        
+
         complaint_details = next(tracker.get_latest_entity_values("complaint_details"), None)
         if complaint_details:
             return [SlotSet("complaint_details", complaint_details)]
@@ -155,7 +154,7 @@ class ActionExtractCustomerEmail(Action):
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        
+
         email = next(tracker.get_latest_entity_values("email"), None)
         if email:
             return [SlotSet("customer_email", email)]

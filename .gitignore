@@ -79,4 +79,9 @@ yarn-error.log*
 .Trashes
 ehthumbs.db
 Thumbs.db
- 
+
+# Environment variables
+.env
+ docs/preliminary/essay/*.txt
+.cursor
+rasa_venv/

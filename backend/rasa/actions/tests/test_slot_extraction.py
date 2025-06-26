@@ -73,10 +73,10 @@ def test_slot_extraction_actions(
         "active_loop": {},
         "latest_action_name": None,
     })
-    
+
     action = action_class()
     events = action.run(mock_dispatcher, tracker, {})
-    
+
     # Verify the correct slot was set
     assert len(events) == 1
     event = events[0]
@@ -103,10 +103,10 @@ def test_no_entity_found(mock_dispatcher):
         "active_loop": {},
         "latest_action_name": None,
     })
-    
+
     action = ActionExtractOrderNumber()
     events = action.run(mock_dispatcher, tracker, {})
-    
+
     # Should return an empty list when no entity is found
     assert events == []
 
@@ -132,10 +132,10 @@ def test_multiple_entities(mock_dispatcher):
         "active_loop": {},
         "latest_action_name": None,
     })
-    
+
     action = ActionExtractOrderNumber()
     events = action.run(mock_dispatcher, tracker, {})
-    
+
     # Should only set the first matching entity
     assert len(events) == 1
     event = events[0]

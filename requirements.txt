@@ -1,0 +1,2 @@
+rasa==3.6.16
+sqlalchemy==1.4.49 
