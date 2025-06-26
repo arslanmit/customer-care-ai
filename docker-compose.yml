@@ -1,7 +1,7 @@
 services:
   # Rasa Server
   rasa:
-    image: rasa/rasa:3.6.21-full
+    image: rasa/rasa:3.6.20-full
     platform: linux/amd64
 
     command: ["run", "--enable-api", "--debug", "--cors", "*", "--credentials", "/app/credentials.yml", "--endpoints", "/app/endpoints.yml", "--model", "/app/models/latest_rasa_model.tar.gz"]
