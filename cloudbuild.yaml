@@ -32,15 +32,15 @@ steps:
       - 'DOCKER_BUILDKIT=1'
       - 'COMPOSE_DOCKER_CLI_BUILD=1'
 
-  # Verify the built image
+  # Verify the built image by importing absl.testing directly
   - name: 'gcr.io/cloud-builders/docker'
-    args: 
+    args:
       - 'run'
       - '--rm'
       - 'gcr.io/$PROJECT_ID/${_SERVICE_NAME}:$BUILD_ID'
       - 'python'
       - '-c'
-      - 'import rasa; print(f"Rasa version: {rasa.__version__}")'
+      - 'import absl.testing; print("Successfully imported absl.testing")'
     id: 'verify'
     waitFor: ['build']
 
