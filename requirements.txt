@@ -1,6 +1,6 @@
 # Rasa and Rasa SDK versions are pinned for consistency.
 rasa==3.6.21
-rasa-sdk==3.12.1
+rasa-sdk==3.6.2
 
 # Natural Language Processing
 
