@@ -1,9 +1,7 @@
 services:
   # Rasa Server
   rasa:
-    build:
-      context: ./backend/rasa
-      dockerfile: Dockerfile
+    image: rasa/rasa:3.6.21-full
     platform: linux/amd64
 
     command: ["run", "--enable-api", "--debug", "--cors", "*", "--credentials", "/app/credentials.yml", "--endpoints", "/app/endpoints.yml", "--model", "/app/models/latest_rasa_model.tar.gz"]
@@ -40,7 +38,7 @@ services:
       resources:
         limits:
           cpus: '2'
-          memory: 4G
+          memory: 8G
     ulimits:
       nproc: 65535
       nofile:
@@ -52,8 +50,8 @@ services:
   # Rasa Actions Server
   actions:
     build:
-      context: ./backend/rasa/actions
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: backend/rasa/actions/Dockerfile
     platform: linux/amd64
     volumes:
       - ./backend/rasa/actions:/app/actions
