@@ -1,6 +1,7 @@
 # Rasa and Rasa SDK versions are pinned for consistency.
 rasa==3.6.20
 rasa-sdk==3.6.2
+absl-py==1.4.0
 
 # Natural Language Processing
 
