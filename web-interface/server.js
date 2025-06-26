@@ -103,7 +103,7 @@ app.post('/api/message', async (req, res) => {
         
         // Forward message to Rasa
         const options = {
-            hostname: 'rasa',
+            hostname: 'localhost',
             port: 5005,
             path: '/webhooks/rest/webhook',
             method: 'POST',
