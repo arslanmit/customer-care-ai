@@ -2,7 +2,7 @@ version: "3.1"
 
 # Session configuration controls conversation session handling
 session_config:
-  session_expiration_time: 60  # minutes of inactivity before session expires
+  session_expiration_time: 60    # minutes of inactivity before session expires
   carry_over_slots_to_new_session: true  # maintain slot values between sessions
 
 # ===== INTENTS =====
@@ -27,10 +27,11 @@ intents:
   - tell_joke
   - ask_return_policy
   - contact_support
-  - need_help
   - provide_order_number
   - return_item
   - product_inquiry
+  - out_of_scope    # user asks something outside supported scope
+  - nlu_fallback    # low-confidence fallback trigger
 
 # ===== ENTITIES =====
 entities:
@@ -53,104 +54,104 @@ slots:
     type: text
     influence_conversation: true
     mappings:
-    - type: custom
-      action: action_extract_order_number
+      - type: custom
+        action: action_extract_order_number
   
   product_id:
     type: text
     influence_conversation: true
     mappings:
-    - type: custom
-      action: action_extract_product_id
+      - type: custom
+        action: action_extract_product_id
   
   email:
     type: text
     influence_conversation: false
     mappings:
-    - type: custom
-      action: action_extract_email
+      - type: custom
+        action: action_extract_email
   
   phone_number:
     type: text
     influence_conversation: false
     mappings:
-    - type: custom
-      action: action_extract_phone_number
+      - type: custom
+        action: action_extract_phone_number
   
   requested_date:
     type: text
     influence_conversation: true
     mappings:
-    - type: custom
-      action: action_extract_date
+      - type: custom
+        action: action_extract_date
   
   requested_time:
     type: text
     influence_conversation: true
     mappings:
-    - type: custom
-      action: action_extract_time
+      - type: custom
+        action: action_extract_time
   
   language:
     type: text
     influence_conversation: true
     mappings:
-    - type: custom
-      action: action_extract_language
-      
-  # Added form slots
+      - type: custom
+        action: action_extract_language
+       
+  # Added form slots for name and complaint forms
   first_name:
     type: text
     influence_conversation: false
     mappings:
-    - type: custom
-      action: action_extract_first_name
+      - type: custom
+        action: action_extract_first_name
   
   last_name:
     type: text
     influence_conversation: false
     mappings:
-    - type: custom
-      action: action_extract_last_name
+      - type: custom
+        action: action_extract_last_name
   
   complaint_type:
     type: text
     influence_conversation: true
     mappings:
-    - type: custom
-      action: action_extract_complaint_type
+      - type: custom
+        action: action_extract_complaint_type
   
   complaint_details:
     type: text
     influence_conversation: true
     mappings:
-    - type: custom
-      action: action_extract_complaint_details
+      - type: custom
+        action: action_extract_complaint_details
   
   customer_email:
     type: text
     influence_conversation: false
     mappings:
-    - type: custom
-      action: action_extract_customer_email
-      
+      - type: custom
+        action: action_extract_customer_email
+       
   num_fallbacks:
     type: float
     initial_value: 0
     influence_conversation: true
     mappings:
-    - type: custom
-
+      - type: custom
+  
   time:
     type: text
     influence_conversation: false
     mappings: []
-
+  
   date:
     type: text
     influence_conversation: false
     mappings: []
-
+  
   datetime:
     type: text
     influence_conversation: false
@@ -172,8 +173,24 @@ responses:
     - text: "Could you please provide your order number?"
     - text: "To check your order, I'll need your order number. Can you share it with me?"
   
+  **utter_ask_first_name:**
+    - text: "Sure, I can help. First, may I know your **first name**?"
+    - text: "Let's get started. Could you tell me your **first name**?"
+  **utter_ask_last_name:**
+    - text: "Thanks. And your **last name**, please?"
+    - text: "Great. May I have your **last name**?"
+  **utter_ask_complaint_type:**
+    - text: "I'm sorry you're facing an issue. Could you briefly describe what your complaint is about?"
+    - text: "I apologize for the inconvenience. Please let me know the topic of your complaint."
+  **utter_ask_complaint_details:**
+    - text: "Could you provide more details about the issue you're experiencing?"
+    - text: "Please give me some details about the problem you're facing."
+  **utter_ask_customer_email:**
+    - text: "Can I have your email address to follow up on this issue?"
+    - text: "Please provide your email so we can contact you about resolving this problem."
+  
   utter_order_status:
-    - text: "Your order {order_number} is currently {status}. Is there anything specific you'd like to know about it?"
+    - text: "Your order **{order_number}** is currently **{status}**. Is there anything specific you'd like to know about it?"
   
   utter_thank:
     - text: "You're welcome!"
@@ -185,14 +202,14 @@ responses:
     - text: "I'm not sure I follow. Could you explain that differently?"
   
   utter_ask_rephrase:
-    - text: "I'm sorry, I didn't catch that. Could you rephrase it?"
-    - text: "I didn't understand. Could you say that again differently?"
+    - text: "I'm sorry, I didn't catch that. Could you say it again in other words?"
+    - text: "I didn't understand. Could you rephrase your request for me?"
   
   utter_iamabot:
-    - text: "I am a customer service assistant designed to help with your inquiries."
+    - text: "I am a virtual assistant designed to help with your inquiries."
   
   utter_out_of_scope:
-    - text: "I'm sorry, but I'm not able to help with that. I can assist with order status, returns, and general product inquiries."
+    - text: "I'm sorry, but I can't assist with that request. I can help with order status, returns, and general product inquiries."
   
   utter_please_wait:
     - text: "Please wait a moment while I check that for you."
@@ -210,32 +227,27 @@ responses:
     - text: "Do you have any other questions?"
   
   utter_time_response:
-    - text: "The current time is {time} UTC."
-    - text: "It's {time} UTC right now."
-    - text: "My clock shows {time} UTC."
-    - text: "The time is currently {time} UTC."
-    - text: "It's {time} UTC at the moment."
+    - text: "The current time is **{time} UTC**."
+    - text: "It's **{time} UTC** right now."
+    - text: "My clock shows **{time} UTC**."
+    - text: "The time is currently **{time} UTC**."
+    - text: "It's **{time} UTC** at the moment."
   
   utter_date_response:
-    - text: "Today's date is {date}."
-    - text: "It's {date} today."
-    - text: "The current date is {date}."
-    - text: "Today is {date}."
-    - text: "According to my calendar, it's {date}."
+    - text: "Today's date is **{date}**."
+    - text: "It's **{date}** today."
+    - text: "The current date is **{date}**."
+    - text: "Today is **{date}**."
+    - text: "According to my calendar, it's **{date}**."
   
   utter_datetime_response:
-    - text: "The current date and time is {datetime}."
-    - text: "Right now it's {datetime}."
-    - text: "The time is {datetime}."
-    - text: "It's {datetime} at the moment."
-    - text: "According to my system, it's {datetime}."
-    - text: "Do you need assistance with anything else?"
+    - text: "The current date and time is **{datetime}**."
+    - text: "Right now it's **{datetime}**."
+    - text: "It's **{datetime}** at the moment."
+    - text: "According to my system, it's **{datetime}**."
+    - text: "The time is **{datetime}**. Do you need help with anything else?"
   
-  utter_human_handoff:
-    - text: "I'm connecting you with a human agent now. Please hold a moment."
-    - text: "I'll transfer you to one of our customer service representatives right away."
-  
-  utter_joke:
+  **utter_joke:**
     - text: "Why did the chatbot go to therapy? It had too many identity issues!"
     - text: "What do you call a bot that sings? Artificial harmonies!"
     - text: "Why don't chatbots ever get tired? They're always taking micro-naps between responses!"
@@ -249,16 +261,16 @@ responses:
     - text: "I appreciate your input, thank you!"
     
   utter_support_help:
-    - text: "I'm here to help you with your support needs. What seems to be the problem?"
-    - text: "Our support team is ready to assist. Can you describe the issue you're experiencing?"
+    - text: "I'm here to help with your issue. What problem are you experiencing?"
+    - text: "Our support team is ready to assist. Can you describe the issue you're facing?"
     
   utter_transfer_to_agent:
     - text: "I'm transferring you to a human agent now. Please hold."
     - text: "One moment while I connect you with a customer service representative."
     
   utter_product_info:
-    - text: "Here's the information about the product you requested."
-    - text: "Let me tell you more about this product."
+    - text: "Here's the information about the product you asked for."
+    - text: "Let me tell you more about that product."
     
   utter_escalate_to_agent:
     - text: "I'm escalating your request to a customer service agent who can better assist you."
@@ -266,11 +278,19 @@ responses:
     
   utter_apologize_for_issue:
     - text: "I apologize for the issue you're experiencing. Let's get this resolved for you."
-    - text: "I'm sorry to hear that. I'd like to help you fix this problem."
+    - text: "I'm sorry to hear that. I'll do my best to help you fix this problem."
     
   utter_info:
     - text: "Here's the information you requested."
-    - text: "I have that information for you."
+    - text: "Sure, let me provide the details you asked for."
+  
+  **utter_return_policy:**
+    - text: "Our return policy allows returns within 30 days of purchase with a valid receipt."
+    - text: "You can return any item within 30 days of purchase, as long as you have proof of purchase."
+  
+  **utter_contact_info:**
+    - text: "You can reach our support team at **support@example.com** or call **1-800-123-4567** (Mon–Fri, 9am–5pm)."
+    - text: "For support inquiries, email us at **support@example.com** or call **1-800-123-4567** during business hours."
 
 # ===== FORMS =====
 forms:
@@ -299,7 +319,9 @@ actions:
   - action_tell_joke
   - action_handoff_to_human
   - action_get_time
-  - action_tell_date
+  - **action_tell_time**
+  - action_get_date
+  - **action_tell_date**
   - action_tell_datetime
   - action_set_language
   - action_ask_order_number

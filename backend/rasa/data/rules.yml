@@ -1,7 +1,211 @@
 version: "3.1"
 
+# ===== CONVERSATION RULES =====
+# These rules define single-turn or predictable conversation turns that should always be handled in a certain way.
+
 rules:
-- rule: Ask for date
-  steps:
-  - intent: ask_date
-  - action: action_tell_date
+  # ===== GREETING AND COURTESY RULES =====
+  - rule: Greet on first user message
+    condition:
+      - active_loop: null    # Only trigger when not in a form
+    steps:
+      - intent: greet
+      - action: utter_greet
+
+  - rule: Respond to goodbye
+    condition:
+      - active_loop: null
+    steps:
+      - intent: goodbye
+      - action: utter_goodbye
+
+  - rule: Respond to user thanks
+    condition:
+      - active_loop: null
+    steps:
+      - intent: thank
+      - action: utter_thank
+
+  # ===== FALLBACK HANDLING =====
+  - rule: Handle NLU fallback
+    condition:
+      - active_loop: null    # Don't interfere with forms
+    steps:
+      - intent: nlu_fallback
+      - action: action_increment_fallback_count
+      - action: utter_default
+
+  # ===== OUT-OF-SCOPE QUERIES =====
+  - rule: Handle out-of-scope query
+    condition:
+      - active_loop: null
+    steps:
+      - intent: out_of_scope
+      - action: utter_out_of_scope
+
+  # ===== FORM HANDLING =====
+  - rule: Activate name form
+    condition:
+      - active_loop: null    # Don't start if another form is active
+    steps:
+      - intent: provide_info
+      - action: name_form
+      - active_loop: name_form
+
+  - rule: Submit name form
+    condition:
+      - active_loop: name_form
+    steps:
+      - action: name_form
+      - active_loop: null
+      - slot_was_set:
+          - requested_slot: null
+      - action: utter_thank_you
+
+  # ===== INFORMATION REQUESTS =====
+  - rule: Answer time inquiry
+    condition:
+      - active_loop: null
+    steps:
+      - intent: ask_time
+      - action: action_tell_time
+
+  - rule: Answer date inquiry
+    condition:
+      - active_loop: null
+    steps:
+      - intent: ask_date
+      - action: action_tell_date
+
+  - rule: Answer date and time inquiry
+    condition:
+      - active_loop: null
+    steps:
+      - intent: ask_datetime
+      - action: action_tell_datetime
+
+  - rule: Tell a joke on request
+    condition:
+      - active_loop: null
+    steps:
+      - intent: tell_joke
+      - action: action_tell_joke
+
+  - rule: Answer general info request
+    condition:
+      - active_loop: null
+    steps:
+      - intent: ask_info
+      - action: utter_info
+
+  # ===== SUPPORT REQUESTS =====
+  - rule: Handle customer support request
+    condition:
+      - active_loop: null
+    steps:
+      - intent: support_request
+      - action: utter_support_help
+
+  - rule: Handle return request
+    condition:
+      - active_loop: null
+    steps:
+      - intent: return_item
+      - action: action_process_return
+
+  - rule: Handle human agent request
+    condition:
+      - active_loop: null
+    steps:
+      - intent: request_human_agent
+      - action: utter_transfer_to_agent
+      - action: action_handoff_to_human
+
+  # ===== PRODUCT INQUIRIES =====
+  - rule: Handle product inquiry
+    condition:
+      - active_loop: null
+    steps:
+      - intent: product_inquiry
+      - action: utter_product_info
+
+  # ===== POLICY AND CONTACT INQUIRIES =====
+  - rule: Handle return policy inquiry
+    condition:
+      - active_loop: null
+    steps:
+      - intent: ask_return_policy
+      - action: utter_return_policy
+
+  - rule: Handle support contact inquiry
+    condition:
+      - active_loop: null
+    steps:
+      - intent: contact_support
+      - action: utter_contact_info
+
+  # ===== LANGUAGE HANDLING =====
+  - rule: Handle language change request
+    condition:
+      - active_loop: null
+    steps:
+      - intent: change_language
+      - action: action_set_language
+      - action: utter_language_changed
+
+  # ===== ORDER AND ACCOUNT INQUIRIES =====
+  - rule: Handle account balance inquiry
+    condition:
+      - active_loop: null
+    steps:
+      - intent: check_balance
+      - action: action_check_balance
+
+  - rule: Handle order status inquiry
+    condition:
+      - active_loop: null
+    steps:
+      - intent: check_order_status
+      - action: action_ask_order_number
+
+  - rule: Handle provided order number
+    condition:
+      - active_loop: null
+    steps:
+      - intent: provide_order_number
+      - action: action_extract_order_number
+      - action: action_check_order_status
+
+  # ===== ESCALATION RULES =====
+  - rule: Escalate after multiple fallbacks
+    condition:
+      - slot_was_set:
+          - num_fallbacks: 3
+    steps:
+      - action: utter_escalate_to_agent
+      - action: action_handoff_to_human
+
+  # ===== COMPLAINT HANDLING RULES =====
+  - rule: Handle customer complaint
+    steps:
+      - intent: complaint
+      - action: utter_apologize_for_issue
+      - action: complaint_form
+      - active_loop: complaint_form
+
+  - rule: Submit complaint form and escalate
+    condition:
+      - active_loop: complaint_form
+    steps:
+      - action: complaint_form
+      - active_loop: null
+      - slot_was_set:
+          - requested_slot: null
+      - action: action_escalate_to_human
+
+  # ===== END OF CONVERSATION =====
+  - rule: End conversation when user says no more help
+    steps:
+      - action: utter_ask_anything_else
+      - intent: deny
+      - action: utter_goodbye

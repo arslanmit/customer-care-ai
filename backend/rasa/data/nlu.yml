@@ -1,6 +1,7 @@
 version: "3.1"
 
 nlu:
+  # Basic greetings
   - intent: greet
     examples: |
       - hello
@@ -57,11 +58,12 @@ nlu:
       - thanks for your help
       - that's helpful
 
+  # Customer account inquiries
   - intent: check_order_status
     examples: |
       - check my order status
       - where is my order
-      - order status
+      - what's the status of my order
       - status of my order
       - track my order
       - when will my order arrive
@@ -72,7 +74,6 @@ nlu:
       - is my order on the way
       - has my order shipped
       - tracking for my order
-      - order status
 
   - intent: check_balance
     examples: |
@@ -83,6 +84,7 @@ nlu:
       - current balance
       - balance inquiry
 
+  # Support and complaint requests
   - intent: support_request
     examples: |
       - I need help
@@ -94,6 +96,11 @@ nlu:
       - need assistance
       - help me please
       - I need to speak with support
+      - I need help with my account
+      - Help me use this feature
+      - I'm stuck and need assistance
+      - Can you help me navigate?
+      - I'm having trouble with this
 
   - intent: complaint
     examples: |
@@ -114,6 +121,7 @@ nlu:
       - Let's talk in German
       - Change to Japanese
 
+  # Time and date questions
   - intent: ask_time
     examples: |
       - What time is it right now?
@@ -137,6 +145,7 @@ nlu:
       - Could you give me the current date and time?
       - Can you tell me the current date and time?
 
+  # Product and general info inquiries
   - intent: product_inquiry
     examples: |
       - Tell me about your products
@@ -147,18 +156,16 @@ nlu:
   - intent: ask_info
     examples: |
       - I need some information
-      - Tell me about your return policy
       - Can you explain how this works?
-      - I have a question about your products
       - What can you tell me about this service?
 
+  # Providing information (email, phone, etc.)
   - intent: provide_info
     examples: |
-      - My email is example@email.com
-      - My phone number is 555-123-4567
+      - My email is [example@email.com](email)
+      - My phone number is [555-123-4567](phone_number)
       - My address is 123 Main Street
       - My account number is ABC12345
-      - My order number is 987654
 
   - intent: request_human_agent
     examples: |
@@ -191,14 +198,6 @@ nlu:
       - Give me your contact information
       - What's the support phone number?
       - How can I reach customer service?
-
-  - intent: need_help
-    examples: |
-      - I need help with my account
-      - Help me use this feature
-      - I'm stuck and need assistance
-      - Can you help me navigate?
-      - I'm having trouble with this
 
   - intent: provide_order_number
     examples: |
@@ -235,3 +234,12 @@ nlu:
       - I need to send back a product
       - Process a return for me
       - I'm not satisfied with my purchase and want to return it
+
+  # Out-of-scope queries (questions outside the bot's domain)
+  - intent: out_of_scope
+    examples: |
+      - What's the weather like today?
+      - Can you play music?
+      - Tell me something about the universe
+      - Who won the game last night?
+      - Sing me a song

@@ -1,195 +1,50 @@
 version: "3.1"
 
 stories:
-  - story: handle time queries
+  # Order status inquiry with user providing order number
+  - story: Order status inquiry (user provides order number)
     steps:
-      - intent: greet
-      - action: utter_greet
-      - intent: ask_time
-      - action: action_extract_time
-      - action: action_get_time
-      - intent: goodbye
+      - intent: check_order_status      # user asks to check order status
+      - action: action_ask_order_number # bot asks for the order number
+      - intent: provide_order_number    # user gives the order number
+      - action: action_extract_order_number
+      - action: action_check_order_status
+      - action: utter_ask_anything_else
+      - intent: deny                    # user says no (nothing else needed)
       - action: utter_goodbye
 
-  - story: handle date queries
+  # Multiple back-to-back queries in one conversation
+  - story: Multiple consecutive inquiries
     steps:
-      - intent: greet
-      - action: utter_greet
+      - intent: ask_time
+      - action: action_tell_time
       - intent: ask_date
-      - action: action_extract_date
-      - action: action_get_date
-      - intent: goodbye
-      - action: utter_goodbye
-
-  - story: handle datetime queries
-    steps:
-      - intent: greet
-      - action: utter_greet
-      - intent: ask_datetime
-      - action: action_extract_date
-      - action: action_extract_time
-      - action: action_tell_datetime
-      - intent: goodbye
-      - action: utter_goodbye
-
-  - story: chained date time queries
-    steps:
-      - intent: greet
-      - action: utter_greet
-      - intent: ask_time
-      - action: action_extract_time
-      - action: action_get_time
-      - intent: ask_date
-      - action: action_extract_date
-      - action: action_get_date
-      - intent: ask_datetime
-      - action: action_extract_date
-      - action: action_extract_time
-      - action: action_tell_datetime
-      - intent: goodbye
-      - action: utter_goodbye
-
-  - story: date time after support
-    steps:
-      - intent: greet
-      - action: utter_greet
-      - intent: support_request
-      - action: utter_support_help
-      - intent: ask_time
-      - action: action_extract_time
-      - action: action_get_time
-      - intent: goodbye
-      - action: utter_goodbye
-  - story: simple greeting and goodbye
-    steps:
-      - intent: greet
-      - action: utter_greet
-      - intent: goodbye
-      - action: utter_goodbye
-
-  - story: basic info inquiry
-    steps:
-      - intent: greet
-      - action: utter_greet
-      - intent: ask_info
-      - action: utter_info
-      - intent: goodbye
-      - action: utter_goodbye
-
-  - story: joke interaction
-    steps:
-      - intent: greet
-      - action: utter_greet
+      - action: action_tell_date
       - intent: tell_joke
       - action: action_tell_joke
       - intent: goodbye
       - action: utter_goodbye
 
-  - story: customer support request
+  # Product question followed by a support request and human handoff
+  - story: Product inquiry followed by support handoff
     steps:
-      - intent: greet
-      - action: utter_greet
-      - intent: support_request
-      - action: utter_support_help
-      - intent: request_human_agent
+      - intent: product_inquiry       # user asks about a product
+      - action: utter_product_info    # bot provides product information
+      - intent: support_request       # user now needs support with an issue
+      - action: utter_support_help    # bot offers help and asks for issue details
+      - intent: request_human_agent   # user requests a human agent
       - action: utter_transfer_to_agent
       - action: action_handoff_to_human
       - intent: goodbye
       - action: utter_goodbye
 
-  - story: customer support with product inquiry
+  # Language change mid-conversation, then general info question
+  - story: Change language and ask for info
     steps:
-      - intent: greet
-      - action: utter_greet
-      - intent: product_inquiry
-      - action: action_extract_product_id
-      - action: utter_product_info
-      - intent: support_request
-      - action: utter_support_help
-      - intent: goodbye
-      - action: utter_goodbye
-
-  - story: order status inquiry
-    steps:
-      - intent: greet
-      - action: utter_greet
-      - intent: check_order_status
-      - action: utter_ask_order_number
-      - intent: provide_order_number
-      - action: action_extract_order_number
-      - action: action_check_order_status
-      - intent: goodbye
-      - action: utter_goodbye
-
-  - story: language change request
-    steps:
-      - intent: greet
-      - action: utter_greet
-      - intent: change_language
+      - intent: change_language      # user requests to switch language
       - action: action_set_language
       - action: utter_language_changed
-      - intent: ask_info
+      - intent: ask_info             # user asks a general question after language change
       - action: utter_info
-      - intent: goodbye
-      - action: utter_goodbye
-
-  - story: time inquiry with joke
-    steps:
-      - intent: greet
-      - action: utter_greet
-      - intent: ask_time
-      - action: action_extract_time
-      - action: action_get_time
-      - intent: tell_joke
-      - action: action_tell_joke
-      - intent: goodbye
-      - action: utter_goodbye
-
-  - story: date inquiry
-    steps:
-      - intent: greet
-      - action: utter_greet
-      - intent: ask_date
-      - action: action_extract_date
-      - action: action_get_date
-      - intent: goodbye
-      - action: utter_goodbye
-
-  - story: date inquiry with follow up
-    steps:
-      - intent: greet
-      - action: utter_greet
-      - intent: ask_date
-      - action: action_extract_date
-      - action: action_get_date
-      - intent: ask_time
-      - action: action_extract_time
-      - action: action_get_time
-      - intent: tell_joke
-      - action: action_tell_joke
-      - intent: goodbye
-      - action: utter_goodbye
-
-  - story: datetime inquiry
-    steps:
-      - intent: greet
-      - action: utter_greet
-      - intent: ask_datetime
-      - action: action_extract_date
-      - action: action_extract_time
-      - action: action_tell_datetime
-      - intent: goodbye
-      - action: utter_goodbye
-
-  - story: datetime inquiry with follow up
-    steps:
-      - intent: greet
-      - action: utter_greet
-      - intent: ask_datetime
-      - action: action_extract_date
-      - action: action_extract_time
-      - action: action_tell_datetime
-      - intent: tell_joke
-      - action: action_tell_joke
       - intent: goodbye
       - action: utter_goodbye
