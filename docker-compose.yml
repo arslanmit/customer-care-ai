@@ -6,7 +6,7 @@ services:
       dockerfile: Dockerfile
     platform: linux/amd64
 
-    entrypoint: ["sleep", "infinity"]
+    command: ["run", "--enable-api", "--debug", "--cors", "*", "--credentials", "/app/credentials.yml", "--endpoints", "/app/endpoints.yml", "--model", "/app/models/latest_rasa_model.tar.gz"]
     ports:
       - "5005:5005"
     volumes:
@@ -30,12 +30,17 @@ services:
       - TF_CPP_MIN_LOG_LEVEL=2
       - RASA_LOG_LEVEL=DEBUG
       - RASA_CONSOLE_OUTPUT_VERBOSITY=DEBUG
-
+    healthcheck:
+      test: ["CMD", "python", "-c", "import sys; import urllib.request; sys.exit(0) if urllib.request.urlopen('http://localhost:5005/status', timeout=5).getcode() == 200 else sys.exit(1)"]
+      interval: 30s
+      timeout: 30s
+      retries: 3
+      start_period: 60s
     deploy:
       resources:
         limits:
           cpus: '2'
-          memory: 4G
+          memory: 6G
     ulimits:
       nproc: 65535
       nofile:
@@ -106,12 +111,13 @@ services:
     networks:
       - rasa-network
     depends_on:
-
+      rasa:
+        condition: service_healthy
       actions:
         condition: service_healthy
 
   jaeger:
-    image: jaegertracing/all-in-one:latest
+    image: jaegertracing/all-in-one:1.57
     platform: linux/amd64
     ports:
       - "16686:16686"
