@@ -4,15 +4,14 @@ FROM rasa/rasa-sdk:3.12.1
 # Set the working directory
 WORKDIR /app
 
-# Copy the requirements file from the root of the context
-COPY requirements.txt .
-
-# Switch to root to install dependencies
+# Switch to root to install dependencies and set permissions
 USER root
 
-# Install Python dependencies, excluding rasa and rasa-sdk
-RUN grep -vE '^rasa==|^rasa-sdk==' requirements.txt > actions-requirements.txt && \
-    pip install --no-cache-dir -r actions-requirements.txt
+# Copy the dedicated actions requirements file
+COPY backend/rasa/actions/requirements-actions.txt .
+
+# Install the Python dependencies for the actions
+RUN pip install --no-cache-dir -r requirements-actions.txt
 
 # Copy the actions code into the container
 COPY backend/rasa/actions/ /app/actions/
