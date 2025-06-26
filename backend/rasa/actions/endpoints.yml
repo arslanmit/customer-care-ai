@@ -1,0 +1,5 @@
+tracing:
+  type: "in_memory"  # Simple in-memory tracing for development
+  url: http://localhost:5000
+  
+# Add other endpoint configurations if needed

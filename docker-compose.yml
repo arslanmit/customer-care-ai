@@ -1,10 +1,12 @@
 services:
   # Rasa Server
   rasa:
-    image: rasa/rasa:3.6.21-full
+    build:
+      context: ./backend/rasa
+      dockerfile: Dockerfile
     platform: linux/amd64
 
-    command: ["run", "--enable-api", "--debug", "--cors", "*", "--credentials", "/app/credentials.yml", "--endpoints", "/app/endpoints.yml", "--model", "/app/models/latest_rasa_model.tar.gz"]
+    entrypoint: ["sleep", "infinity"]
     ports:
       - "5005:5005"
     volumes:
@@ -28,12 +30,7 @@ services:
       - TF_CPP_MIN_LOG_LEVEL=2
       - RASA_LOG_LEVEL=DEBUG
       - RASA_CONSOLE_OUTPUT_VERBOSITY=DEBUG
-    healthcheck:
-      test: ["CMD", "python", "-c", "import sys; import urllib.request; sys.exit(0) if urllib.request.urlopen('http://localhost:5005/status', timeout=5).getcode() == 200 else sys.exit(1)"]
-      interval: 30s
-      timeout: 30s
-      retries: 3
-      start_period: 60s
+
     deploy:
       resources:
         limits:
@@ -55,6 +52,7 @@ services:
     platform: linux/amd64
     volumes:
       - ./backend/rasa/actions:/app/actions
+      - ./backend/rasa/endpoints.yml:/app/endpoints.yml
     environment:
       - PYTHONPATH=/app
       - RASA_ACTIONS_SANIC_WORKERS=2
@@ -108,10 +106,20 @@ services:
     networks:
       - rasa-network
     depends_on:
-      rasa:
-        condition: service_healthy
+
       actions:
         condition: service_healthy
+
+  jaeger:
+    image: jaegertracing/all-in-one:latest
+    platform: linux/amd64
+    ports:
+      - "16686:16686"
+      - "6831:6831/udp"
+    networks:
+      - rasa-network
+    environment:
+      - COLLECTOR_ZIPKIN_HOST_PORT=:9411
 
 networks:
   rasa-network:
