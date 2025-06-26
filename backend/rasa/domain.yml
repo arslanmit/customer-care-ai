@@ -173,22 +173,6 @@ responses:
     - text: "Could you please provide your order number?"
     - text: "To check your order, I'll need your order number. Can you share it with me?"
   
-  **utter_ask_first_name:**
-    - text: "Sure, I can help. First, may I know your **first name**?"
-    - text: "Let's get started. Could you tell me your **first name**?"
-  **utter_ask_last_name:**
-    - text: "Thanks. And your **last name**, please?"
-    - text: "Great. May I have your **last name**?"
-  **utter_ask_complaint_type:**
-    - text: "I'm sorry you're facing an issue. Could you briefly describe what your complaint is about?"
-    - text: "I apologize for the inconvenience. Please let me know the topic of your complaint."
-  **utter_ask_complaint_details:**
-    - text: "Could you provide more details about the issue you're experiencing?"
-    - text: "Please give me some details about the problem you're facing."
-  **utter_ask_customer_email:**
-    - text: "Can I have your email address to follow up on this issue?"
-    - text: "Please provide your email so we can contact you about resolving this problem."
-  
   utter_order_status:
     - text: "Your order **{order_number}** is currently **{status}**. Is there anything specific you'd like to know about it?"
   
@@ -247,11 +231,6 @@ responses:
     - text: "According to my system, it's **{datetime}**."
     - text: "The time is **{datetime}**. Do you need help with anything else?"
   
-  **utter_joke:**
-    - text: "Why did the chatbot go to therapy? It had too many identity issues!"
-    - text: "What do you call a bot that sings? Artificial harmonies!"
-    - text: "Why don't chatbots ever get tired? They're always taking micro-naps between responses!"
-  
   utter_language_changed:
     - text: "Language has been changed successfully."
     - text: "I've switched the language as requested."
@@ -283,15 +262,13 @@ responses:
   utter_info:
     - text: "Here's the information you requested."
     - text: "Sure, let me provide the details you asked for."
-  
-  **utter_return_policy:**
-    - text: "Our return policy allows returns within 30 days of purchase with a valid receipt."
-    - text: "You can return any item within 30 days of purchase, as long as you have proof of purchase."
-  
-  **utter_contact_info:**
-    - text: "You can reach our support team at **support@example.com** or call **1-800-123-4567** (Mon–Fri, 9am–5pm)."
-    - text: "For support inquiries, email us at **support@example.com** or call **1-800-123-4567** during business hours."
 
+  utter_return_policy:
+    - text: "Our return policy allows returns within 30 days of purchase with proof of receipt. Would you like more details?"
+
+  utter_contact_info:
+    - text: "You can reach our support team at support@example.com or call 1-800-123-4567. How else may I help you today?"
+  
 # ===== FORMS =====
 forms:
   name_form:
@@ -319,9 +296,7 @@ actions:
   - action_tell_joke
   - action_handoff_to_human
   - action_get_time
-  - **action_tell_time**
   - action_get_date
-  - **action_tell_date**
   - action_tell_datetime
   - action_set_language
   - action_ask_order_number
@@ -341,3 +316,5 @@ actions:
   - action_extract_complaint_type
   - action_extract_complaint_details
   - action_extract_customer_email
+  - action_tell_time
+  - action_tell_date

@@ -10,6 +10,7 @@ stories:
       - action: action_extract_order_number
       - action: action_check_order_status
       - action: utter_ask_anything_else
+      - action: action_listen
       - intent: deny                    # user says no (nothing else needed)
       - action: utter_goodbye
 

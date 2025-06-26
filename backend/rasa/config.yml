@@ -79,4 +79,4 @@ session_config:
   carry_over_slots_to_new_session: true
 
 # assistant_id: customer-care-ai
-assistant_id: 20250625-014637-mint-halite
+assistant_id: latest_rasa_model
