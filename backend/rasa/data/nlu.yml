@@ -217,6 +217,16 @@ nlu:
       - order [ZYX-987](order_number)
       - order #[4567](order_number)
       - order number [XYZ-789-ABC](order_number)
+      - My order number is [ORD12345](order_number)
+      - I want to check my order with number [ORD12345](order_number)
+      - Here's my order number [ORD12345](order_number)
+      - Can you look up order [ORD12345](order_number)
+      - Let me give you my order number, it's [ORD12345](order_number)
+      - Order with reference [ORD12345](order_number)
+      - I placed an order with number [ORD12345](order_number)
+      - The order I'm referring to is [ORD12345](order_number)
+      - Please check order [ORD12345](order_number) for me
+      - Track my order [ORD12345](order_number)
 
   - intent: return_item
     examples: |

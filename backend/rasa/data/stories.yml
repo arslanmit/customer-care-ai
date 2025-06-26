@@ -138,6 +138,7 @@ stories:
       - intent: greet
       - action: utter_greet
       - intent: ask_time
+      - action: action_extract_time
       - action: action_get_time
       - intent: tell_joke
       - action: action_tell_joke
@@ -149,6 +150,7 @@ stories:
       - intent: greet
       - action: utter_greet
       - intent: ask_date
+      - action: action_extract_date
       - action: action_get_date
       - intent: goodbye
       - action: utter_goodbye
@@ -158,8 +160,10 @@ stories:
       - intent: greet
       - action: utter_greet
       - intent: ask_date
+      - action: action_extract_date
       - action: action_get_date
       - intent: ask_time
+      - action: action_extract_time
       - action: action_get_time
       - intent: tell_joke
       - action: action_tell_joke
@@ -171,6 +175,8 @@ stories:
       - intent: greet
       - action: utter_greet
       - intent: ask_datetime
+      - action: action_extract_date
+      - action: action_extract_time
       - action: action_tell_datetime
       - intent: goodbye
       - action: utter_goodbye
@@ -180,6 +186,8 @@ stories:
       - intent: greet
       - action: utter_greet
       - intent: ask_datetime
+      - action: action_extract_date
+      - action: action_extract_time
       - action: action_tell_datetime
       - intent: tell_joke
       - action: action_tell_joke
