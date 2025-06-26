@@ -20,6 +20,7 @@ WORKDIR /app
 COPY requirements.txt .
 
 RUN grep -v '^models/' requirements.txt > /app/requirements-clean.txt && \
+    echo "absl-py" >> /app/requirements-clean.txt && \
     pip install --user -r /app/requirements-clean.txt && \
     apt-get remove -y --auto-remove build-essential curl git && \
     apt-get clean && \
