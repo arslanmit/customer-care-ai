@@ -1,56 +1,81 @@
-# Rasa and Rasa SDK versions
+# Core framework
 rasa==3.6.21
 rasa-sdk==3.6.2
 
-# Core dependencies
-numpy>=1.23.5,<2.0.0
+# Numerical & ML libs
+numpy>=1.23.5,<1.24.0
 scipy>=1.10.1,<2.0.0
 scikit-learn>=1.1.3,<2.0.0
-tensorflow>=2.12.0,<3.0.0
-tensorflow-cpu>=2.12.0,<3.0.0
-tensorflow-text==2.12.0
-torch>=2.0.0,<3.0.0
-sentence-transformers>=2.2.2,<3.0.0
-dask==2022.10.2
 
-# Web framework & sockets
+# TensorFlow CPU-only and matching components
+tensorflow-cpu==2.12.0
+tensorflow-estimator==2.12.0
+tensorboard==2.12.0
+keras==2.12.0
+tensorflow-text==2.12.0
+
+# Embedding models
+sentence-transformers>=2.2.2,<3.0.0
+
+# Parallel & async
+dask==2022.10.2
+aio-pika>=8.2.3,<9.0.0
+aiormq>=6.4.2,<7.0.0
+
+# Web/API framework
 fastapi>=0.68.2,<1.0.0
 uvicorn>=0.34.3,<1.0.0
 python-socketio>=5.13.0,<6.0.0
 python-engineio>=4.12.2,<5.0.0
+httpx>=0.23.0
 
-# Message Brokers
-aio-pika>=8.2.3,<9.0.0
-aiormq>=6.4.2,<7.0.0
+# Message brokers & queues
 kafka-python>=2.0.2,<3.0.0
-
-# Utils & Helpers
-python-dotenv>=1.1.0,<2.0.0
-python-dateutil>=2.8.2,<3.0.0
-pytz>=2022.7.1,<2024.0.0
-
-# Logging & Monitoring
-sentry-sdk>=1.14.0,<2.0.0
-prometheus-client>=0.17.1,<1.0.0
-jaeger-client>=4.8.0
-
-# Storage & Databases
 redis>=4.6.0,<5.0.0
 pymongo>=4.3.3,<5.0.0
 psycopg2-binary>=2.9.10,<3.0.0
-SQLAlchemy>=1.4.54,<2.0.0
 
-# Chat integrations
+# Cloud integrations
+google-cloud-logging>=2.7.0
+boto3>=1.26.136,<2.0.0
+tensorflow-io-gcs-filesystem==0.32
+
+# Chat connectors
 rocketchat_API>=0.6.31,<1.31.0
 slack-sdk>=3.19.2,<4.0.0
 fbmessenger>=6.0.0,<6.1.0
 mattermostwrapper>=2.2,<2.3
+twilio>=6.26,<8.3
+webexteamssdk>=1.1.1,<1.7.0
+aiogram>=2.25.2,<2.26
 
-# NLP & translation
-transformers>=4.30.0,<5.0.0
+# Translations & NLP
 deep-translator>=1.11.0
+transformers>=4.30.0,<5.0.0
 
-# Testing & linting
+# Logging & tracing
+sentry-sdk>=1.14.0,<2.0.0
+prometheus-client>=0.17.1,<1.0.0
+jaeger-client>=4.8.0
+structlog>=23.1.0,<24.0.0
+
+# Utilities & helpers
+python-dotenv>=1.1.0,<2.0.0
+python-dateutil>=2.8.2,<3.0.0
+pytz>=2022.7.1,<2024.0.0
+dnspython==2.3.0
+randomname>=0.1.5,<0.2.0
+colorhash>=1.0.2,<1.3.0
+flatbuffers>=2.0
+cachecontrol>=0.12.9,<0.13.0
+tabulate>=0.8.8
+threadpoolctl>=2.0.0
+joblib>=1.0.0
+
+# Server & routing (if needed)
+starlette>=0.37.2,<0.41.0
+
+# Misc QA, formatting & linting
 pytest>=8.4.1,<9.0.0
 pytest-cov>=6.2.1,<7.0.0
 pytest-asyncio>=0.21.1,<1.0.0
@@ -61,11 +86,25 @@ isort>=5.12.0,<6.0.0
 flake8>=7.1.0,<8.0.0
 mypy>=1.10.0,<2.0.0
 pre-commit>=3.7.0,<4.0.0
-
-# Messaging helpers
 questionary>=1.5.1,<1.11.0
 
-# Optional – if you need Google Cloud logging
-google-cloud-logging>=2.7.0
+# YAML, HTTP, parsing, etc.
+ruamel.yaml>=0.16.5,<0.17.22
+jinja2==3.1.6
+pydantic<1.10.10
+attrs>=19.3,<22.2
+aiohttp>=3.9.0,<3.10
+portalocker>=2.7.0,<3.0.0
+tomli>=1.0
+jsonpickle>=1.3,<3.1
+jsonschema>=3.2,<4.18
 
-# End of file
+# Graphs, dates, plotting
+matplotlib>=3.1,<3.6
+networkx>=2.4,<2.7
+sympy==1.13.1
+
+# CI & coverage
+coverage[toml]>=7.5
+execnet>=2.1
+platformdirs>=2
