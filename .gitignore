@@ -12,6 +12,9 @@ env/
 venv/
 ENV/
 
+# Environment variables
+.env
+
 # Package distributions
 build/
 dist/
