@@ -87,8 +87,10 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8080:8080"
-    volumes:
-      - ./web-interface:/app
+    # Removed bind mount of local web-interface source to retain installed node_modules in the image
+    # If you need live code editing, add the mount back in development only.
+    # volumes:
+    #   - ./web-interface:/app
     environment:
       - NODE_ENV=production
       - RASABOT_HOST=rasa
