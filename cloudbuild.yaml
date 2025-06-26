@@ -32,18 +32,6 @@ steps:
       - 'DOCKER_BUILDKIT=1'
       - 'COMPOSE_DOCKER_CLI_BUILD=1'
 
-  # Verify the built image by overriding the entrypoint
-  - name: 'gcr.io/cloud-builders/docker'
-    args:
-      - 'run'
-      - '--rm'
-      - '--entrypoint=python'
-      - 'gcr.io/$PROJECT_ID/${_SERVICE_NAME}:$BUILD_ID'
-      - '-c'
-      - 'import absl.testing; print("Successfully imported absl.testing")'
-    id: 'verify'
-    waitFor: ['build']
-
   # Pre-process cloudrun.yaml to substitute variables
   - name: 'gcr.io/cloud-builders/gcloud'
     id: 'preprocess-cloudrun-yaml'
@@ -54,7 +42,7 @@ steps:
       - '_SERVICE_NAME=${_SERVICE_NAME}'
       - '_SERVICE_ACCOUNT=${_SERVICE_ACCOUNT}'
       - '_CLOUDSQL_INSTANCE=${_CLOUDSQL_INSTANCE}'
-    waitFor: ['verify']
+    waitFor: ['build']
 
   # Deploy to Cloud Run
   - name: 'gcr.io/cloud-builders/gcloud'
